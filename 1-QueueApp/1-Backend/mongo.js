@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-
 const password = process.argv[2]
 
 const url =
@@ -14,13 +13,20 @@ mongoose.connect(url).then(() => {
 
   const Staff = mongoose.model('Staff', staffSchema)
 
-  const staff = new Staff({
-    username: 'Staff 1',
-    password: 'staff_1',
-  })
+  // const staff = new Staff({
+  //   username: 'Staff 1',
+  //   password: 'staff_1',
+  // })
 
-  staff.save().then(() => {
-    console.log('staff saved!')
+  // staff.save().then(() => {
+  //   console.log('staff saved!')
+  //   mongoose.connection.close()
+  // })
+
+  Staff.find({}).then(result => {
+    result.forEach(staff => {
+      console.log(staff)
+    })
     mongoose.connection.close()
   })
 })

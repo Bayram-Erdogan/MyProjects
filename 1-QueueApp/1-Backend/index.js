@@ -1,24 +1,8 @@
-const express = require('express')
-const app = express()
+require('dotenv').config()
+const app = require('./app')
+const config = require('./src/utils/config')
 
-let staffs = [
-    {
-        username:"Staff 1",
-        email:"staff_1@queue.com",
-        password:"123456"
-    },
-    {
-        username:"Staff 2",
-        email:"staff_2@queue.com",
-        password:"123456"
-    }
-]
 
-app.get('/api/staffs',(request, response) =>{
-    response.json(staffs)
-})
-
-const PORT = 3001
-app.listen(PORT, ()=>{
-    console.log(`Server is running http://localhost:${PORT}`)
+app.listen(config.PORT, () => {
+  console.log(`Server is running http://localhost:${config.PORT}`)
 })
