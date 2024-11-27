@@ -1,0 +1,134 @@
+# CREATE NEW USER WITH AUTHORIZATION
+POST http://localhost:3001/api/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZDZiZDFjMmZiMjE2ZTNhYWMyNzAiLCJpYXQiOjE3MzI2OTg2NTh9.5KWArVif5mmaCXWj6-dt8cvJ5LfDEnnunka1fx4tWgQ
+
+{
+    "name" : "User 1 Created from VSC",
+    "email": "user_1@queue.com",
+    "password"  : "user_1"
+}
+
+###
+# CREATE NEW USER WITHOUT AUTHORIZATION
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "name" : "User 1",
+    "email": "user_1@queue.com",
+    "password"  : "user_1",
+}
+
+###
+# READ_ALL_USERS WITH AUTHORIZATION
+GET http://localhost:3001/api/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZDZiZDFjMmZiMjE2ZTNhYWMyNzAiLCJpYXQiOjE3MzI2OTg2NTh9.5KWArVif5mmaCXWj6-dt8cvJ5LfDEnnunka1fx4tWgQ
+
+###
+# READ_ALL_USERS WITHOUT AUTHORIZATION
+GET http://localhost:3001/api/users
+
+###
+# UPDATE_SPECIFIC_USER'S NAME WITH AUTHORIZATION
+PUT http://localhost:3001/api/users/6746d81b11c7eace611fdaf7
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZDZiZDFjMmZiMjE2ZTNhYWMyNzAiLCJpYXQiOjE3MzI2OTU5MjR9.3ztj6YcUPKx3uOu25CYP1TYiqPY2s-M_cSXWK4LnquE
+
+{
+    "name" : "User 2 updated from VSC"
+}
+###
+# UPDATE_SPECIFIC_USER'S EMAIL WITH AUTHORIZATION
+PUT http://localhost:3001/api/users/6746d81b11c7eace611fdaf7
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZDZiZDFjMmZiMjE2ZTNhYWMyNzAiLCJpYXQiOjE3MzI2OTU5MjR9.3ztj6YcUPKx3uOu25CYP1TYiqPY2s-M_cSXWK4LnquE
+
+{
+    "email" : "user_1_updated@queue.com"
+}
+
+###
+# UPDATE_SPECIFIC_USER'S PASSWORD WITH AUTHORIZATION
+PUT http://localhost:3001/api/users/67458fa9a5a23577554b019b
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZDZiZDFjMmZiMjE2ZTNhYWMyNzAiLCJpYXQiOjE3MzI2OTU5MjR9.3ztj6YcUPKx3uOu25CYP1TYiqPY2s-M_cSXWK4LnquE
+
+{
+    "password" : "user_1 password updated from VSC"
+}
+
+###
+# UPDATE_SPECIFIC_USER'S ALL DATA WITH AUTHORIZATION
+PUT http://localhost:3001/api/users/67458fa9a5a23577554b019b
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZDZiZDFjMmZiMjE2ZTNhYWMyNzAiLCJpYXQiOjE3MzI2OTU5MjR9.3ztj6YcUPKx3uOu25CYP1TYiqPY2s-M_cSXWK4LnquE
+
+{
+    "username" : "Staff 1 updated from VSC",
+    "email" : "user_1_updated@queue.com",
+    "password" : "user_1 password updated from VSC"
+}
+
+###
+
+# UPDATE_SPECIFIC_USER'S NAME WITHOUT AUTHORIZATION
+PUT http://localhost:3001/api/users/6746d81b11c7eace611fdaf7
+Content-Type: application/json
+
+{
+    "name" : "User 2 updated from VSC"
+}
+###
+# UPDATE_SPECIFIC_USER'S EMAIL WITHOUT AUTHORIZATION
+PUT http://localhost:3001/api/users/6746d81b11c7eace611fdaf7
+Content-Type: application/json
+{
+    "email" : "user_1_updated@queue.com"
+}
+
+###
+# UPDATE_SPECIFIC_USER'S PASSWORD WITHOUT AUTHORIZATION
+PUT http://localhost:3001/api/users/67458fa9a5a23577554b019b
+Content-Type: application/json
+
+{
+    "password" : "user_1 password updated from VSC"
+}
+
+###
+# UPDATE_SPECIFIC_USER'S ALL DATA WITHOUT AUTHORIZATION
+PUT http://localhost:3001/api/users/67458fa9a5a23577554b019b
+Content-Type: application/json
+
+{
+    "username" : "Staff 1 updated from VSC",
+    "email" : "user_1_updated@queue.com",
+    "password" : "user_1 password updated from VSC"
+}
+
+###
+# DELETE_ALL_USERS WITH AUTHORIZATION
+DELETE http://localhost:3001/api/users/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZDZiZDFjMmZiMjE2ZTNhYWMyNzAiLCJpYXQiOjE3MzI2OTg2NTh9.5KWArVif5mmaCXWj6-dt8cvJ5LfDEnnunka1fx4tWgQ
+
+###
+# DELETE_ALL_USERS WITHOUT AUTHORIZATION
+DELETE http://localhost:3001/api/users/
+
+###
+# DELETE_SPECIFIC_USER WITH AUTHORIZATION
+DELETE http://localhost:3001/api/users/6746d81b11c7eace611fdaf7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZDZiZDFjMmZiMjE2ZTNhYWMyNzAiLCJpYXQiOjE3MzI2OTU5MjR9.3ztj6YcUPKx3uOu25CYP1TYiqPY2s-M_cSXWK4LnquE
+
+###
+# DELETE_SPECIFIC_USER WITHOUT AUTHORIZATION
+DELETE http://localhost:3001/api/users/67459185ba6dbc7391054617
+
+
+
+
+
+
+
+

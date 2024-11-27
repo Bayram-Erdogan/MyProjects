@@ -1,0 +1,71 @@
+# CREATE NEW DESK WITH AUTHORIZATION
+POST http://localhost:3001/api/desks
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MDYwMzh9.DzHuWVYY9kLuYd2vuPKWwcAd9HiIhh56V3iCl0EF9Yc
+
+{
+    "desk_number": 23
+}
+
+###
+# CREATE NEW DESK WITHOUT AUTHORIZATION
+POST http://localhost:3001/api/desks
+Content-Type: application/json
+
+{
+    "desk_number": 44
+}
+
+###
+# READ_ALL_DESKS WITH AUTHORIZATION
+GET http://localhost:3001/api/desks
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MDYwMzh9.DzHuWVYY9kLuYd2vuPKWwcAd9HiIhh56V3iCl0EF9Yc
+
+###
+# READ_ALL_DESKS WITHOUT AUTHORIZATION
+GET http://localhost:3001/api/desks
+###
+# READ_SPECIFIC_DESK WITH AUTHORIZATION
+GET http://localhost:3001/api/desks/67474729b19add57a5ca3340
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MDYwMzh9.DzHuWVYY9kLuYd2vuPKWwcAd9HiIhh56V3iCl0EF9Yc
+
+###
+# READ_SPECIFIC_DESK WITHOUT AUTHORIZATION
+GET http://localhost:3001/api/desks/6746ec074eb5d32febb14c0d
+
+###
+# UPDATE_SPECIFIC_DESK'S DESK_NUMBER WITH AUTHORIZATION
+PUT http://localhost:3001/api/desks/67474811f06c7a2a398f96ca
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MDYwMzh9.DzHuWVYY9kLuYd2vuPKWwcAd9HiIhh56V3iCl0EF9Yc
+
+{
+    "desk_number" : 100
+}
+
+###
+# UPDATE_SPECIFIC_DESK'S DESK_NUMBER WITHOUT AUTHORIZATION
+PUT http://localhost:3001/api/desks/67474811f06c7a2a398f96ca
+Content-Type: application/json
+J1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MDYwMzh9.DzHuWVYY9kLuYd2vuPKWwcAd9HiIhh56V3iCl0EF9Yc
+
+{
+    "desk_number" : 100
+}
+
+###
+# DELETE_ALL_DESKS WITH AUTHORIZATION
+DELETE http://localhost:3001/api/desks/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MjMwMDN9.9bbBpSCkxj0FA79tTV9LrB1DJOJUcRfqrGty1jraklA
+
+###
+# DELETE_ALL_DESKS WITHOUT AUTHORIZATION
+DELETE http://localhost:3001/api/desks/
+
+###
+# DELETE_SPECIFIC_DESK WITH AUTHORIZATION
+DELETE http://localhost:3001/api/desks/67474811f06c7a2a398f96ca
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MjMwMDN9.9bbBpSCkxj0FA79tTV9LrB1DJOJUcRfqrGty1jraklA
+###
+# DELETE_SPECIFIC_DESK WITHOUT AUTHORIZATION
+DELETE http://localhost:3001/api/desks/67459185ba6dbc7391054617

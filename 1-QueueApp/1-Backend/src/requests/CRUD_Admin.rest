@@ -1,0 +1,51 @@
+# CREATE
+POST http://localhost:3001/api/admin
+Content-Type: application/json
+
+{
+    "username" : "Admin",
+    "password" : "12345678"
+}
+
+###
+# READ_ALL
+GET http://localhost:3001/api/admin
+
+###
+# READ_SPECIFIC_ADMIN
+GET http://localhost:3001/api/admin/6746ec074eb5d32febb14c0d
+
+###
+# UPDATE admin's usermane
+PUT http://localhost:3001/api/admin/6746ec074eb5d32febb14c0d
+Content-Type: application/json
+
+{
+    "username" : "Admin 1 updated from VSC"
+}
+###
+# UPDATE admin's password
+PUT http://localhost:3001/api/admin/6746ec074eb5d32febb14c0d
+Content-Type: application/json
+
+{
+    "password" : "admin_2 updated from VSC"
+}
+
+###
+# UPDATE admin's all data
+PUT http://localhost:3001/api/admin/6746ec074eb5d32febb14c0d
+Content-Type: application/json
+
+{
+    "username" : "Admin 2 updated from VSC",
+    "password" : "admin_2 updated from VSC"
+}
+
+###
+# DELETE_ALL_ADMINS
+DELETE http://localhost:3001/api/admin
+
+###
+# DELETE_SPECIFIC_ADMIN
+DELETE http://localhost:3001/api/admin/6746d7501c2fb216e3aac273

@@ -19,14 +19,13 @@ adminRouter.post('/', async (request, response) => {
 })
 
 adminRouter.get('/', async (request, response) => {
-  const admins = await Admin.find({}).populate('staffs', 'username') // populate from ChatGPT
+  const admins = await Admin.find({}).populate('users', 'username') // populate from ChatGPT
   response.json(admins)
 })
 
-
 adminRouter.get('/:id', async (request, response) => {
 
-  const admin = await Admin.findById(request.params.id).populate('staffs', 'username')
+  const admin = await Admin.findById(request.params.id).populate('users', 'username')
   if (admin) {
     response.json(admin)
   } else {
@@ -34,7 +33,6 @@ adminRouter.get('/:id', async (request, response) => {
   }
 
 })
-
 
 adminRouter.delete('/', (request, response, next) => {
   Admin.deleteMany({})
@@ -50,7 +48,6 @@ adminRouter.delete('/:id', (request, response, next) => {
       response.status(204).end()
     })
     .catch(error => next(error))
-
 })
 
 adminRouter.put('/:id', (request, response, next) => {

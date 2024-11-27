@@ -1,8 +1,0 @@
-POST http://localhost:3001/api/staffs
-Content-Type: application/json
-
-{
-    "username" : "Staff 2 created from VSC",
-    "password" : "staff_2 created from VSC",
-    "id" : "6745f20a5f75c1dcc907dc3c"
-}

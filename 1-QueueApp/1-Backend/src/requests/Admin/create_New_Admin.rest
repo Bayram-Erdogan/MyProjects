@@ -1,7 +1,0 @@
-POST http://localhost:3001/api/admin
-Content-Type: application/json
-
-{
-    "username" : "Admin 2 created from VSC",
-    "password" : "admin_2 created from VSC"
-}

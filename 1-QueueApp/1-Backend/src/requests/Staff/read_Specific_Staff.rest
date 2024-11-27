@@ -1,1 +1,0 @@
-GET http://localhost:3001/api/staffs/67459185ba6dbc7391054617
