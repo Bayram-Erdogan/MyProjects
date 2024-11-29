@@ -19,13 +19,16 @@ adminRouter.post('/', async (request, response) => {
 })
 
 adminRouter.get('/', async (request, response) => {
-  const admins = await Admin.find({}).populate('users', 'username') // populate from ChatGPT
+  const admins = await Admin.find({})
+    .populate('users', 'name')
+    .populate('desks', 'desk_number')
+    .populate('queues','queue_name desk_number')
   response.json(admins)
 })
 
 adminRouter.get('/:id', async (request, response) => {
 
-  const admin = await Admin.findById(request.params.id).populate('users', 'username')
+  const admin = await Admin.findById(request.params.id).populate('users', 'name')
   if (admin) {
     response.json(admin)
   } else {

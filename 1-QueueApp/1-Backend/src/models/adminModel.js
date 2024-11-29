@@ -29,6 +29,15 @@ adminSchema.set('toJSON', {
     delete returnedObject._id
     delete returnedObject.__v
     delete returnedObject.passwordHash
+
+    const orderedObject = {
+      username:returnedObject.username,
+      admin_id: returnedObject.id,
+      users: returnedObject.users,
+      queues: returnedObject.queues,
+      desks: returnedObject.desks,
+    }
+    return orderedObject
   }
 })
 

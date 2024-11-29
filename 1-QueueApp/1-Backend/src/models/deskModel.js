@@ -1,17 +1,12 @@
 const mongoose = require('mongoose')
 
 const deskSchema = new mongoose.Schema({
-//   desk_name : {
-//     type : String,
-//     required : true,
-//     minLength : 3
-//   },
   desk_number:{
-    type:Number,
-    required:true,
-    unique:true
+    type: Number,
+    required: true,
+    unique: true
   },
-  //   max_of_customer: Number,
+  queue_name: String,
   createdTime: {
     date: {
       type: String,
@@ -26,12 +21,12 @@ const deskSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Admin'
   },
-  queues: [
+  queues:[
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Queue',
-    },
-  ]
+    }
+  ],
 })
 
 deskSchema.set('toJSON', {
@@ -42,15 +37,14 @@ deskSchema.set('toJSON', {
     delete returnedObject.passwordHash
 
     const orderedObject = {
-      //queue_name: returnedObject.queue_name,
       desk_number: returnedObject.desk_number,
-      //max_of_customer:returnedObject.max_of_customer,
-      id: returnedObject.id,
+      desk_id: returnedObject.id,
       createdTime: returnedObject.createdTime,
-      createdBy:returnedObject.createdBy
+      createdBy: returnedObject.createdBy,
     }
+    console.log(orderedObject)
     return orderedObject
-  }
+  },
 })
 
 module.exports = mongoose.model('Desk', deskSchema)

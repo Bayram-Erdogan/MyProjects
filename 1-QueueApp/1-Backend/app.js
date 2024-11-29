@@ -11,6 +11,7 @@ const loginRouter = require('./src/routes/login')
 const queueRouter = require('./src/routes/queueRoutes')
 const deskRouter = require('./src/routes/deskRoutes')
 
+
 mongoose.set('strictQuery', false)
 mongoose.connect(config.MONGODB_URI)
   .then(() => {

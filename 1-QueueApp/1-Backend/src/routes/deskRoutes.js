@@ -22,9 +22,7 @@ deskRouter.post('/', async (request, response) => {
   const admin = await Admin.findById(decodedToken.id)
 
   const desk = new Desk({
-    //queue_name: body.queue_name,
     desk_number: body.desk_number,
-    //max_of_customer:body.max_of_customer,
     createdBy: admin._id
   })
 
@@ -36,8 +34,10 @@ deskRouter.post('/', async (request, response) => {
 })
 
 deskRouter.get('/', async (request, response) => {
-  const queues = await Desk.find({}).populate('createdBy', 'username') //  Populate from ChatGPT
-  response.json(queues)
+  const desks = await Desk.find({})
+    .populate('queues', 'queue_name')
+    .populate('createdBy', 'username') //  Populates from ChatGPT
+  response.json(desks)
 })
 
 deskRouter.get('/:id', async (request, response) => {

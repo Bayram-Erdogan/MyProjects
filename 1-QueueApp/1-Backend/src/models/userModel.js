@@ -38,7 +38,7 @@ userSchema.set('toJSON', {
     const orderedObject = {
       name: returnedObject.name,
       email: returnedObject.email,
-      id: returnedObject.id,
+      user_id: returnedObject.id,
       createdTime: returnedObject.createdTime,
       createdBy:returnedObject.createdBy
     }

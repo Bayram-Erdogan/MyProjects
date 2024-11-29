@@ -1,10 +1,10 @@
 # CREATE NEW USER WITH AUTHORIZATION
 POST http://localhost:3001/api/users
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZDZiZDFjMmZiMjE2ZTNhYWMyNzAiLCJpYXQiOjE3MzI2OTg2NTh9.5KWArVif5mmaCXWj6-dt8cvJ5LfDEnnunka1fx4tWgQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ5ODM5MTcyNGVlZjZlZTViMDI0NzEiLCJpYXQiOjE3MzI4NzEwNzZ9.ETPCoKLoxY1xVEpgcKBjcTQqjEj6PQriJoq7jWkrVhk
 
 {
-    "name" : "User 1 Created from VSC",
+    "name" : "User 1",
     "email": "user_1@queue.com",
     "password"  : "user_1"
 }

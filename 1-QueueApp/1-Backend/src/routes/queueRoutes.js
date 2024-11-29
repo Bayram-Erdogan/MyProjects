@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const Queue = require('../models/queueModel')
 const Admin = require('../models/adminModel')
 const Desk = require('../models/deskModel')
+const QRCode = require('qrcode')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
@@ -14,30 +15,48 @@ const getTokenFrom = request => {
 
 queueRouter.post('/', async (request, response) => {
   const body = request.body
-  const desk = await Desk.findById(body.desk_id)
+  const desk = await Desk.findOne({ desk_number: body.desk_number })
+
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
-
+  console.log(desk)
   const admin = await Admin.findById(decodedToken.id)
 
   const queue = new Queue({
     queue_name: body.queue_name,
     desk: desk.id,
+    desk_number: desk.desk_number,
     max_of_customer:body.max_of_customer,
     createdBy: admin._id
   })
 
+  let qrCodeBase64
+  try { //try-catch blog is from ChatGPT
+    qrCodeBase64 = await QRCode.toDataURL(queue._id.toString())
+    queue.qr_code = qrCodeBase64
+  } catch (error) {
+    console.error('QR Code generation failed:', error)
+    return response.status(500).json({ error: 'Failed to generate QR Code' })
+  }
+
   const savedQueue = await queue.save()
-  admin.desks = admin.desks.concat(savedQueue._id)
+  admin.queues = admin.queues.concat(savedQueue._id)
   await admin.save().then(console.log('Queue successfully created'))
 
-  response.json(savedQueue)
+  response.json({ //response is updated from ChatGPT
+    ...savedQueue.toJSON(),
+    qr_code: qrCodeBase64
+  })
 })
 
+
 queueRouter.get('/', async (request, response) => {
-  const queues = await Queue.find({}).populate('desk', 'desk_number').populate('createdBy', 'username') //  Populate from ChatGPT
+  const queues = await Queue.find({})
+    .populate('desk', 'desk_number createdTime createdBy')
+    .populate('createdBy', 'username') // populates fron ChatGPT
+
   response.json(queues)
 })
 
@@ -101,6 +120,18 @@ queueRouter.put('/:id', async (request, response, next) => {
       response.json(updatedQueue)
     })
     .catch(error => next(error))
+})
+
+/* Qr routes */
+
+queueRouter.get('/qr-code/:id', async (req, res) => {
+  const queueId = req.params.id
+  try { //try-catch blog is from ChatGPT
+    const qrCode = await QRCode.toDataURL(queueId)
+    res.json({ qr_code: qrCode })
+  } catch  {
+    res.status(500).json({ error: 'QR code generation failed' })
+  }
 })
 
 module.exports = queueRouter
