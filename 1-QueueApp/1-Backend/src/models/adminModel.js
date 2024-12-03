@@ -9,18 +9,18 @@ const adminSchema = new mongoose.Schema({
       ref: 'User'
     }
   ],
-  queues: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Queue'
-    }
-  ],
   desks: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Desk'
     }
   ],
+  queues: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Queue'
+    }
+  ]
 })
 
 adminSchema.set('toJSON', {
@@ -34,8 +34,8 @@ adminSchema.set('toJSON', {
       username:returnedObject.username,
       admin_id: returnedObject.id,
       users: returnedObject.users,
-      queues: returnedObject.queues,
       desks: returnedObject.desks,
+      queues: returnedObject.queues
     }
     return orderedObject
   }

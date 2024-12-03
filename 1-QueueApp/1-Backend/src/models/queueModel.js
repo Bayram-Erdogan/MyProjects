@@ -27,6 +27,11 @@ const queueSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Admin',
   },
+  status: {
+    type: String,
+    enum: ['active', 'nonactive'],
+    default: 'nonactive',
+  }
 })
 
 queueSchema.set('toJSON', {
@@ -42,7 +47,8 @@ queueSchema.set('toJSON', {
       max_of_customer:returnedObject.max_of_customer,
       queue_id: returnedObject.id,
       createdTime: returnedObject.createdTime,
-      createdBy:returnedObject.createdBy
+      createdBy:returnedObject.createdBy,
+      status: returnedObject.status
     }
 
     return orderedObject

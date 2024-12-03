@@ -42,7 +42,6 @@ deskSchema.set('toJSON', {
       createdTime: returnedObject.createdTime,
       createdBy: returnedObject.createdBy,
     }
-    console.log(orderedObject)
     return orderedObject
   },
 })

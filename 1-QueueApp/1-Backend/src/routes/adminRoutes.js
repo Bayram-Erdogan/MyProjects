@@ -13,7 +13,7 @@ adminRouter.post('/', async (request, response) => {
     passwordHash,
   })
 
-  const savedAdmin = await admin.save()
+  const savedAdmin = await admin.save().then(console.log('Admin successfully created'))
 
   response.status(201).json(savedAdmin)
 })

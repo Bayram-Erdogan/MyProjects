@@ -7,26 +7,8 @@
 </head>
 <body>
     <h1>Queue QR Code</h1>
-    <p>Aşağıdaki QR kodunu yazdırabilirsiniz:</p>
-    <!-- QR kodunu gösterecek img etiketi -->
-    <img id="qr-code" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIQAAACECAYAAABRRIOnAAAAAklEQVR4AewaftIAAAOGSURBVO3BO65jSwIDwWRB+99yThvPoFXAgaTbn2FE/IWZ/xxmymGmHGbKYaYcZsphphxmymGmHGbKYaYcZsphphxmymGmHGbKizcl4SepPJGEG5V3JKGptCT8JJV3HGbKYaYcZsqLD1P5pCQ8kYQnkvAOlSdUPikJn3SYKYeZcpgpL74sCU+oPJGEJ1RuktBUvikJT6h802GmHGbKYaa8+D+XhKbSktBU/mWHmXKYKYeZ8uIfp3Kj0pLQVG6S0FT+ZoeZcpgph5ny4stU/iYqN0loKu9Q+ZMcZsphphxmyosPS8LvpNKS0FRaEppKS0JTaUloKjdJ+JMdZsphphxmSvyFv1gSmspNEprKE0loKv+Sw0w5zJTDTHnxpiQ0lZaET1JpKjdJeCIJNypPJOGTVL7pMFMOM+UwU168SeUJlZskNJWWhBuVG5UnVG6S0FSaSktCU2lJ+J0OM+UwUw4z5cUPS0JTuUlCU3lCpSXhRqUl4UblCZUnVH7SYaYcZsphprx4UxLekYQblSeS0FSayhMq70hCU/mTHWbKYaYcZsqLD1NpSbhRaUloSbhRaSo3SXiHyk0SnkjCTRKayjcdZsphphxmSvyFNyShqdwk4UblJgk3Ku9IQlNpSbhRuUlCU/mTHGbKYaYcZsqLP1wSmkpLwhNJuFFpSWgqN0m4UWlJeEKlJaGpvOMwUw4z5TBT4i+8IQlNpSWhqbwjCZ+k8kQSblQ+KQlN5ZsOM+UwUw4z5cWXqbQk3Ki0JNyotCS8IwnvSMInqfykw0w5zJTDTIm/8BdLQlNpSWgqLQlN5SYJNypPJKGp/E6HmXKYKYeZ8uJNSfhJKk2lJaGp3Ki0JDSVdyShqdwkoam0JNyovOMwUw4z5TBTXnyYyicl4SYJ70jCEyotCTcqT6j8ToeZcpgph5ny4suS8ITKO1TeodKS0FRukvBJSWgqLQmfdJgph5lymCkv/jFJuFFpKi0JTaUloam0JDSVloSbJDSVn3SYKYeZcpgpL/4xKi0JLQk3Ki0JT6i0JNyotCS0JDSVbzrMlMNMOcyUF1+m8k0q71C5UblJwhMqNyotCS0J33SYKYeZcpgpLz4sCT8pCTcqLQktCU3lCZUnktBUWhKayk0SPukwUw4z5TBT4i/M/OcwUw4z5TBTDjPlMFMOM+UwUw4z5TBTDjPlMFMOM+UwUw4z5TBT/gdQ/pMGfHSOzQAAAABJRU5ErkJggg==" alt="Queue QR Code" />
 
-    <script>
-        // Buradaki 'queueId' yerine gerçek bir queue ID değeri kullanmalısınız
-        const queueId = "some-queue-id"; // Burayı gerçek queue ID ile değiştirin
+    <img id="qr-code" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIQAAACECAYAAABRRIOnAAAAAklEQVR4AewaftIAAAOJSURBVO3BQY5bSwIDwWRB979yjhd/wVVhHiQ12gYj4h/M/OcwUw4z5TBTDjPlMFMOM+UwUw4z5TBTDjPlMFMOM+UwUw4z5TBTXrwpCT9JpSXhRuUmCZ+k0pLwk1TecZgph5lymCkvPkzlk5Jwo9KS0JLwDpWbJDyh8klJ+KTDTDnMlMNMefFlSXhC5R0qLQk3Kk8k4ZOS8ITKNx1mymGmHGbKi79cEppKU3kiCU+o/EsOM+UwUw4z5cU/Lgnz/zvMlMNMOcyUF1+m8pup3CShqXySym9ymCmHmXKYKS8+LAm/mUpLQlN5IglN5SYJv9lhphxmymGmvHiTym+ShKbySUl4QuVvcpgph5lymCkv3pSEpvJEEppKS8ITKjdJeEKlJeEmCZ+kcpOEpvKOw0w5zJTDTHnxYUloKi0JT6i0JDSVloQblZaEloQnVFoSmkpLwo3KTRK+6TBTDjPlMFNefJhKS0JTaUm4ScJNEprKTRI+KQlN5UalJaEloancqHzSYaYcZsphprz4MpWWhKbSktBUWhKeSMITKjdJaCotCU2lJaGp3CThJx1mymGmHGZK/INfLAlNpSXhHSrvSEJTaUm4UblJwhMq7zjMlMNMOcyUF29KQlO5ScITKk+otCQ0lZaEd6i0JDSVmyTcqPykw0w5zJTDTIl/8EVJaCo3SbhRaUm4UWlJuFG5SUJTeSIJTeUmCTcqn3SYKYeZcpgpL75M5SYJTeUdKi0JNyo3SWgqLQlN5UalJaGpPJGEpvKOw0w5zJTDTHnxpiTcqLQkNJWWhCdUnlBpSfikJHyTyjcdZsphphxmSvyDv1gSnlC5SUJTuUlCU3kiCTcqP+kwUw4z5TBTXrwpCT9J5ZtUPikJTeWTktBU3nGYKYeZcpgpLz5M5ZOScKPSktBUbpLQVD5J5R1JuFH5pMNMOcyUw0x58WVJeELliSQ0lZaEJ5Jwo3KThG9SaUloKu84zJTDTDnMlBd/OZWWhBuVloSm0pLQknCj0pLQVG6S0FR+0mGmHGbKYaa8+MeptCTcJOE3ScKNyicdZsphphxmyosvU/lNVFoSmspNEprKjcoTKi0JTeWbDjPlMFMOM+XFhyXhJyXhiSTcJKGpPJGEpnKThKbyRBKayjsOM+UwUw4zJf7BzH8OM+UwUw4z5TBTDjPlMFMOM+UwUw4z5TBTDjPlMFMOM+UwUw4z5X/oL4YiSA4BsQAAAABJRU5ErkJggg==" alt="Queue QR Code" />
 
-        // QR kodunu backend'ten alıp <img> etiketi ile gösterme
-        fetch(`/api/queues/qr-code/${queueId}`)
-            .then(response => response.json()) // JSON formatında veri al
-            .then(data => {
-                // Eğer qr_code verisi varsa, img etiketi src'sini base64 kodu ile güncelle
-                if (data.qr_code) {
-                    document.getElementById('qr-code').src = data.qr_code; // Base64 kodunu <img> 'src' ile bağla
-                } else {
-                    console.error("QR kodu verisi alınamadı");
-                }
-            })
-            .catch(err => console.error('QR kodu alırken hata oluştu:', err)); // Hata durumunda log
-    </script>
 </body>
 </html>

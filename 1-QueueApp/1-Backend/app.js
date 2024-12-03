@@ -10,6 +10,7 @@ const adminRouter = require('./src/routes/adminRoutes')
 const loginRouter = require('./src/routes/login')
 const queueRouter = require('./src/routes/queueRoutes')
 const deskRouter = require('./src/routes/deskRoutes')
+const customerRouter = require('./src/routes/customerRoutes')
 
 
 mongoose.set('strictQuery', false)
@@ -29,6 +30,7 @@ app.use('/api/admin', adminRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/queues', queueRouter)
 app.use('/api/desks', deskRouter)
+app.use('/api/customers', customerRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

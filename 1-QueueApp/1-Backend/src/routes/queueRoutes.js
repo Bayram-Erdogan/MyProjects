@@ -21,7 +21,6 @@ queueRouter.post('/', async (request, response) => {
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
-  console.log(desk)
   const admin = await Admin.findById(decodedToken.id)
 
   const queue = new Queue({
@@ -29,7 +28,8 @@ queueRouter.post('/', async (request, response) => {
     desk: desk.id,
     desk_number: desk.desk_number,
     max_of_customer:body.max_of_customer,
-    createdBy: admin._id
+    createdBy: admin._id,
+    status:body.status
   })
 
   let qrCodeBase64
@@ -51,13 +51,27 @@ queueRouter.post('/', async (request, response) => {
   })
 })
 
-
 queueRouter.get('/', async (request, response) => {
   const queues = await Queue.find({})
     .populate('desk', 'desk_number createdTime createdBy')
     .populate('createdBy', 'username') // populates fron ChatGPT
-
   response.json(queues)
+})
+
+queueRouter.get('/active', async (request, response) => {
+  const active_queues = await Queue.find({ status: 'active' })
+    .populate('desk', 'desk_number createdTime createdBy')
+    .populate('createdBy', 'username')
+  response.json(active_queues)
+  //console.log(`Number of waiting : ${active_queues.max_of_customer}`)
+})
+
+queueRouter.get('/nonactive', async (request, response) => {
+  const nonactive_queues = await Queue.find({ status: 'nonactive' })
+    .populate('desk', 'desk_number createdTime createdBy')
+    .populate('createdBy', 'username')
+
+  response.json(nonactive_queues)
 })
 
 queueRouter.get('/:id', async (request, response) => {
@@ -118,6 +132,7 @@ queueRouter.put('/:id', async (request, response, next) => {
     { new: true, runValidators: true, context: 'query' })
     .then(updatedQueue => {
       response.json(updatedQueue)
+      console.log('Your data has been updated successfully')
     })
     .catch(error => next(error))
 })
@@ -133,5 +148,6 @@ queueRouter.get('/qr-code/:id', async (req, res) => {
     res.status(500).json({ error: 'QR code generation failed' })
   }
 })
+
 
 module.exports = queueRouter

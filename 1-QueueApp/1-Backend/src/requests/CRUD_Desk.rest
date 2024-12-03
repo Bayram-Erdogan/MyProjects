@@ -1,10 +1,10 @@
 # CREATE NEW DESK WITH AUTHORIZATION
 POST http://localhost:3001/api/desks
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ5ODM5MTcyNGVlZjZlZTViMDI0NzEiLCJpYXQiOjE3MzI4NzEwNzZ9.ETPCoKLoxY1xVEpgcKBjcTQqjEj6PQriJoq7jWkrVhk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzRlZGI1MTRlNjBlZmQ4ZTMyNjZhNGUiLCJpYXQiOjE3MzMyMjI5NDF9.GsEmAm0vfk7kV7Aeaw28JCQsuKcHGlvNvdxi95H9LHM
 
 {
-    "desk_number": 1
+    "desk_number": 2
 }
 
 ###
