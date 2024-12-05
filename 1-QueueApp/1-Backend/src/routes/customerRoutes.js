@@ -1,6 +1,7 @@
 const customerRouter = require('express').Router()
 const Queue = require('../models/queueModel')
 const Customer = require('../models/customerModel')
+const Admin = require('../models/adminModel')
 
 customerRouter.post('/', async (request, response) => {
   const queue = await Queue.findOne({ _id: request.body.queue_id })
@@ -9,8 +10,16 @@ customerRouter.post('/', async (request, response) => {
     queue_id: queue,
   })
 
-  const savedCustomer = await customer.save().then(console.log('Customer successfully created'))
+  const admin = await Admin.findById(queue.createdBy)
 
+  const savedCustomer = await customer.save()
+
+  admin.customers = admin.customers.concat(savedCustomer._id)
+  await admin.save().then(console.log('Customer successfully created'))
+
+  queue.waiting_customer +=1
+  queue.total_customer +=1
+  queue.save()
   response.json(savedCustomer)
 })
 

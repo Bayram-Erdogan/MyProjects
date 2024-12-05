@@ -1,21 +1,21 @@
 # CREATE NEW QUEUE WITH AUTHORIZATION
 POST http://localhost:3001/api/queues
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzRlZGI1MTRlNjBlZmQ4ZTMyNjZhNGUiLCJpYXQiOjE3MzMyMjI5NDF9.GsEmAm0vfk7kV7Aeaw28JCQsuKcHGlvNvdxi95H9LHM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzUxNTA3NTJhOTNlY2QzMGI5MzU4NmUiLCJpYXQiOjE3MzMzODIzMDN9.EBEG6-k0YBH5j_eDqtYJJMmULYcKZl4WfA6p2xFKl9g
 
 {
-    "queue_name": "Queue 2",
-    "desk_number": 2,
+    "queue_name": "Queue 44",
+    "desk_number": 1,
     "max_of_customer": 20
 }
 ###
 # CREATE NEW QUEUE WITH STATUS and AUTHORIZATION
 POST http://localhost:3001/api/queues
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzRkYjA5MmE1OWQ3NDk5ODM5NGIyMzQiLCJpYXQiOjE3MzMxNDQ3MzV9.qeY-G1gOonQHvunIubrVsEFQ_GUwI_BZRsmWw3nGwwA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzUxNTA3NTJhOTNlY2QzMGI5MzU4NmUiLCJpYXQiOjE3MzMzODIzMDN9.EBEG6-k0YBH5j_eDqtYJJMmULYcKZl4WfA6p2xFKl9g
 
 {
-    "queue_name": "Queue 2",
+    "queue_name": "Queue 3",
     "desk_number": 2,
     "max_of_customer": 20,
     "status" : "active"
@@ -59,16 +59,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkb
 }
 ###
 # UPDATE_SPECIFIC_QUEUES'S DESK_NUMBER WITH AUTHORIZATION
-PUT http://localhost:3001/api/queues/674997520d0d11853f22884d
+PUT http://localhost:3001/api/queues/67504c1ed33ab81e2a9e5b46
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ5ODM5MTcyNGVlZjZlZTViMDI0NzEiLCJpYXQiOjE3MzI4NzEwNzZ9.ETPCoKLoxY1xVEpgcKBjcTQqjEj6PQriJoq7jWkrVhk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzUwMGE4ZWY2YWYzY2UzODlhMjhkYTIiLCJpYXQiOjE3MzMyOTg4NzN9.fXRLyR7P76zPV37RVlBQ6w91FdMHemRcSLtiG14hNx8
 
 {
-    "desk_number" : 2
+    "desk_number" : 3
 }
 
 ###
-# UPDATE_SPECIFIC_USER'S MAX_OF_CUSTOMER WITH AUTHORIZATION
+# UPDATE_SPECIFIC_QUEUES'S MAX_OF_CUSTOMER WITH AUTHORIZATION
 PUT http://localhost:3001/api/queues/674702c12fc846e540c6fd49
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MjMwMDN9.9bbBpSCkxj0FA79tTV9LrB1DJOJUcRfqrGty1jraklA
@@ -78,7 +78,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkb
 }
 
 ###
-# UPDATE_SPECIFIC_USER'S ALL DATA WITH AUTHORIZATION
+# UPDATE_SPECIFIC_QUEUES'S MAX_OF_CUSTOMER WITH AUTHORIZATION
+PUT http://localhost:3001/api/queues/675151142a93ecd30b9358a6
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzUxNTA3NTJhOTNlY2QzMGI5MzU4NmUiLCJpYXQiOjE3MzMzODIzMDN9.EBEG6-k0YBH5j_eDqtYJJMmULYcKZl4WfA6p2xFKl9g
+
+{
+    "status" : "active"
+}
+
+###
+# UPDATE_SPECIFIC_QUEUES'S ALL DATA WITH AUTHORIZATION
 PUT http://localhost:3001/api/queues/674997520d0d11853f22884d
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MjMwMDN9.9bbBpSCkxj0FA79tTV9LrB1DJOJUcRfqrGty1jraklA
@@ -132,14 +142,14 @@ DELETE http://localhost:3001/api/queues/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3NzgyNzJ9.IDGs1DXs6rjZfUDeaPuYStDQM6mYpngisRHax_6oZfk
 
 ###
-# DELETE_ALL_USERS WITHOUT AUTHORIZATION
+# DELETE_ALL_QUEUES'S WITHOUT AUTHORIZATION
 DELETE http://localhost:3001/api/queues/
 
 ###
-# DELETE_SPECIFIC_USER WITH AUTHORIZATION
+# DELETE_SPECIFIC_QUEUES'S WITH AUTHORIZATION
 DELETE http://localhost:3001/api/queues/674702c12fc846e540c6fd49
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MjMwMDN9.9bbBpSCkxj0FA79tTV9LrB1DJOJUcRfqrGty1jraklA
 ###
-# DELETE_SPECIFIC_USER WITHOUT AUTHORIZATION
+# DELETE_SPECIFIC_QUEUES'S WITHOUT AUTHORIZATION
 DELETE http://localhost:3001/api/queues/67459185ba6dbc7391054617
 

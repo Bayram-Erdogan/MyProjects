@@ -39,8 +39,10 @@ deskSchema.set('toJSON', {
     const orderedObject = {
       desk_number: returnedObject.desk_number,
       desk_id: returnedObject.id,
+      queues:returnedObject.queues,
       createdTime: returnedObject.createdTime,
       createdBy: returnedObject.createdBy,
+
     }
     return orderedObject
   },

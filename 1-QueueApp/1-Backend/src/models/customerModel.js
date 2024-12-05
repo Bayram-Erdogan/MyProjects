@@ -15,8 +15,12 @@ const customerSchema = new mongoose.Schema({
       type: String,
       default: () => new Date().toISOString().slice(11, 16),
     },
+  },
+  status : {
+    type: String,
+    enum: ['waiting', 'process', 'done'],
+    default: 'waiting',
   }
-
 })
 
 customerSchema.set('toJSON', {
@@ -29,7 +33,9 @@ customerSchema.set('toJSON', {
       customer_id: returnedObject.id,
       attached_queue: returnedObject.queue_id,
       joining_time: returnedObject.joining_time,
+      status:returnedObject.status
     }
+
     return orderedObject
 
   }

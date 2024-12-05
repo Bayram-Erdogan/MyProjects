@@ -35,8 +35,8 @@ deskRouter.post('/', async (request, response) => {
 
 deskRouter.get('/', async (request, response) => {
   const desks = await Desk.find({})
-    .populate('queues', 'queue_name')
-    .populate('createdBy', 'username') //  Populates from ChatGPT
+    .populate('queues')
+    .populate('createdBy', 'username')
   response.json(desks)
 })
 

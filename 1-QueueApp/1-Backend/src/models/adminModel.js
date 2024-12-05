@@ -20,7 +20,13 @@ const adminSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Queue'
     }
-  ]
+  ],
+  customers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Customer',
+    },
+  ],
 })
 
 adminSchema.set('toJSON', {
@@ -35,7 +41,8 @@ adminSchema.set('toJSON', {
       admin_id: returnedObject.id,
       users: returnedObject.users,
       desks: returnedObject.desks,
-      queues: returnedObject.queues
+      queues: returnedObject.queues,
+      customers:returnedObject.customers
     }
     return orderedObject
   }

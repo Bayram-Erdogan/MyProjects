@@ -22,7 +22,8 @@ adminRouter.get('/', async (request, response) => {
   const admins = await Admin.find({})
     .populate('users', 'name')
     .populate('desks', 'desk_number')
-    .populate('queues','queue_name desk_number')
+    .populate('queues','queue_name desk_number status total_customer waiting_customer active_customer')
+    .populate('customers', 'queue_id')
   response.json(admins)
 })
 

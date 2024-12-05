@@ -12,7 +12,22 @@ const queueSchema = new mongoose.Schema({
     required: true,
   },
   max_of_customer: Number,
-  desk_number:Number,
+  active_customer:{
+    type: Number,
+    default :0
+  },
+  waiting_customer:{
+    type: Number,
+    default :0
+  },
+  total_customer:{
+    type: Number,
+    default :0
+  },
+  desk_number : {
+    type : Number,
+    required: true
+  },
   createdTime: {
     date: {
       type: String,
@@ -31,7 +46,7 @@ const queueSchema = new mongoose.Schema({
     type: String,
     enum: ['active', 'nonactive'],
     default: 'nonactive',
-  }
+  },
 })
 
 queueSchema.set('toJSON', {
@@ -48,9 +63,11 @@ queueSchema.set('toJSON', {
       queue_id: returnedObject.id,
       createdTime: returnedObject.createdTime,
       createdBy:returnedObject.createdBy,
-      status: returnedObject.status
+      status: returnedObject.status,
+      active_customer:returnedObject.active_customer,
+      waiting_customer:returnedObject.waiting_customer,
+      total_customer:returnedObject.total_customer,
     }
-
     return orderedObject
 
   }

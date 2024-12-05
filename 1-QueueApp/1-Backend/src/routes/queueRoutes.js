@@ -43,6 +43,7 @@ queueRouter.post('/', async (request, response) => {
 
   const savedQueue = await queue.save()
   admin.queues = admin.queues.concat(savedQueue._id)
+  desk.queues.push(savedQueue._id)
   await admin.save().then(console.log('Queue successfully created'))
 
   response.json({ //response is updated from ChatGPT
@@ -53,14 +54,12 @@ queueRouter.post('/', async (request, response) => {
 
 queueRouter.get('/', async (request, response) => {
   const queues = await Queue.find({})
-    .populate('desk', 'desk_number createdTime createdBy')
     .populate('createdBy', 'username') // populates fron ChatGPT
   response.json(queues)
 })
 
 queueRouter.get('/active', async (request, response) => {
   const active_queues = await Queue.find({ status: 'active' })
-    .populate('desk', 'desk_number createdTime createdBy')
     .populate('createdBy', 'username')
   response.json(active_queues)
   //console.log(`Number of waiting : ${active_queues.max_of_customer}`)
@@ -68,7 +67,6 @@ queueRouter.get('/active', async (request, response) => {
 
 queueRouter.get('/nonactive', async (request, response) => {
   const nonactive_queues = await Queue.find({ status: 'nonactive' })
-    .populate('desk', 'desk_number createdTime createdBy')
     .populate('createdBy', 'username')
 
   response.json(nonactive_queues)
@@ -119,7 +117,7 @@ queueRouter.delete('/:id', (request, response, next) => {
 })
 
 queueRouter.put('/:id', async (request, response, next) => {
-  const { queue_name, desk_number, max_of_customer } = request.body
+  const { queue_name, desk_number, max_of_customer, status } = request.body
 
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id) {
@@ -128,7 +126,7 @@ queueRouter.put('/:id', async (request, response, next) => {
 
   Queue.findByIdAndUpdate(
     request.params.id,
-    { queue_name, desk_number, max_of_customer },
+    { queue_name, desk_number, max_of_customer, status },
     { new: true, runValidators: true, context: 'query' })
     .then(updatedQueue => {
       response.json(updatedQueue)
