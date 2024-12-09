@@ -2,6 +2,6 @@ POST http://localhost:3001/api/customers
 Content-Type: application/json
 
 {
-    "queue_id": "675171473eccd6dcde60d9db"
+    "queue_id": "675742e4c83cdc0ae246448f"
 }
 
