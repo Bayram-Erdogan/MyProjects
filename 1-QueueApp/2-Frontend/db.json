@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "user": "User 1",
+      "email": "user_1@queue.mail",
+      "password": "pass_user_1"
+    },
+    {
+      "user": "User 2",
+      "email": "user_2@queue.mail",
+      "password": "pass_user_2"
+    },
+    {
+      "user": "User 3",
+      "email": "user_3@queue.mail",
+      "password": "pass_user_3"
+    },
+    {
+      "id": "73b6",
+      "user": "Bayram",
+      "email": "ff@ff.ff",
+      "password": ""
+    }
+  ]
+}

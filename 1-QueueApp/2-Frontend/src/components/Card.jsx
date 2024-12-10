@@ -1,5 +1,6 @@
 import Button from "./Button"
 
+
 const Card = ({
     cardType,
     title,
