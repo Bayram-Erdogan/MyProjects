@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
-import axios from "axios"
 import Input from "../components/Input"
 import Button from "../components/Button"
 import userService from '../services/usersService'
+import Card from "../components/Card"
+import userImage from "../assets/poster.jpeg";
 
 const Users = () => {
     const [users, setUsers] = useState([])
@@ -67,16 +68,22 @@ const Users = () => {
 
                 <Button text={'Create new user'}/>
             </form>
-            <h2>All users</h2>
-            <div>
-                {users.map((user) => (
-                    <div key={user.user_id}>
-                        <p><strong>User:</strong> {user.name}</p>
-                        <p><strong>Email:</strong> {user.email}</p>
-                        {/* <p><strong>Password:</strong> {user.password}</p> */}
-                        <hr />
-                    </div>
-                ))}
+
+            <div className="container">
+                <h2>All users</h2>
+                <div className="articles-container">
+                    {users.map((user) => (
+                        <Card
+                            key={user.user_id}
+                            cardType="User"
+                            title={user.name}
+                            user={user}
+                            text_1="Desk"
+                            text_2="Queue"
+                            image={userImage}
+                        />)
+                    )}
+                </div>
             </div>
         </div>
     )

@@ -4,9 +4,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzM4NDg5Mzl9.IWOBGEtJxV4I2gjf638TJW8mrea2Z45Tv0-9sugwV-Y
 
 {
-    "name" : "User 3 from VSC",
-    "email": "user_3gmail.com",
-    "password"  : "user3"
+    "name" : "User 5 from VSC",
+    "email": "user_5gmail.com",
+    "password"  : "user5"
 }
 
 ###

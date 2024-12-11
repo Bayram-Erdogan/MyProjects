@@ -1,61 +1,44 @@
-import Button from "./Button"
-
-
 const Card = ({
     cardType,
     title,
     user,
-    desk_number,
-    queue_name,
-    text_1,
-    text_2}) => {
+    attached_desk,
+    max_of_customer,
+    image}) => {
 
-        switch(cardType){
-            case 'User':
-                return(
+    switch(cardType){
+        case 'User':
+            return(
+                <article className="card">
+                    <img src={image} alt="" />
                     <div>
-                        {/* <img class="card-image img-fluid" src="Ders_08_poster-3.jpeg" alt=""> */}
-                        <div >
-                            <h3>{title}</h3>
-                            <p>{`${text_1} : ${desk_number}`} </p>
-                            <p>{`${text_2} : ${queue_name}`}</p>
-                            <p>
-                                <Button text={'Details from Component'}/>
-                            </p>
-                        </div>
+                        <h3> {title} </h3>
+                        <p><strong>User:</strong> {user.name}</p>
+                        <p><strong>Email:</strong> {user.email}</p>
                     </div>
-                )
-            case 'Desk':
-                return(
+                </article>
+            )
+        case 'Desk':
+            return(
+                <article className="card">
+                    <img src={image} alt="" />
                     <div>
-                        {/* <img class="card-image img-fluid" src="Ders_08_poster-3.jpeg" alt=""> */}
-                        <h3> Card will be in here</h3>
-                        <div >
-                            <h3>{title}</h3>
-                            <p>{`${text_1} : ${user}`} </p>
-                            <p>{`${text_2} : ${queue_name}`}</p>
-                            <p>
-                                <button >Details</button>
-                            </p>
-                        </div>
+                        <h3> {title} </h3>
                     </div>
-                )
-            case 'Queue':
-                return(
+                </article>
+            )
+        case 'Queue':
+            return(
+                <article className="card">
+                    <img src={image} alt="" />
                     <div>
-                        {/* <img class="card-image img-fluid" src="Ders_08_poster-3.jpeg" alt=""> */}
-                        <h3> Card will be in here</h3>
-                        <div >
-                            <h3>{title}</h3>
-                            <p>{`${text_1} : ${user}`} </p>
-                            <p>{`${text_2} : ${desk_number}`}</p>
-                            <p>
-                                <button >Details</button>
-                            </p>
-                        </div>
+                        <h3> {title} </h3>
+                        <p><strong>Attached desk :</strong> {attached_desk}</p>
+                        <p><strong>Max of customer:</strong> {max_of_customer}</p>
                     </div>
-                )
-        }
+                </article>
+            )
+    }
 }
 
 export default Card

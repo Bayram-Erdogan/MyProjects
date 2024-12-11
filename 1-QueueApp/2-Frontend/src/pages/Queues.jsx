@@ -1,27 +1,48 @@
-import { useState } from "react"
+import { useState , useEffect } from "react"
 import Input from "../components/Input"
 import Button from "../components/Button"
-
+import queuesServices from "../services/queuesServices"
+import Card from "../components/Card"
+import queueImage from "../assets/queue.jpg";
 
 const Queues = () => {
-    const [queues, setQueues] = useState('')
+    const [queues, setQueues] = useState([])
     const [queueName, setQueueName] = useState('')
     const [deskNumber, setDeskNumber] = useState('')
     const [maxOfCustomer, setMaxOfCustomer] = useState('')
 
-    const handleQueues =(event) => {
-        console.log('Queue added with', queueName, deskNumber, maxOfCustomer)
-        event.preventDefault();
-        setQueueName('')
-        setDeskNumber('')
-        setMaxOfCustomer('')
+    useEffect(() => {
+      queuesServices
+        .getAll()
+        .then(initialQueues => {
+            setQueues(initialQueues)
+        })
+    }, []);
+
+    const addQueue = (event) => {
+        event.preventDefault()
+
+        const queueObject = {
+            queue_name: queueName,
+            desk_number: deskNumber,
+            max_of_customer: maxOfCustomer
+        }
+
+        queuesServices
+          .create(queueObject)
+          .then(returnedQueue => {
+            setQueues(queues.concat(returnedQueue))
+            setQueueName('')
+            setDeskNumber('')
+            setMaxOfCustomer('')
+          })
     }
 
     return (
         <div>
             <h1>Queues</h1>
             <h2>Add new queue</h2>
-            <form onSubmit={handleQueues}>
+            <form onSubmit={addQueue}>
                 <Input
                     type = {"text"}
                     placeholder = {"Queue name"}
@@ -48,7 +69,22 @@ const Queues = () => {
 
                 <Button text = {"Create new queue"}/>
             </form>
-            <h2>All queues</h2>
+
+            <div className="container">
+                <h2>All Queues</h2>
+                <div className="articles-container">
+                    {queues.map((queue) => (
+                        <Card
+                            key={queue.queue_id}
+                            cardType = "Queue"
+                            title = {queue.queue_name}
+                            attached_desk = {queue.attached_desk}
+                            max_of_customer = {queue.max_of_customer}
+                            image={queueImage}
+                        />)
+                    )}
+                </div>
+            </div>
         </div>
     )
 }
