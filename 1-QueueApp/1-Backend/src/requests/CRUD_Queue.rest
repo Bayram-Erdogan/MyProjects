@@ -4,9 +4,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzM3NzE4NDB9.mDmJpuXy1yP9jQ1OZXX_D7R0xUMPbRKZZMKhgMayqc0
 
 {
-    "queue_name": "Queue from VSC",
-    "desk_number": 4,
-    "max_of_customer": 20
+    "queue_name": "Queue 5 from VSC",
+    "desk_number": 5,
+    "max_of_customer": 50
 }
 ###
 # CREATE NEW QUEUE WITH STATUS and AUTHORIZATION

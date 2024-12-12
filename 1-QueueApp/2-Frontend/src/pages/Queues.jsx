@@ -3,13 +3,14 @@ import Input from "../components/Input"
 import Button from "../components/Button"
 import queuesServices from "../services/queuesServices"
 import Card from "../components/Card"
-import queueImage from "../assets/queue.jpg";
+import Notification from "../components/Notification"
 
 const Queues = () => {
     const [queues, setQueues] = useState([])
     const [queueName, setQueueName] = useState('')
     const [deskNumber, setDeskNumber] = useState('')
     const [maxOfCustomer, setMaxOfCustomer] = useState('')
+    const [successMessage, setSuccessMessage] =useState(null)
 
     useEffect(() => {
       queuesServices
@@ -35,6 +36,10 @@ const Queues = () => {
             setQueueName('')
             setDeskNumber('')
             setMaxOfCustomer('')
+            setSuccessMessage('Queue added successfully')
+            setTimeout(() => {
+                setSuccessMessage(null)
+            }, 5000)
           })
     }
 
@@ -69,7 +74,7 @@ const Queues = () => {
 
                 <Button text = {"Create new queue"}/>
             </form>
-
+            <Notification message={successMessage}/>
             <div className="container">
                 <h2>All Queues</h2>
                 <div className="articles-container">
@@ -80,10 +85,11 @@ const Queues = () => {
                             title = {queue.queue_name}
                             attached_desk = {queue.attached_desk}
                             max_of_customer = {queue.max_of_customer}
-                            image={queueImage}
+                            image={queue.qr_code}
                         />)
                     )}
                 </div>
+
             </div>
         </div>
     )

@@ -47,6 +47,9 @@ const queueSchema = new mongoose.Schema({
     enum: ['active', 'nonactive'],
     default: 'nonactive',
   },
+  qr_code: {
+    type: String,
+  }
 })
 
 queueSchema.set('toJSON', {
@@ -67,6 +70,7 @@ queueSchema.set('toJSON', {
       active_customer:returnedObject.active_customer,
       waiting_customer:returnedObject.waiting_customer,
       total_customer:returnedObject.total_customer,
+      qr_code: returnedObject.qr_code
     }
     return orderedObject
 

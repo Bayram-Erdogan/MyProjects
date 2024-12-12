@@ -3,13 +3,15 @@ import Input from "../components/Input"
 import Button from "../components/Button"
 import userService from '../services/usersService'
 import Card from "../components/Card"
-import userImage from "../assets/poster.jpeg";
+import userImage from "../assets/user.jpeg";
+import Notification from "../components/Notification";
 
 const Users = () => {
     const [users, setUsers] = useState([])
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [successMessage, setSuccessMessage] = useState(null)
 
     useEffect(() => {
       userService
@@ -34,6 +36,10 @@ const Users = () => {
             setUsername('')
             setEmail('')
             setPassword('')
+            setSuccessMessage('User added successfully')
+            setTimeout(() => {
+                setSuccessMessage(null)
+            }, 5000)
         })
       }
 
@@ -68,7 +74,7 @@ const Users = () => {
 
                 <Button text={'Create new user'}/>
             </form>
-
+            <Notification message={successMessage} />
             <div className="container">
                 <h2>All users</h2>
                 <div className="articles-container">

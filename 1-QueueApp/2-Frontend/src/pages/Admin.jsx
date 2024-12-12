@@ -3,9 +3,8 @@ import Card from '../components/Card'
 import userService from '../services/usersService'
 import desksService from "../services/desksService"
 import queuesServices from "../services/queuesServices"
-import userImage from "../assets/poster.jpeg";
+import userImage from "../assets/user.jpeg";
 import deskImage from "../assets/desk.jpg";
-import queueImage from "../assets/queue.jpg";
 
 const Admin = () => {
   const [users, setUsers] = useState([])
@@ -88,7 +87,7 @@ const Admin = () => {
                   title={queue.queue_name}
                   attached_desk={queue.attached_desk}
                   max_of_customer={queue.max_of_customer}
-                  image={queueImage}
+                  image={queue.qr_code}
                 />
               ))}
             </div>

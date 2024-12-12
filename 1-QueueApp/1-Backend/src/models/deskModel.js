@@ -6,7 +6,6 @@ const deskSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  queue_name: String,
   createdTime: {
     date: {
       type: String,
@@ -42,7 +41,6 @@ deskSchema.set('toJSON', {
       queues:returnedObject.queues,
       createdTime: returnedObject.createdTime,
       createdBy: returnedObject.createdBy,
-
     }
     return orderedObject
   },

@@ -4,11 +4,13 @@ import Button from "../components/Button"
 import desksService from "../services/desksService"
 import Card from "../components/Card"
 import deskImage from "../assets/desk.jpg";
+import Notification from "../components/Notification"
 
 
 const Desks = () => {
     const [desks, setDesks] = useState([])
     const [deskNumber, setDeskNumber] = useState('')
+    const [seuccesMessage, setSuccessMessage] = useState(null)
 
     useEffect (() =>{
       desksService
@@ -30,6 +32,10 @@ const Desks = () => {
       .then(returnedDesk => {
         setDesks(desks.concat(returnedDesk))
         setDeskNumber('')
+        setSuccessMessage('Desk added successfully')
+            setTimeout(() => {
+                setSuccessMessage(null)
+            }, 5000)
       })
     }
 
@@ -49,6 +55,7 @@ const Desks = () => {
 
                 <Button text = {"Create new desk"}/>
             </form>
+            <Notification message={seuccesMessage}/>
             <div className="container">
                 <h2>All Desks</h2>
                 <div className="articles-container">

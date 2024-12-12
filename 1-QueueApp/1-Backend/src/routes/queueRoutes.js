@@ -54,10 +54,6 @@ queueRouter.post('/', async (request, response) => {
   })
 })
 
-//await desk.save()
-
-
-
 queueRouter.get('/', async (request, response) => {
   const queues = await Queue.find({})
     .populate('createdBy', 'username') // populates fron ChatGPT
