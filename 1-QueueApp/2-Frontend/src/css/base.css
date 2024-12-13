@@ -91,7 +91,7 @@
   }
 
   .bg-primary {
-    background-color: var(--primary-color);
+    background-color: var(--primary-color) !important;
     color: #fff;
   }
 
@@ -105,7 +105,7 @@
     color: var(--dark-color);
   }
   .bg-dark {
-    background-color: var(--dark-color);
+    background-color: var(--dark-color) !important;
     color: #fff;
   }
 

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 
-export const Navbar = ({setUser}) => {
+export const Navbar = () => {
     const padding = {
         padding: 5
       }
@@ -24,6 +24,7 @@ export const AdminNavbar = () => {
             <Link style={padding} to="/admin/users">Users</Link>
             <Link style={padding} to="/admin/desks">Desks</Link>
             <Link style={padding} to="/admin/queues">Queues</Link>
+            <Link style={padding} to="/admin/queues/actives">Active Queues</Link>
             <Link style={padding} to="/admin/customers">Customers</Link>
             <Link style={padding} to="/admin/statistics">Statistics</Link>
         </div>

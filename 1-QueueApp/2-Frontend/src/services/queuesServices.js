@@ -11,4 +11,9 @@ const create = (queueObject) => {
     return request.then(response => response.data)
 }
 
-export default {getAll, create}
+const getActive = () => {
+    const request = axios.get(`${baseUrl}/active`);
+    return request.then(response => response.data);
+  };
+
+export default {getAll, create, getActive}

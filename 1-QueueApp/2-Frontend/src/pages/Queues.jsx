@@ -10,7 +10,8 @@ const Queues = () => {
     const [queueName, setQueueName] = useState('')
     const [deskNumber, setDeskNumber] = useState('')
     const [maxOfCustomer, setMaxOfCustomer] = useState('')
-    const [successMessage, setSuccessMessage] =useState(null)
+    const [successMessage, setSuccessMessage] = useState(null)
+    //const [showAll, setShowAll] = useState(true)
 
     useEffect(() => {
       queuesServices
@@ -42,6 +43,25 @@ const Queues = () => {
             }, 5000)
           })
     }
+
+    // const toggleShowActive = () => {
+    //     queuesServices
+    //       .getActive()
+    //       .then(activeQueues => {
+    //         setQueues(activeQueues)
+    //       })
+    //   }
+
+    // const toggleShowAll = () => {
+    //     if (showAll) {
+    //       toggleShowActive()
+    //     } else {
+    //       queuesServices.getAll().then(initialQueues => {
+    //         setQueues(initialQueues)
+    //       })
+    //     }
+    //     setShowAll(!showAll)
+    //   }
 
     return (
         <div>
@@ -76,7 +96,17 @@ const Queues = () => {
             </form>
             <Notification message={successMessage}/>
             <div className="container">
-                <h2>All Queues</h2>
+                <div >
+                    <h2>All queues</h2>
+                    {/* <Button
+                        style={"btn btn-primary"}
+                        onClick={toggleShowAll}
+                        text={showAll ? 'Show Active Queues' : 'Show All Queues'}
+                    /> */}
+
+
+                </div>
+
                 <div className="articles-container">
                     {queues.map((queue) => (
                         <Card
