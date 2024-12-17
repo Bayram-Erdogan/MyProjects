@@ -362,3 +362,8 @@
   .page-container #categories ul li a:hover{
     color: var(--primary-color);
   }
+
+  .qr-code {
+    width: 200px;
+    height: 200px;
+}

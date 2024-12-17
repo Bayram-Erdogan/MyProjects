@@ -1,81 +1,71 @@
 import Button from './Button'
+import {Link} from 'react-router-dom'
+import  handlePrint  from '../utils/printHelper';
+
 const Card = ({
     cardType,
-    title,
     user,
-    attached_desk,
-    max_of_customer,
+    desk,
+    queue,
     image,
-    waiting_customer
-    }) => {
 
-    const handlePrint = (image) => { // This from ChatGpt
-        const printWindow = window.open("", "_blank");
-        printWindow.document.write(`
-            <html>
-                <head>
-                    <title>Print QR Code</title>
-                </head>
-                <body>
-                    <img src="${image}" alt="QR Code" style="width: 200px; height: 200px;"/>
-                </body>
-            </html>
-            `);
-            printWindow.document.close();
-            printWindow.focus();
-            printWindow.print();
-            printWindow.close();
-        };
+    }) => {
 
     switch(cardType){
         case 'User':
             return(
-                <article className="card bg-dark">
-                    <img src={image} alt="" />
-                    <div>
-                        <h3> {title} </h3>
-                        {/* <p><strong>Attached desk:</strong> {user.name}</p>
-                        <p><strong>Attached queue:</strong> {user.email}</p> */}
-                    </div>
-                </article>
+                <Link to={`/admin/users/${user.user_id}`}>
+                    <article className="card bg-light">
+                        <img src={image}/>
+                        <div>
+                            <h3> {user.name} </h3>
+                            <p><strong>Id :</strong> {user.user_id}</p>
+                        </div>
+                    </article>
+                </Link>
             )
         case 'Desk':
             return(
-                <article className="card bg-secondary">
-                    <img src={image} alt="" />
-                    <div>
-                        <h3> {title} </h3>
-                        {/* <p><strong>Attached queue:</strong> </p>
-                        <p><strong>Attached user:</strong> </p> */}
-                    </div>
-                </article>
+                <Link to={`/admin/desks/${desk.desk_id}`}>
+                    <article className="card bg-secondary">
+                        <img src={image}/>
+                        <div>
+                            <h3> {desk.desk_number} </h3>
+                            <p><strong>Id :</strong> {desk.desk_id}</p>
+                        </div>
+                    </article>
+                </Link>
             )
         case 'Queue':
             return(
-                <article className="card bg-primary">
-                    <img src={image} alt="qr_code" />
-                    <div>
-                        <h3> {title} </h3>
-                        <p><strong>Attached desk :</strong> {attached_desk}</p>
-                        <p><strong>Max of customer:</strong> {max_of_customer}</p>
-                        <p>{user}</p>
-                        <Button style={"btn btn-dark"} text= {"Print"} onClick={() => handlePrint(image)}/>
-                    </div>
-                </article>
-            )
-            case 'Active_Queue':
-                return(
-                    <article className="card bg-primary">
+                <Link to={`/admin/queues/${queue.queue_id}`}>
+                    <article className="card bg-light">
                         <img src={image} alt="qr_code" />
                         <div>
-                            <h3> {title} </h3>
-                            <p><strong>Number of Waiting Customers :</strong> {waiting_customer}</p>
-                            <p><strong>Average Waiting Time :</strong> {max_of_customer}</p>
-                            <p>{user}</p>
+                            <h3> {queue.queue_name} </h3>
+                            <p><strong>Id :</strong> {queue.queue_id}</p>
+                            <p><strong>Attached desk :</strong> {queue.attached_desk}</p>
+                            <p><strong>Max of customer:</strong> {queue.max_of_customer}</p>
+                            <Button style={"btn btn-dark"} text={"Print"} onClick={() => handlePrint(image)} />
+                        </div>
+                    </article>
+                </Link>
+            )
+        case 'Active_Queue':
+            return(
+                <Link to={`/admin/queues/${queue.queue_id}`}>
+                    <article className="card bg-light">
+                        <img src={image} alt="qr_code" />
+                        <div>
+                            <h3> {queue.queue_name} </h3>
+                            <p><strong>Id :</strong> {queue.queue_id}</p>
+                            <p><strong>Number of Waiting Customers :</strong> {queue.waiting_customer}</p>
+                            <p><strong>Average Waiting Time :</strong> {queue.max_of_customer}</p>
                             <Button style={"btn btn-dark"} text= {"Print"} onClick={() => handlePrint(image)}/>
                         </div>
                     </article>
-                )
+                </Link>
+            )
     }
 }
 

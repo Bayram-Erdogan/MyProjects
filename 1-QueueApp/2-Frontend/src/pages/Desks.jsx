@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Input from "../components/Input"
 import Button from "../components/Button"
 import desksService from "../services/desksService"
@@ -7,18 +7,9 @@ import deskImage from "../assets/desk.jpg";
 import Notification from "../components/Notification"
 
 
-const Desks = () => {
-    const [desks, setDesks] = useState([])
+const Desks = ({desks, setDesks}) => {
     const [deskNumber, setDeskNumber] = useState('')
     const [seuccesMessage, setSuccessMessage] = useState(null)
-
-    useEffect (() =>{
-      desksService
-        .getAll()
-        .then(initialDesks => {
-            setDesks(initialDesks)
-        })
-    },[])
 
     const addDesk = (event) =>{
         event.preventDefault()
@@ -39,7 +30,6 @@ const Desks = () => {
       })
     }
 
-
     return (
         <div>
             <h1>Desks</h1>
@@ -52,7 +42,6 @@ const Desks = () => {
                     value={deskNumber}
                     onChange={({target}) => setDeskNumber(target.value)}
                 />
-
                 <Button text = {"Create new desk"}/>
             </form>
             <Notification message={seuccesMessage}/>
@@ -63,7 +52,7 @@ const Desks = () => {
                         <Card
                             key={desk.desk_id}
                             cardType="Desk"
-                            title={desk.desk_number}
+                            desk = {desk}
                             image={deskImage}
                         />)
                     )}

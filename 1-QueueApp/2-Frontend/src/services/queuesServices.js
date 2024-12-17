@@ -16,4 +16,9 @@ const getActive = () => {
     return request.then(response => response.data);
   };
 
-export default {getAll, create, getActive}
+const update = (id, updatedQueue) => {
+    const request = axios.put(`${baseUrl}/${id}`, updatedQueue);
+    return request.then(response => response.data);
+};
+
+export default { getAll, create, getActive, update };

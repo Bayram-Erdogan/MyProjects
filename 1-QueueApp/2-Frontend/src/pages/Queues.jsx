@@ -1,25 +1,15 @@
-import { useState , useEffect } from "react"
+import { useState } from "react"
 import Input from "../components/Input"
 import Button from "../components/Button"
 import queuesServices from "../services/queuesServices"
 import Card from "../components/Card"
 import Notification from "../components/Notification"
 
-const Queues = () => {
-    const [queues, setQueues] = useState([])
+const Queues = ({queues, setQueues}) => {
     const [queueName, setQueueName] = useState('')
     const [deskNumber, setDeskNumber] = useState('')
     const [maxOfCustomer, setMaxOfCustomer] = useState('')
     const [successMessage, setSuccessMessage] = useState(null)
-    //const [showAll, setShowAll] = useState(true)
-
-    useEffect(() => {
-      queuesServices
-        .getAll()
-        .then(initialQueues => {
-            setQueues(initialQueues)
-        })
-    }, []);
 
     const addQueue = (event) => {
         event.preventDefault()
@@ -43,25 +33,6 @@ const Queues = () => {
             }, 5000)
           })
     }
-
-    // const toggleShowActive = () => {
-    //     queuesServices
-    //       .getActive()
-    //       .then(activeQueues => {
-    //         setQueues(activeQueues)
-    //       })
-    //   }
-
-    // const toggleShowAll = () => {
-    //     if (showAll) {
-    //       toggleShowActive()
-    //     } else {
-    //       queuesServices.getAll().then(initialQueues => {
-    //         setQueues(initialQueues)
-    //       })
-    //     }
-    //     setShowAll(!showAll)
-    //   }
 
     return (
         <div>
@@ -98,23 +69,13 @@ const Queues = () => {
             <div className="container">
                 <div >
                     <h2>All queues</h2>
-                    {/* <Button
-                        style={"btn btn-primary"}
-                        onClick={toggleShowAll}
-                        text={showAll ? 'Show Active Queues' : 'Show All Queues'}
-                    /> */}
-
-
                 </div>
-
                 <div className="articles-container">
                     {queues.map((queue) => (
                         <Card
                             key={queue.queue_id}
                             cardType = "Queue"
-                            title = {queue.queue_name}
-                            attached_desk = {queue.attached_desk}
-                            max_of_customer = {queue.max_of_customer}
+                            queue={queue}
                             image={queue.qr_code}
                         />)
                     )}

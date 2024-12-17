@@ -44,8 +44,8 @@ const queueSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['active', 'nonactive'],
-    default: 'nonactive',
+    enum: ['Active', 'Nonactive'],
+    default: 'Nonactive',
   },
   qr_code: {
     type: String,

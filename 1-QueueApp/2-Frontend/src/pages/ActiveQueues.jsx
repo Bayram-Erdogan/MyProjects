@@ -16,15 +16,12 @@ const ActiveQueues = () => {
         <div>
             <h1>Active Queues</h1>
             <div className="container">
-                <h2>All queues</h2>
                 <div className="articles-container">
                     {queues.map((queue) => (
                         <Card
                             key={queue.queue_id}
                             cardType = "Active_Queue"
-                            title = {queue.queue_name}
-                            attached_desk = {queue.attached_desk}
-                            max_of_customer = {queue.max_of_customer}
+                            queue={queue}
                             image={queue.qr_code}
                         />)
                     )}

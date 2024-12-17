@@ -4,6 +4,7 @@ import Card from "../components/Card"
 
 const Home = () =>{
   const [queues, setQueues] = useState([])
+
   useEffect(() => {
     queuesServices
       .getAll()
@@ -11,6 +12,7 @@ const Home = () =>{
           setQueues(initialQueues)
       })
   }, []);
+
   return (
     <div>
       <h1> Welcome to Queue App</h1>
@@ -21,9 +23,7 @@ const Home = () =>{
             <Card
             key={queue.queue_id}
             cardType = "Queue"
-            title = {queue.queue_name}
-            attached_desk = {queue.attached_desk}
-            max_of_customer = {queue.max_of_customer}
+            queue={queue}
             image={queue.qr_code}
             />)
           )}

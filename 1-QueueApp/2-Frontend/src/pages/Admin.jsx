@@ -1,41 +1,10 @@
-import { useState, useEffect } from "react"
+
 import Card from '../components/Card'
-import userService from '../services/usersService'
-import desksService from "../services/desksService"
-import queuesServices from "../services/queuesServices"
 import userImage from "../assets/user.jpeg";
 import deskImage from "../assets/desk.jpg";
 
-const Admin = () => {
-  const [users, setUsers] = useState([])
-  const [desks, setDesks] = useState([])
-  const [queues, setQueues] = useState([])
-
-  useEffect(() => {
-    userService
-      .getAll()
-      .then(initialUsers => {
-        setUsers(initialUsers)
-      })
-  }, [])
-
-  useEffect(() => {
-    desksService
-      .getAll()
-      .then(initialDesks => {
-        setDesks(initialDesks)
-      })
-  }, [])
-
-  useEffect(() => {
-    queuesServices
-      .getAll()
-      .then(initialQueues => {
-        setQueues(initialQueues)
-      })
-  }, [])
-
-  return (
+const Admin = ({users, desks, queues}) => {
+    return (
     <div>
       <h1>Admin Page</h1>
       <section>
@@ -47,10 +16,7 @@ const Admin = () => {
                 <Card
                   key={user.user_id}
                   cardType="User"
-                  title={user.name}
                   user={user}
-                  text_1="Desk"
-                  text_2="Queue"
                   image={userImage}
                 />
               ))}
@@ -67,7 +33,8 @@ const Admin = () => {
                 <Card
                   key={desk.desk_id}
                   cardType="Desk"
-                  title={desk.desk_number}
+                  desk = {desk}
+                  queue_name = {desk.queue_name}
                   image={deskImage}
                 />
               ))}
@@ -84,9 +51,7 @@ const Admin = () => {
                 <Card
                   key={queue.queue_id}
                   cardType="Queue"
-                  title={queue.queue_name}
-                  attached_desk={queue.attached_desk}
-                  max_of_customer={queue.max_of_customer}
+                  queue={queue}
                   image={queue.qr_code}
                 />
               ))}

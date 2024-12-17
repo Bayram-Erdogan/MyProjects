@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Input from "../components/Input"
 import Button from "../components/Button"
 import userService from '../services/usersService'
@@ -6,20 +6,11 @@ import Card from "../components/Card"
 import userImage from "../assets/user.jpeg";
 import Notification from "../components/Notification";
 
-const Users = () => {
-    const [users, setUsers] = useState([])
+const Users = ({users, setUsers}) => {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [successMessage, setSuccessMessage] = useState(null)
-
-    useEffect(() => {
-      userService
-        .getAll()
-        .then(initialUsers => {
-          setUsers(initialUsers)
-        })
-    },[])
 
     const addUser = event => {
         event.preventDefault()
@@ -82,10 +73,7 @@ const Users = () => {
                         <Card
                             key={user.user_id}
                             cardType="User"
-                            title={user.name}
                             user={user}
-                            text_1="Desk"
-                            text_2="Queue"
                             image={userImage}
                         />)
                     )}
