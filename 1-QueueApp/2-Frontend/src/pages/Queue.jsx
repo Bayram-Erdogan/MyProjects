@@ -52,14 +52,17 @@ const Queue = ({ queues, setQueues }) => {
 
       <form onSubmit={updateQueue}>
         <Input
+          text={"Queue name : "}
           type = {"text"}
           placeholder = {"Queue name"}
           name = {"queue_name"}
           value={queueName}
           onChange={({target}) => setQueueName(target.value)}
+
         />
 
         <Input
+          text={"Desk number : "}
           type = {"text"}
           placeholder = {"Desk number"}
           name = {"desk_number"}
@@ -68,6 +71,7 @@ const Queue = ({ queues, setQueues }) => {
         />
 
         <Input
+          text={"Max of customer : "}
           type = {"text"}
           placeholder = {"Max of customer"}
           name = {"max_of_customer"}
@@ -76,6 +80,7 @@ const Queue = ({ queues, setQueues }) => {
         />
 
         <Input
+          text={"User : "}
           type = {"text"}
           placeholder = {"User"}
           name = {"user"}
@@ -84,6 +89,7 @@ const Queue = ({ queues, setQueues }) => {
         />
 
         <Input
+          text={"Status : "}
           type = {"text"}
           placeholder = {"Status"}
           name = {"status"}

@@ -4,6 +4,7 @@ const Queue = require('../models/queueModel')
 //const Admin = require('../models/adminModel')
 const Desk = require('../models/deskModel')
 const QRCode = require('qrcode')
+const { findWaitingCustomers, calculateAverageWaitingTime } = require('../utils/customerHelpers')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
@@ -63,12 +64,29 @@ queueRouter.get('/', async (request, response) => {
   response.json(queues)
 })
 
-queueRouter.get('/active', async (request, response) => {
-  const active_queues = await Queue.find({ status: 'active' })
-    .populate('createdBy', 'username')
-  response.json(active_queues)
-  //console.log(`Number of waiting : ${active_queues.max_of_customer}`)
+queueRouter.get('/active', async (request, response) => { // updated from ChatGPT
+  try {
+    const active_queues = await Queue.find({ status: 'Active' })
+      .populate('createdBy', 'username')
+
+    const activeQueuesWithDetails = await Promise.all(active_queues.map(async (queue) => {
+      const waitingCustomers = await findWaitingCustomers(queue._id)
+      const averageWaitingTime = await calculateAverageWaitingTime(queue._id)
+
+      return {
+        ...queue.toObject(),
+        waiting_customers: waitingCustomers.length,
+        average_waiting_time: averageWaitingTime.averageWaitingTime,
+      }
+    }))
+    response.json(activeQueuesWithDetails)
+
+  } catch (error) {
+    console.error(error)
+    response.status(500).json({ error: 'Error fetching active queues.' })
+  }
 })
+
 
 queueRouter.get('/nonactive', async (request, response) => {
   const nonactive_queues = await Queue.find({ status: 'nonactive' })

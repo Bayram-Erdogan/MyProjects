@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite preview --host --port $PORT",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "preview": "vite preview",
     "server": "json-server -p3001 --watch db.json"
   },
   "dependencies": {
