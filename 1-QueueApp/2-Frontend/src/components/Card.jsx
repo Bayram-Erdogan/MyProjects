@@ -51,6 +51,17 @@ const Card = ({
                     </article>
                 </Link>
             )
+            case 'Queue__home':
+            return(
+                <Link to={`/admin/queues/${queue.queue_id}`}>
+                    <article className="card bg-light">
+                        <img src={image} alt="qr_code" />
+                        <div>
+                            <h3> {queue.queue_name} </h3>
+                        </div>
+                    </article>
+                </Link>
+            )
         case 'Active_Queue':
             return(
                 <Link to={`/admin/queues/${queue.queue_id}`}>

@@ -35,7 +35,7 @@ queueRouter.post('/', async (request, response) => {
     status:body.status || 'Nonactive',
   })
 
-  const qrUrl = `http://localhost:3001/api/customers/auto-join/${queue._id.toString()}` // queue._id kullanarak URL oluşturuluyor
+  const qrUrl = `http://localhost:3001/api/customers/auto-join/${queue._id.toString()}`
   let qrCode
 
   try { //try-catch blog is from ChatGPT

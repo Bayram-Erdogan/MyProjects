@@ -15,7 +15,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzUxNTA3NTJhOTNlY2QzMGI5MzU4NmUiLCJpYXQiOjE3MzMzODIzMDN9.EBEG6-k0YBH5j_eDqtYJJMmULYcKZl4WfA6p2xFKl9g
 
 {
-    "queue_name": "VSC Queue 1",
+    "queue_name": "VSC Queue 3",
     "desk_number": 1,
     "max_of_customer": 20,
     "status" : "Active"
