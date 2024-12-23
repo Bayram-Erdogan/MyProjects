@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Navbar } from "./components/Navbar";
+import { Navbar, AdminNavbar } from "./components/Navbar";
+import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Users from "./pages/Users";
@@ -78,9 +79,7 @@ const App = () => {
           <Route path="/admin/statistics" element={<Statistics />} />
         </Routes>
 
-        <div>
-          <i>Queue app, 2025</i>
-        </div>
+        <Footer/>
       </div>
     </Router>
   );

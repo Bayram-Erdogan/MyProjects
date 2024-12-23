@@ -5,65 +5,72 @@ import deskImage from "../assets/desk.jpg";
 
 const Admin = ({users, desks, queues}) => {
     return (
-    <div>
-      <h1>Admin Page</h1>
+    <div className='page-container'>
       <section>
-        <div>
-          <div className="container">
+        <div className="box">
+          <header className="section-header">
             <h2>Users</h2>
-            <div className="articles-container">
-              {users.slice(0, 5).map((user) => ( // slice() from chatgpt
-                <Card
-                  key={user.user_id}
-                  cardType="User"
-                  user={user}
-                  image={userImage}
-                />
-              ))}
-            </div>
+          </header>
+          <div className="articles-container">
+            {users.slice(0, 5).map((user) => ( // slice() from chatgpt
+              <Card
+                key={user.user_id}
+                cardType="User"
+                user={user}
+                image={userImage}
+              />
+            ))}
           </div>
         </div>
       </section>
       <section>
-        <div>
-          <div className="container">
+        <div className="box">
+          <header className="section-header">
             <h2>Desks</h2>
-            <div className="articles-container">
-              {desks.slice(0, 5).map((desk) => (
-                <Card
-                  key={desk.desk_id}
-                  cardType="Desk"
-                  desk = {desk}
-                  queue_name = {desk.queue_name}
-                  image={deskImage}
-                />
-              ))}
-            </div>
+          </header>
+          <div className="articles-container">
+            {desks.slice(0, 5).map((desk) => (
+              <Card
+                key={desk.desk_id}
+                cardType="Desk"
+                desk = {desk}
+                queue_name = {desk.queue_name}
+                image={deskImage}
+              />
+            ))}
           </div>
         </div>
       </section>
       <section>
-        <div>
-          <div className="container">
+        <div className="box">
+          <header className="section-header">
             <h2>Queues</h2>
-            <div className="articles-container">
-              {queues.slice(0, 5).map((queue) => (
-                <Card
-                  key={queue.queue_id}
-                  cardType="Queue"
-                  queue={queue}
-                  image={queue.qr_code}
-                />
-              ))}
-            </div>
+          </header>
+          <div className="articles-container">
+            {queues.slice(0, 5).map((queue) => (
+              <Card
+                key={queue.queue_id}
+                cardType="Queue"
+                queue={queue}
+                image={queue.qr_code}
+              />
+            ))}
           </div>
         </div>
       </section>
       <section>
-        <h2>Customers</h2>
+        <div className="box">
+          <header className="section-header">
+            <h2>Customers</h2>
+          </header>
+        </div>
       </section>
       <section>
-        <h2>Statistics</h2>
+        <div className="box">
+          <header className="section-header">
+            <h2>Statistics</h2>
+          </header>
+        </div>
       </section>
     </div>
   )

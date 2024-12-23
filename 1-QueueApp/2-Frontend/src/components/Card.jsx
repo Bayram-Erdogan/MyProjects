@@ -19,7 +19,6 @@ const Card = ({
                         <img src={image}/>
                         <div>
                             <h3> {user.name} </h3>
-                            <p><strong>Id :</strong> {user.user_id}</p>
                         </div>
                     </article>
                 </Link>
@@ -30,8 +29,7 @@ const Card = ({
                     <article className="card bg-secondary">
                         <img src={image}/>
                         <div>
-                            <h3> {desk.desk_number} </h3>
-                            <p><strong>Id :</strong> {desk.desk_id}</p>
+                            <h3> Desk : {desk.desk_number} </h3>
                         </div>
                     </article>
                 </Link>
@@ -43,7 +41,6 @@ const Card = ({
                         <img src={image} alt="qr_code" />
                         <div>
                             <h3> {queue.queue_name} </h3>
-                            <p><strong>Id :</strong> {queue.queue_id}</p>
                             <p><strong>Attached desk :</strong> {queue.attached_desk}</p>
                             <p><strong>Max of customer:</strong> {queue.max_of_customer}</p>
                             <Button style={"btn btn-dark"} text={"Print"} onClick={() => handlePrint(image)} />

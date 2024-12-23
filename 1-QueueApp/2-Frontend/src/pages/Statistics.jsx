@@ -1,6 +1,6 @@
 const Statistics = () => {
     return (
-        <div>
+        <div className="page-container box">
             <h1>Statistics</h1>
         </div>
     )

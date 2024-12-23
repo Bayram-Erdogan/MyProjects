@@ -30,7 +30,7 @@ const SignIn = ({ setUser }) => {
   };
 
   return (
-    <div>
+    <div className="sign-in ">
       <h1>Sign In</h1>
       <form onSubmit={handleSignIn}>
         <div>

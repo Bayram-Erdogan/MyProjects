@@ -35,51 +35,56 @@ const Users = ({users, setUsers}) => {
       }
 
     return (
-        <div>
-            <h1>Users</h1>
+      <div className="page-container">
+        <div className="page-con">
+          <div className="left">
             <h2>Add new user</h2>
             <form onSubmit={addUser}>
-                <Input
-                    type = {"text"}
-                    placeholder = {"Username"}
-                    name = {"username"}
-                    value = {username}
-                    onChange={({target}) => setUsername(target.value)}
-                />
+              <Input
+                type = {"text"}
+                placeholder = {"Username"}
+                name = {"username"}
+                value = {username}
+                onChange={({target}) => setUsername(target.value)}
+              />
 
-                <Input
-                    type = {"email"}
-                    placeholder = {"Email"}
-                    name = {"email"}
-                    value = {email}
-                    onChange={({target}) => setEmail(target.value)}
-                />
+              <Input
+                type = {"email"}
+                placeholder = {"Email"}
+                name = {"email"}
+                value = {email}
+                onChange={({target}) => setEmail(target.value)}
+              />
 
-                <Input
-                    type = {"password"}
-                    placeholder = {"Password"}
-                    name = {"password"}
-                    value = {password}
-                    onChange={({target}) => setPassword(target.value)}
-                />
-
-                <Button text={'Create new user'}/>
+              <Input
+                type = {"password"}
+                placeholder = {"Password"}
+                name = {"password"}
+                value = {password}
+                onChange={({target}) => setPassword(target.value)}
+              />
+             <Button text={'Create new user'}/>
             </form>
             <Notification message={successMessage} />
-            <div className="container">
-                <h2>All users</h2>
-                <div className="articles-container">
-                    {users.map((user) => (
-                        <Card
-                            key={user.user_id}
-                            cardType="User"
-                            user={user}
-                            image={userImage}
-                        />)
-                    )}
-                </div>
+          </div>
+
+          <div className="right">
+            <div className="container box">
+              <h2>All users</h2>
+              <div className="articles-container">
+                {users.map((user) => (
+                  <Card
+                    key={user.user_id}
+                    cardType="User"
+                    user={user}
+                    image={userImage}
+                  />)
+                )}
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     )
 }
 

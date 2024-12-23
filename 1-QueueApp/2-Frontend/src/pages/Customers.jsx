@@ -32,7 +32,7 @@ const Customers = ({ customers, setCustomers }) => {
   }, [queue_id, setCustomers]);
 
   return (
-    <div>
+    <div className="page-container box">
       <h1>Customers</h1>
       <Notification message={successMessage} />
       <ul>

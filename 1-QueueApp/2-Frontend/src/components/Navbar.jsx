@@ -3,37 +3,34 @@ import { Link } from 'react-router-dom'
 export const Navbar = () => {
 
     return (
-        // <div>
-        //     <Link style={padding} to="/">Home</Link>
-        //     <Link style={padding} to="/signIn">Sign in</Link>
-        // </div>
-        <header className='main-header'>
-            <div className='navbar'>
-                <h1 className='brand'>
-                    <Link to="/">Queue App</Link>
-                </h1>
-                <nav>
-                    <Link to="/signIn">Sign in</Link>
-                </nav>
-            </div>
-        </header>
+    <navbar className='navbar'>
+        <h2 className='brand'>
+            <Link to="/"> <span>Queue</span> App</Link>
+        </h2>
+        <div>
+            <Link to="/signIn">Sign in</Link>
+        </div>
+    </navbar>
     )
 }
 
-// export const AdminNavbar = () => {
-//     const padding = {
-//         padding: 5
-//       }
-//     return (
-//         <div>
-//             <Link style={padding} to="/">Home</Link>
-//             <Link style={padding} to="/admin">Admin</Link>
-//             <Link style={padding} to="/admin/users">Users</Link>
-//             <Link style={padding} to="/admin/desks">Desks</Link>
-//             <Link style={padding} to="/admin/queues">Queues</Link>
-//             <Link style={padding} to="/admin/queues/actives">Active Queues</Link>
-//             <Link style={padding} to="/admin/customers">Customers</Link>
-//             <Link style={padding} to="/admin/statistics">Statistics</Link>
-//         </div>
-//     )
-// }
+export const AdminNavbar = () => {
+
+    return (
+        <navbar className='navbar'>
+            <h2 className='brand'>
+                <Link to="/"> <span>Queue</span> App</Link>
+            </h2>
+            <div>
+                <Link to="/admin">Admin</Link>
+                <Link to="/admin/users">Users</Link>
+                <Link to="/admin/desks">Desks</Link>
+                <Link to="/admin/queues">Queues</Link>
+                <Link to="/admin/queues/actives">Active Queues</Link>
+                <Link to="/admin/customers">Customers</Link>
+                <Link to="/admin/statistics">Statistics</Link>
+            </div>
+            <Link to="/">Sign out</Link>
+        </navbar>
+    )
+}

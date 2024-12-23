@@ -14,33 +14,19 @@ const Home = () =>{
   }, []);
 
   return (
-    // <div>
-    //   <h1> Welcome to Queue App</h1>
-    //   <h2>Join a Queue</h2>
-    //   <div className="container">
-    //     <div className="articles-container">
-    //       {queues.map((queue) => (
-    //         <Card
-    //         key={queue.queue_id}
-    //         cardType = "Queue"
-    //         queue={queue}
-    //         image={queue.qr_code}
-    //         />)
-    //       )}
-    //     </div>
-    //   </div>
-
-    // </div>
-
-    <div>
-      <div className="bg bg-image1">
-        <div className="caption">
+    <div id="home">
+      <div className="main-header">
+        <div className="content">
           <span className="border">Welcome to Queue App</span>
         </div>
       </div>
 
       <div className="box">
-        <h2>Join a Queue</h2>
+
+        <header className="section-header">
+          <h2>Join a Queue</h2>
+        </header>
+
         <div className="container">
           <div className="articles-container">
             {queues.map((queue) => (
@@ -54,10 +40,6 @@ const Home = () =>{
           </div>
         </div>
       </div>
-
-
-
-
     </div>
   )
 }

@@ -48,7 +48,7 @@ const Queue = ({ queues, setQueues }) => {
       })
   };
   return (
-    <div>
+    <div className="page-container">
 
       <form onSubmit={updateQueue}>
         <Input

@@ -9,7 +9,7 @@ import Notification from "../components/Notification"
 
 const Desks = ({desks, setDesks}) => {
     const [deskNumber, setDeskNumber] = useState('')
-    const [seuccesMessage, setSuccessMessage] = useState(null)
+    const [successMessage, setSuccessMessage] = useState(null)
 
     const addDesk = (event) =>{
         event.preventDefault()
@@ -31,34 +31,40 @@ const Desks = ({desks, setDesks}) => {
     }
 
     return (
-        <div>
-            <h1>Desks</h1>
+      <div className="page-container">
+        <div className="page-con">
+          <div className="left">
             <h2>Add new desk</h2>
             <form onSubmit={addDesk}>
-                <Input
+              <Input
                     type = {"text"}
                     placeholder = {"Desk number"}
                     name = {"desk_number"}
                     value={deskNumber}
                     onChange={({target}) => setDeskNumber(target.value)}
                 />
-                <Button text = {"Create new desk"}/>
+              <Button text = {"Create new desk"}/>
             </form>
-            <Notification message={seuccesMessage}/>
-            <div className="container">
-                <h2>All Desks</h2>
-                <div className="articles-container">
-                    {desks.map((desk) => (
-                        <Card
-                            key={desk.desk_id}
-                            cardType="Desk"
-                            desk = {desk}
-                            image={deskImage}
-                        />)
-                    )}
-                </div>
+            <Notification message={successMessage} />
+          </div>
+          <div className="right">
+            <div className="container box">
+              <h2>All Desks</h2>
+              <div className="articles-container">
+                {desks.map((desk) => (
+                  <Card
+                    key={desk.desk_id}
+                    cardType="Desk"
+                    desk = {desk}
+                    image={deskImage}
+                  />)
+                 )}
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+
     )
 }
 

@@ -12,7 +12,7 @@ const ActiveQueues = () => {
             })
         }, []);
     return (
-        <div>
+        <div className="page-container box">
         <h1>Active Queues</h1>
         <div className="container">
             <table className="active-queues-table">

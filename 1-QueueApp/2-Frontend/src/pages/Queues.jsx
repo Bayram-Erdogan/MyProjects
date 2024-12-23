@@ -35,54 +35,54 @@ const Queues = ({queues, setQueues}) => {
     }
 
     return (
-        <div>
-            <h1>Queues</h1>
+      <div className="page-container">
+        <div className="page-con">
+          <div className="left">
             <h2>Add new queue</h2>
             <form onSubmit={addQueue}>
-                <Input
-                    type = {"text"}
-                    placeholder = {"Queue name"}
-                    name = {"queue_name"}
-                    value={queueName}
-                    onChange={({target}) => setQueueName(target.value)}
-                />
+              <Input
+                type = {"text"}
+                placeholder = {"Queue name"}
+                name = {"queue_name"}
+                value={queueName}
+                onChange={({target}) => setQueueName(target.value)}
+              />
+              <Input
+                type = {"text"}
+                placeholder = {"Desk number"}
+                name = {"desk_number"}
+                value={deskNumber}
+                onChange={({target}) => setDeskNumber(target.value)}
+              />
+              <Input
+                type = {"text"}
+                placeholder = {"Max of customer"}
+                name = {"max_of_customer"}
+                value={maxOfCustomer}
+                onChange={({target}) => setMaxOfCustomer(target.value)}
+              />
 
-                <Input
-                    type = {"text"}
-                    placeholder = {"Desk number"}
-                    name = {"desk_number"}
-                    value={deskNumber}
-                    onChange={({target}) => setDeskNumber(target.value)}
-                />
-
-                <Input
-                    type = {"text"}
-                    placeholder = {"Max of customer"}
-                    name = {"max_of_customer"}
-                    value={maxOfCustomer}
-                    onChange={({target}) => setMaxOfCustomer(target.value)}
-                />
-
-                <Button text = {"Create new queue"}/>
+              <Button text = {"Create new queue"}/>
             </form>
-            <Notification message={successMessage}/>
-            <div className="container">
-                <div >
-                    <h2>All queues</h2>
-                </div>
-                <div className="articles-container">
-                    {queues.map((queue) => (
-                        <Card
-                            key={queue.queue_id}
-                            cardType = "Queue"
-                            queue={queue}
-                            image={queue.qr_code}
-                        />)
-                    )}
-                </div>
-
+            <Notification message={successMessage} />
+          </div>
+          <div className="right">
+            <div className="container box">
+              <h2>All Queues</h2>
+              <div className="articles-container">
+                {queues.map((queue) => (
+                  <Card
+                    key={queue.queue_id}
+                    cardType = "Queue"
+                    queue={queue}
+                    image={queue.qr_code}
+                  />)
+                 )}
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     )
 }
 export default Queues
