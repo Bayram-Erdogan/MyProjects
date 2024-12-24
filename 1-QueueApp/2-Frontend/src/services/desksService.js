@@ -11,4 +11,9 @@ const create = deskObject => {
     return request.then(response => response.data)
 }
 
-export default {getAll, create}
+const update = (id, updateDesk) => {
+    const request = axios.put(`${baseUrl}/${id}`, updateDesk);
+    return request.then(response => response.data);
+};
+
+export default {getAll, create, update}

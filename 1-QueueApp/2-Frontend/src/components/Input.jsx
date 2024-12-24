@@ -1,8 +1,8 @@
 const Input = ({type, placeholder, name, value, onChange, text}) => {
     return (
         <div>
-            {text}
-            <input
+            <div>{text}</div>
+            <input className="input"
                 type={type}
                 placeholder={placeholder}
                 name={name}

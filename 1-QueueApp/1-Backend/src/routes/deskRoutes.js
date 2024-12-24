@@ -86,10 +86,10 @@ deskRouter.delete('/:id', (request, response, next) => {
 deskRouter.put('/:id', async (request, response, next) => {
   const {  desk_number } = request.body
 
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
+  // const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  // if (!decodedToken.id) {
+  //   return response.status(401).json({ error: 'token invalid' })
+  // }
 
   Desk.findByIdAndUpdate(
     request.params.id,

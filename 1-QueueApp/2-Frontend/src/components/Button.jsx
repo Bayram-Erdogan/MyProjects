@@ -1,6 +1,6 @@
 const Button = ({onClick, text, style}) => {
     return (
-      <button className={style} onClick={onClick}>
+      <button className="btn" onClick={onClick}>
         {text}
       </button>
     )

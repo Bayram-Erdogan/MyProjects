@@ -30,7 +30,6 @@ const Queue = ({ queues, setQueues }) => {
 
   const updateQueue = (event) => {
     event.preventDefault();
-
     const queueObject = {
       queue_name: queueName,
       desk_number: deskNumber,
@@ -38,7 +37,6 @@ const Queue = ({ queues, setQueues }) => {
       user: user,
       status: status
     };
-
     queuesServices
       .update(id, queueObject)
       .then(updatedQueue => {
@@ -49,73 +47,122 @@ const Queue = ({ queues, setQueues }) => {
   };
   return (
     <div className="page-container">
+      <div className="left">
+        <div>
+          <img src={queue.qr_code} alt="qr_code" className="qr-code" />
+          <Button text={"Print"} onClick={() => handlePrint(queue.qr_code)} />
+        </div>
+        <form onSubmit={updateQueue}>
+          <Input
+            text={"Queue name : "}
+            type = {"text"}
+            placeholder = {"Queue name"}
+            name = {"queue_name"}
+            value={queueName}
+            onChange={({target}) => setQueueName(target.value)}
 
-      <form onSubmit={updateQueue}>
-        <Input
-          text={"Queue name : "}
-          type = {"text"}
-          placeholder = {"Queue name"}
-          name = {"queue_name"}
-          value={queueName}
-          onChange={({target}) => setQueueName(target.value)}
+          />
 
-        />
+          <Input
+            text={"Desk number : "}
+            type = {"text"}
+            placeholder = {"Desk number"}
+            name = {"desk_number"}
+            value={deskNumber}
+            onChange={({target}) => setDeskNumber(target.value)}
+          />
 
-        <Input
-          text={"Desk number : "}
-          type = {"text"}
-          placeholder = {"Desk number"}
-          name = {"desk_number"}
-          value={deskNumber}
-          onChange={({target}) => setDeskNumber(target.value)}
-        />
+          <Input
+            text={"Max of customer : "}
+            type = {"text"}
+            placeholder = {"Max of customer"}
+            name = {"max_of_customer"}
+            value={maxOfCustomer}
+            onChange={({target}) => setMaxOfCustomer(target.value)}
+          />
 
-        <Input
-          text={"Max of customer : "}
-          type = {"text"}
-          placeholder = {"Max of customer"}
-          name = {"max_of_customer"}
-          value={maxOfCustomer}
-          onChange={({target}) => setMaxOfCustomer(target.value)}
-        />
+          <Input
+            text={"User : "}
+            type = {"text"}
+            placeholder = {"User"}
+            name = {"user"}
+            value={user}
+            onChange={({target}) => setUser(target.value)}
+          />
 
-        <Input
-          text={"User : "}
-          type = {"text"}
-          placeholder = {"User"}
-          name = {"user"}
-          value={user}
-          onChange={({target}) => setUser(target.value)}
-        />
+          <Input
+            text={"Status : "}
+            type = {"text"}
+            placeholder = {"Status"}
+            name = {"status"}
+            value={status}
+            onChange={({target}) => setStatus(target.value)}
+          />
 
-        <Input
-          text={"Status : "}
-          type = {"text"}
-          placeholder = {"Status"}
-          name = {"status"}
-          value={status}
-          onChange={({target}) => setStatus(target.value)}
-        />
+          <Button text={'Update'}/>
+        </form>
+        <Notification message={successMessage}/>
+      </div>
 
-        <Button style={"btn btn-primary"} text={'Update'}/>
-      </form>
-
-      <Notification message={successMessage}/>
-
-      <h1>{queue.queue_name} Details</h1>
-      <p><strong>Queue ID :</strong> {queue.queue_id}</p>
-      <p><strong>User :</strong> Buraya bagli oldugu user gelecek</p>
-      <p><strong>Desk :</strong> {queue.attached_desk}</p>
-      <p><strong>Status :</strong> {queue.status}</p>
-      <p><strong>Maximum of customer :</strong> {queue.max_of_customer} </p>
-      <p><strong>Active customer :</strong> {queue.active_customer} </p>
-      <p><strong>Waiting customer :</strong> {queue.waiting_customer} </p>
-      <p><strong>Total customer :</strong> {queue.total_customer} </p>
-      <p><strong>Created time :</strong> {queue.createdTime.date} / {queue.createdTime.hour}</p>
-      <p><strong>Created by:</strong> Buraya olusturan kisi gelecek</p>
-      <p><strong>Qr qode :</strong> </p>
-      <p><img src={queue.qr_code} alt="qr_code" className="qr-code" /></p>
-      <Button style={"btn btn-dark"} text={"Print"} onClick={() => handlePrint(queue.qr_code)} />
+      <div className="right">
+        <div className="section-header">
+          <h1>{queue.queue_name} Details</h1>
+        </div>
+        <table className="details-table">
+          <tbody>
+            <tr>
+              <td><strong>Queue ID</strong></td>
+              <td className="middle-column">:</td>
+              <td>{queue.queue_id}</td>
+            </tr>
+            <tr>
+              <td><strong>User</strong></td>
+              <td className="middle-column">:</td>
+              <td>Buraya bağlı olduğu user gelecek</td>
+            </tr>
+            <tr>
+              <td><strong>Desk</strong></td>
+              <td className="middle-column">:</td>
+              <td>{queue.attached_desk}</td>
+            </tr>
+            <tr>
+              <td><strong>Status</strong></td>
+              <td className="middle-column">:</td>
+              <td>{queue.status}</td>
+            </tr>
+            <tr>
+              <td><strong>Maximum of Customer</strong></td>
+              <td className="middle-column">:</td>
+              <td>{queue.max_of_customer}</td>
+            </tr>
+            <tr>
+              <td><strong>Active Customer</strong></td>
+              <td className="middle-column">:</td>
+              <td>{queue.active_customer}</td>
+            </tr>
+            <tr>
+              <td><strong>Waiting Customer</strong></td>
+              <td className="middle-column">:</td>
+              <td>{queue.waiting_customer}</td>
+            </tr>
+            <tr>
+              <td><strong>Total Customer</strong></td>
+              <td className="middle-column">:</td>
+              <td>{queue.total_customer}</td>
+            </tr>
+            <tr>
+              <td><strong>Created Time</strong></td>
+              <td className="middle-column">:</td>
+              <td>{queue.createdTime.date} / {queue.createdTime.hour}</td>
+            </tr>
+            <tr>
+              <td><strong>Created By</strong></td>
+              <td className="middle-column">:</td>
+              <td>Buraya oluşturan kişi gelecek</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

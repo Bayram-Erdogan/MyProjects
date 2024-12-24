@@ -43,12 +43,12 @@ const Card = ({
                             <h3> {queue.queue_name} </h3>
                             <p><strong>Attached desk :</strong> {queue.attached_desk}</p>
                             <p><strong>Max of customer:</strong> {queue.max_of_customer}</p>
-                            <Button style={"btn btn-dark"} text={"Print"} onClick={() => handlePrint(image)} />
+                            <Button style={"btn"} text={"Print"} onClick={() => handlePrint(image)} />
                         </div>
                     </article>
                 </Link>
             )
-            case 'Queue__home':
+        case 'Queue__home':
             return(
                 <Link to={`/admin/queues/${queue.queue_id}`}>
                     <article className="card bg-light">
