@@ -38,33 +38,35 @@ const Queues = ({queues, setQueues}) => {
       <div className="page-container">
         <div className="page-con">
           <div className="left">
-            <h2>Add new queue</h2>
-            <form onSubmit={addQueue}>
-              <Input
-                type = {"text"}
-                placeholder = {"Queue name"}
-                name = {"queue_name"}
-                value={queueName}
-                onChange={({target}) => setQueueName(target.value)}
-              />
-              <Input
-                type = {"text"}
-                placeholder = {"Desk number"}
-                name = {"desk_number"}
-                value={deskNumber}
-                onChange={({target}) => setDeskNumber(target.value)}
-              />
-              <Input
-                type = {"text"}
-                placeholder = {"Max of customer"}
-                name = {"max_of_customer"}
-                value={maxOfCustomer}
-                onChange={({target}) => setMaxOfCustomer(target.value)}
-              />
+            <div className="left-container">
+              <h2>Add new queue</h2>
+              <form onSubmit={addQueue}>
+                <Input
+                  type = {"text"}
+                  placeholder = {"Queue name"}
+                  name = {"queue_name"}
+                  value={queueName}
+                  onChange={({target}) => setQueueName(target.value)}
+                />
+                <Input
+                  type = {"text"}
+                  placeholder = {"Desk number"}
+                  name = {"desk_number"}
+                  value={deskNumber}
+                  onChange={({target}) => setDeskNumber(target.value)}
+                />
+                <Input
+                  type = {"text"}
+                  placeholder = {"Max of customer"}
+                  name = {"max_of_customer"}
+                  value={maxOfCustomer}
+                  onChange={({target}) => setMaxOfCustomer(target.value)}
+                />
 
-              <Button text = {"Create new queue"}/>
-            </form>
-            <Notification message={successMessage} />
+                <Button text = {"Create new queue"}/>
+              </form>
+              <Notification message={successMessage} />
+            </div>
           </div>
           <div className="right">
             <div className="container box">

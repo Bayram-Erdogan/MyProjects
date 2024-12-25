@@ -15,7 +15,7 @@ const Card = ({
         case 'User':
             return(
                 <Link to={`/admin/users/${user.user_id}`}>
-                    <article className="card bg-light">
+                    <article className="card">
                         <img src={image}/>
                         <div>
                             <h3> {user.name} </h3>
@@ -26,7 +26,7 @@ const Card = ({
         case 'Desk':
             return(
                 <Link to={`/admin/desks/${desk.desk_id}`}>
-                    <article className="card bg-secondary">
+                    <article className="card">
                         <img src={image}/>
                         <div>
                             <h3> Desk : {desk.desk_number} </h3>
@@ -51,7 +51,7 @@ const Card = ({
         case 'Queue__home':
             return(
                 <Link to={`/admin/queues/${queue.queue_id}`}>
-                    <article className="card bg-light">
+                    <article className="card">
                         <img src={image} alt="qr_code" />
                         <div>
                             <h3> {queue.queue_name} </h3>
@@ -62,7 +62,7 @@ const Card = ({
         case 'Active_Queue':
             return(
                 <Link to={`/admin/queues/${queue.queue_id}`}>
-                    <article className="card bg-light">
+                    <article className="card">
                         <img src={image} alt="qr_code" />
                         <div>
                             <h3> {queue.queue_name} </h3>

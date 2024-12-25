@@ -34,18 +34,21 @@ const Desks = ({desks, setDesks}) => {
       <div className="page-container">
         <div className="page-con">
           <div className="left">
-            <h2>Add new desk</h2>
-            <form onSubmit={addDesk}>
-              <Input
-                    type = {"text"}
-                    placeholder = {"Desk number"}
-                    name = {"desk_number"}
-                    value={deskNumber}
-                    onChange={({target}) => setDeskNumber(target.value)}
-                />
-              <Button text = {"Create new desk"}/>
-            </form>
-            <Notification message={successMessage} />
+
+            <div className="left-container">
+              <h2>Add new desk</h2>
+              <form onSubmit={addDesk}>
+                <Input
+                      type = {"text"}
+                      placeholder = {"Desk number"}
+                      name = {"desk_number"}
+                      value={deskNumber}
+                      onChange={({target}) => setDeskNumber(target.value)}
+                  />
+                <Button text = {"Create new desk"}/>
+              </form>
+              <Notification message={successMessage} />
+            </div>
           </div>
           <div className="right">
             <div className="container box">

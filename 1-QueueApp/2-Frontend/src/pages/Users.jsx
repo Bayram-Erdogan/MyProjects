@@ -38,6 +38,7 @@ const Users = ({users, setUsers}) => {
       <div className="page-container">
         <div className="page-con">
           <div className="left">
+           <div className="left-container">
             <h2>Add new user</h2>
             <form onSubmit={addUser}>
               <Input
@@ -66,6 +67,7 @@ const Users = ({users, setUsers}) => {
              <Button text={'Create new user'}/>
             </form>
             <Notification message={successMessage} />
+           </div>
           </div>
 
           <div className="right">

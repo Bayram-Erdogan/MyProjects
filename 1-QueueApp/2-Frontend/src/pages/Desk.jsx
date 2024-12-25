@@ -52,78 +52,80 @@ const Desk = ({ desks, setDesks }) => {
   return (
     <div className="page-container">
       <div className="left">
-        <form onSubmit={updateDesk}>
-          <Input
-            text={"Desk Number :"}
-            type={"text"}
-            placeholder={"Desk Number"}
-            name={"desk_number"}
-            value={deskNumber}
-            onChange={({ target }) => setDeskNumber(target.value)}
-          />
-          <Input
-            text={"Created Time (Date) :"}
-            type={"text"}
-            placeholder={"Created Date"}
-            name={"created_date"}
-            value={createdTime.date}
-            onChange={({ target }) =>
-              setCreatedTime({ ...createdTime, date: target.value })
-            }
-          />
-          <Input
-            text={"Created Time (Hour) :"}
-            type={"text"}
-            placeholder={"Created Hour"}
-            name={"created_hour"}
-            value={createdTime.hour}
-            onChange={({ target }) =>
-              setCreatedTime({ ...createdTime, hour: target.value })
-            }
-          />
-          <Input
-            text={"Created By :"}
-            type={"text"}
-            placeholder={"Created By"}
-            name={"created_by"}
-            value={createdBy}
-            onChange={({ target }) => setCreatedBy(target.value)}
-          />
-          <Input
-            text={"User :"}
-            type={"text"}
-            placeholder={"User"}
-            name={"user"}
-            value={user}
-            onChange={({ target }) => setUser(target.value)}
-          />
-          <Input
-            text={"Queue :"}
-            type={"text"}
-            placeholder={"Queue"}
-            name={"queue"}
-            value={queue}
-            onChange={({ target }) => setQueue(target.value)}
-          />
-          <Input
-            text={"Status :"}
-            type={"text"}
-            placeholder={"Status"}
-            name={"status"}
-            value={status}
-            onChange={({ target }) => setStatus(target.value)}
-          />
-          <Input
-            text={"Total Customers :"}
-            type={"text"}
-            placeholder={"Total Customers"}
-            name={"total_customers"}
-            value={totalCustomers}
-            onChange={({ target }) => setTotalCustomers(target.value)}
-          />
-          <Button text={"Update"} />
-        </form>
-        <Notification message={successMessage} />
+        <div className="left-container">
+          <form onSubmit={updateDesk}>
+            <Input
+              text={"Desk Number :"}
+              type={"text"}
+              placeholder={"Desk Number"}
+              name={"desk_number"}
+              value={deskNumber}
+              onChange={({ target }) => setDeskNumber(target.value)}
+            />
+            <Input
+              text={"Created Time (Date) :"}
+              type={"text"}
+              placeholder={"Created Date"}
+              name={"created_date"}
+              value={createdTime.date}
+              onChange={({ target }) =>
+                setCreatedTime({ ...createdTime, date: target.value })
+              }
+            />
+            <Input
+              text={"Created Time (Hour) :"}
+              type={"text"}
+              placeholder={"Created Hour"}
+              name={"created_hour"}
+              value={createdTime.hour}
+              onChange={({ target }) =>
+                setCreatedTime({ ...createdTime, hour: target.value })
+              }
+            />
+            <Input
+              text={"Created By :"}
+              type={"text"}
+              placeholder={"Created By"}
+              name={"created_by"}
+              value={createdBy}
+              onChange={({ target }) => setCreatedBy(target.value)}
+            />
+            <Input
+              text={"User :"}
+              type={"text"}
+              placeholder={"User"}
+              name={"user"}
+              value={user}
+              onChange={({ target }) => setUser(target.value)}
+            />
+            <Input
+              text={"Queue :"}
+              type={"text"}
+              placeholder={"Queue"}
+              name={"queue"}
+              value={queue}
+              onChange={({ target }) => setQueue(target.value)}
+            />
+            <Input
+              text={"Status :"}
+              type={"text"}
+              placeholder={"Status"}
+              name={"status"}
+              value={status}
+              onChange={({ target }) => setStatus(target.value)}
+            />
+            <Input
+              text={"Total Customers :"}
+              type={"text"}
+              placeholder={"Total Customers"}
+              name={"total_customers"}
+              value={totalCustomers}
+              onChange={({ target }) => setTotalCustomers(target.value)}
+            />
+            <Button text={"Update"} />
+          </form>
+          <Notification message={successMessage} />
+        </div>
       </div>
       <div className="right">
         <h1> Desk {desk.desk_number} Details</h1>

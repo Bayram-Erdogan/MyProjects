@@ -48,60 +48,62 @@ const Queue = ({ queues, setQueues }) => {
   return (
     <div className="page-container">
       <div className="left">
-        <div>
-          <img src={queue.qr_code} alt="qr_code" className="qr-code" />
-          <Button text={"Print"} onClick={() => handlePrint(queue.qr_code)} />
+        <div className="left-container">
+          <div className="text-align">
+            <img src={queue.qr_code} alt="qr_code" className="qr-code" />
+            <Button text={"Print"} onClick={() => handlePrint(queue.qr_code)} />
+          </div>
+          <form onSubmit={updateQueue}>
+            <Input
+              text={"Queue name : "}
+              type = {"text"}
+              placeholder = {"Queue name"}
+              name = {"queue_name"}
+              value={queueName}
+              onChange={({target}) => setQueueName(target.value)}
+
+            />
+
+            <Input
+              text={"Desk number : "}
+              type = {"text"}
+              placeholder = {"Desk number"}
+              name = {"desk_number"}
+              value={deskNumber}
+              onChange={({target}) => setDeskNumber(target.value)}
+            />
+
+            <Input
+              text={"Max of customer : "}
+              type = {"text"}
+              placeholder = {"Max of customer"}
+              name = {"max_of_customer"}
+              value={maxOfCustomer}
+              onChange={({target}) => setMaxOfCustomer(target.value)}
+            />
+
+            <Input
+              text={"User : "}
+              type = {"text"}
+              placeholder = {"User"}
+              name = {"user"}
+              value={user}
+              onChange={({target}) => setUser(target.value)}
+            />
+
+            <Input
+              text={"Status : "}
+              type = {"text"}
+              placeholder = {"Status"}
+              name = {"status"}
+              value={status}
+              onChange={({target}) => setStatus(target.value)}
+            />
+
+            <Button text={'Update'}/>
+          </form>
+          <Notification message={successMessage}/>
         </div>
-        <form onSubmit={updateQueue}>
-          <Input
-            text={"Queue name : "}
-            type = {"text"}
-            placeholder = {"Queue name"}
-            name = {"queue_name"}
-            value={queueName}
-            onChange={({target}) => setQueueName(target.value)}
-
-          />
-
-          <Input
-            text={"Desk number : "}
-            type = {"text"}
-            placeholder = {"Desk number"}
-            name = {"desk_number"}
-            value={deskNumber}
-            onChange={({target}) => setDeskNumber(target.value)}
-          />
-
-          <Input
-            text={"Max of customer : "}
-            type = {"text"}
-            placeholder = {"Max of customer"}
-            name = {"max_of_customer"}
-            value={maxOfCustomer}
-            onChange={({target}) => setMaxOfCustomer(target.value)}
-          />
-
-          <Input
-            text={"User : "}
-            type = {"text"}
-            placeholder = {"User"}
-            name = {"user"}
-            value={user}
-            onChange={({target}) => setUser(target.value)}
-          />
-
-          <Input
-            text={"Status : "}
-            type = {"text"}
-            placeholder = {"Status"}
-            name = {"status"}
-            value={status}
-            onChange={({target}) => setStatus(target.value)}
-          />
-
-          <Button text={'Update'}/>
-        </form>
-        <Notification message={successMessage}/>
       </div>
 
       <div className="right">

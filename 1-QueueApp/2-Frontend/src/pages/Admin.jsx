@@ -5,7 +5,7 @@ import deskImage from "../assets/desk.jpg";
 
 const Admin = ({users, desks, queues}) => {
     return (
-    <div className='page-container'>
+    <div id='admin' className='page-container'>
       <section>
         <div className="box">
           <header className="section-header">
