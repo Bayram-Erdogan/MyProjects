@@ -73,9 +73,9 @@ const App = () => {
           <Route path="/signIn" element={<SignIn setUser={setUser} />} />
           <Route path="/admin" element={<Admin users={users} desks={desks} queues={queues} />} />
           <Route path="/admin/users" element={<Users users={users} setUsers={setUsers} />} />
-          <Route path="/admin/users/:id" element={<User users={users} />} />
+          <Route path="/admin/users/:id" element={<User users={users} setUsers={setUsers} />} />
           <Route path="/admin/desks" element={<Desks desks={desks} setDesks={setDesks} />} />
-          <Route path="/admin/desks/:id" element={<Desk desks={desks} />} />
+          <Route path="/admin/desks/:id" element={<Desk desks={desks} setDesks={setDesks} />} />
           <Route path="/admin/queues" element={<Queues queues={queues} setQueues={setQueues} />} />
           <Route path="/admin/queues/:id" element={<Queue queues={queues} setQueues={setQueues} />} />
           <Route path="/admin/queues/actives" element={<ActiveQueues />} />

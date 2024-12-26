@@ -35,7 +35,6 @@ adminRouter.get('/:id', async (request, response) => {
   } else {
     response.status(404).end()
   }
-
 })
 
 adminRouter.delete('/', (request, response, next) => {

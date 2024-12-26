@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const userRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
-//const Admin = require('../models/adminModel')
+const Admin = require('../models/adminModel')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
@@ -15,12 +15,12 @@ const getTokenFrom = request => {
 userRouter.post('/', async (request, response) => {
   const body = request.body
 
-  //const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  //if (!decodedToken.id) {
-  //  return response.status(401).json({ error: 'token invalid' })
-  //}
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
 
-  //const admin = await Admin.findById(decodedToken.id)
+  const admin = await Admin.findById(decodedToken.id)
 
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(body.password, saltRounds)
@@ -29,22 +29,21 @@ userRouter.post('/', async (request, response) => {
     name: body.name,
     email: body.email,
     passwordHash,
-    //createdBy: admin._id
+    createdBy: admin._id
   })
 
   const savedUser = await user.save()
-  //admin.users = admin.users.concat(savedUser._id)
-  //await admin.save().then(console.log('User successfully created'))
+  admin.users = admin.users.concat(savedUser._id)
+  await admin.save().then(console.log('User successfully created'))
 
   response.json(savedUser)
 })
 
 userRouter.get('/', async (request, response) => {
-  // asagidaki blogu gecici olarak kapattim yoksa tarayicida yuklenenleri göremiyorum token istiyor.
-  // const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  // if (!decodedToken.id) {
-  //   return response.status(401).json({ error: 'token invalid' })
-  // }
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
 
   const users = await User.find({}).populate('createdBy', 'username') //  Populate from ChatGPT
   response.json(users)
@@ -96,7 +95,7 @@ userRouter.delete('/:id', (request, response, next) => {
 })
 
 userRouter.put('/:id', async (request, response, next) => {
-  const { name, email, password } = request.body
+  const { name, email, password, desk, queue } = request.body
 
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id) {
@@ -105,7 +104,7 @@ userRouter.put('/:id', async (request, response, next) => {
 
   User.findByIdAndUpdate(
     request.params.id,
-    { name, email, password },
+    { name, email, password, desk, queue },
     { new: true, runValidators: true, context: 'query' })
     .then(updatedUser => {
       response.json(updatedUser)

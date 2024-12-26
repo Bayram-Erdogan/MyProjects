@@ -1,7 +1,7 @@
 const queueRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Queue = require('../models/queueModel')
-//const Admin = require('../models/adminModel')
+const Admin = require('../models/adminModel')
 const Desk = require('../models/deskModel')
 const QRCode = require('qrcode')
 const { findWaitingCustomers, calculateAverageWaitingTime } = require('../utils/customerHelpers')
@@ -20,18 +20,18 @@ queueRouter.post('/', async (request, response) => {
 
   const desk = await Desk.findOne({ desk_number: body.desk_number })
 
-  // const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  // if (!decodedToken.id) {
-  //   return response.status(401).json({ error: 'token invalid' })
-  // }
-  // const admin = await Admin.findById(decodedToken.id)
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  const admin = await Admin.findById(decodedToken.id)
 
   const queue = new Queue({
     queue_name: body.queue_name,
     desk: desk.id,
     desk_number: desk.desk_number,
     max_of_customer:body.max_of_customer,
-    //createdBy: admin._id,
+    createdBy: admin._id,
     status:body.status || 'Nonactive',
   })
 
@@ -48,9 +48,9 @@ queueRouter.post('/', async (request, response) => {
   }
 
   const savedQueue = await queue.save()
-  //admin.queues = admin.queues.concat(savedQueue._id)
+  admin.queues = admin.queues.concat(savedQueue._id)
   desk.queues.push(savedQueue._id)
-  //await admin.save().then(console.log('Queue successfully created'))
+  await admin.save().then(console.log('Queue successfully created'))
   await desk.save()
   response.json({ //response is updated from ChatGPT
     ...savedQueue.toJSON(),
@@ -59,6 +59,12 @@ queueRouter.post('/', async (request, response) => {
 })
 
 queueRouter.get('/', async (request, response) => {
+
+  // const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  // if (!decodedToken.id) {
+  //   return response.status(401).json({ error: 'token invalid' })
+  // }
+
   const queues = await Queue.find({})
     .populate('createdBy', 'username') // populates fron ChatGPT
   response.json(queues)
@@ -66,6 +72,12 @@ queueRouter.get('/', async (request, response) => {
 
 queueRouter.get('/active', async (request, response) => { // updated from ChatGPT
   try {
+
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'token invalid' })
+    }
+
     const active_queues = await Queue.find({ status: 'Active' })
       .populate('createdBy', 'username')
 
@@ -87,8 +99,13 @@ queueRouter.get('/active', async (request, response) => { // updated from ChatGP
   }
 })
 
-
 queueRouter.get('/nonactive', async (request, response) => {
+
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
   const nonactive_queues = await Queue.find({ status: 'nonactive' })
     .populate('createdBy', 'username')
 
@@ -140,16 +157,16 @@ queueRouter.delete('/:id', (request, response, next) => {
 })
 
 queueRouter.put('/:id', async (request, response, next) => {
-  const { queue_name, desk_number, max_of_customer, status, user } = request.body
+  const { queue_name, desk_number, max_of_customer, user, status  } = request.body
 
-  // const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  // if (!decodedToken.id) {
-  //   return response.status(401).json({ error: 'token invalid' })
-  // }
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
 
   Queue.findByIdAndUpdate(
     request.params.id,
-    { queue_name, desk_number, max_of_customer, status, user },
+    { queue_name, desk_number, max_of_customer,user, status },
     { new: true, runValidators: true, context: 'query' })
     .then(updatedQueue => {
       response.json(updatedQueue)

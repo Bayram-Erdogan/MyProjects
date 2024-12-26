@@ -9,8 +9,6 @@ const User = ({ users, setUsers }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [createdTime, setCreatedTime] = useState({ date: "", hour: "" });
-  const [createdBy, setCreatedBy] = useState("");
   const [desk, setDesk] = useState("");
   const [queue, setQueue] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
@@ -23,8 +21,6 @@ const User = ({ users, setUsers }) => {
       setName(user.name || "");
       setEmail(user.email || "");
       setPassword("");
-      setCreatedTime(user.createdTime || { date: "", hour: "" });
-      setCreatedBy(user.createdBy || "");
       setDesk(user.desk || "");
       setQueue(user.queue || "");
     }
@@ -32,20 +28,20 @@ const User = ({ users, setUsers }) => {
 
   const updateUser = (event) => {
     event.preventDefault();
-    const updatedUser = {
-      name,
-      email,
-      password,
-      createdTime,
-      createdBy,
-      desk,
-      queue,
+    const userObject = {
+      name : name,
+      email : email,
+      password : password,
+      desk : desk,
+      queue : queue,
     };
 
-    usersServices.update(id, updatedUser).then((updatedUser) => {
-      setUsers(users.map((u) => (u.user_id === id ? updatedUser : u)));
-      setSuccessMessage("User updated successfully");
-      setTimeout(() => setSuccessMessage(null), 5000);
+    usersServices
+      .update(id, userObject)
+      .then((updatedUser) => {
+        setUsers(users.map((u) => (u.user_id === id ? updatedUser : u)));
+        setSuccessMessage("User updated successfully");
+        setTimeout(() => setSuccessMessage(null), 5000);
     });
   };
 
@@ -77,34 +73,6 @@ const User = ({ users, setUsers }) => {
               name={"password"}
               value={password}
               onChange={({ target }) => setPassword(target.value)}
-            />
-            <Input
-              text={"Created Time (Date) :"}
-              type={"text"}
-              placeholder={"Created Date"}
-              name={"created_date"}
-              value={createdTime.date}
-              onChange={({ target }) =>
-                setCreatedTime({ ...createdTime, date: target.value })
-              }
-            />
-            <Input
-              text={"Created Time (Hour) :"}
-              type={"text"}
-              placeholder={"Created Hour"}
-              name={"created_hour"}
-              value={createdTime.hour}
-              onChange={({ target }) =>
-                setCreatedTime({ ...createdTime, hour: target.value })
-              }
-            />
-            <Input
-              text={"Created By :"}
-              type={"text"}
-              placeholder={"Created By"}
-              name={"created_by"}
-              value={createdBy}
-              onChange={({ target }) => setCreatedBy(target.value)}
             />
             <Input
               text={"Desk :"}

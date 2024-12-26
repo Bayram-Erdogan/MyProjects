@@ -1,27 +1,31 @@
 # CREATE NEW QUEUE WITH AUTHORIZATION
 POST http://localhost:3001/api/queues
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzM3NzE4NDB9.mDmJpuXy1yP9jQ1OZXX_D7R0xUMPbRKZZMKhgMayqc0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzUxMzc0MDd9.e7uDV_TANf7ii5cq_INSvYKv-p_L0oegwgPInKRo98M
 
 {
     "queue_name": "VSC 2",
-    "desk_number": 2,
+    "desk_number": 1,
     "max_of_customer": 20
 }
 ###
+
+
 # CREATE NEW QUEUE WITH STATUS and AUTHORIZATION
 POST http://localhost:3001/api/queues
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzUxNTA3NTJhOTNlY2QzMGI5MzU4NmUiLCJpYXQiOjE3MzMzODIzMDN9.EBEG6-k0YBH5j_eDqtYJJMmULYcKZl4WfA6p2xFKl9g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzUxMzc0MDd9.e7uDV_TANf7ii5cq_INSvYKv-p_L0oegwgPInKRo98M
 
 {
-    "queue_name": "VSC Queue 3",
+    "queue_name": "VSC Queue 1",
     "desk_number": 1,
     "max_of_customer": 20,
     "status" : "Active"
 }
 
 ###
+
+
 # CREATE NEW QUEUE WITHOUT AUTHORIZATION
 POST http://localhost:3001/api/queues
 Content-Type: application/json
@@ -29,86 +33,109 @@ Content-Type: application/json
 {
     "queue_name" : "Queue 1 Created from VSC",
     "desk_number": 2,
-    "max_of_customer": 5
+    "max_of_customer": 20
 }
 
 ###
+
+
 # READ_ALL_QUEUES WITH AUTHORIZATION
 GET http://localhost:3001/api/queues
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZDZiZDFjMmZiMjE2ZTNhYWMyNzAiLCJpYXQiOjE3MzI2OTg2NTh9.5KWArVif5mmaCXWj6-dt8cvJ5LfDEnnunka1fx4tWgQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzUxMzc0MDd9.e7uDV_TANf7ii5cq_INSvYKv-p_L0oegwgPInKRo98M
 
 ###
+
+
 # READ_ALL_QUEUES WITHOUT AUTHORIZATION
 GET http://localhost:3001/api/queues
+
+###
+
+
 # READ_SPECIFIC_QUEUES WITH AUTHORIZATION
-GET http://localhost:3001/api/queues/674700ee50d43efbc92a6167
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MjI2Mzh9.5ozLwla0sTBR9D2EVhdQnTqqDZTw_ak_73UEgs8tAiY
+GET http://localhost:3001/api/queues/676c2034860ee972d7991cae
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzUxMzc0MDd9.e7uDV_TANf7ii5cq_INSvYKv-p_L0oegwgPInKRo98M
 
 ###
+
+
 # READ_SPECIFIC_QUEUES WITHOUT AUTHORIZATION
-GET http://localhost:3001/api/queues/6746ec074eb5d32febb14c0d
+GET http://localhost:3001/api/queues/676c2034860ee972d7991cae
 
 ###
+
+
 # UPDATE_SPECIFIC_QUEUES'S QUEUE_NAME WITH AUTHORIZATION
-PUT http://localhost:3001/api/queues/674702c12fc846e540c6fd49
+PUT http://localhost:3001/api/queues/676c2034860ee972d7991cae
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MjMwMDN9.9bbBpSCkxj0FA79tTV9LrB1DJOJUcRfqrGty1jraklA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzUxMzc0MDd9.e7uDV_TANf7ii5cq_INSvYKv-p_L0oegwgPInKRo98M
 
 {
-    "queue_name" : "User 2 updated from VSC"
+    "queue_name" : "VSC queue 2 updated from VSC"
 }
 ###
+
+
 # UPDATE_SPECIFIC_QUEUES'S DESK_NUMBER WITH AUTHORIZATION
-PUT http://localhost:3001/api/queues/67504c1ed33ab81e2a9e5b46
+PUT http://localhost:3001/api/queues/676c2034860ee972d7991cae
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzUwMGE4ZWY2YWYzY2UzODlhMjhkYTIiLCJpYXQiOjE3MzMyOTg4NzN9.fXRLyR7P76zPV37RVlBQ6w91FdMHemRcSLtiG14hNx8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzUxMzc0MDd9.e7uDV_TANf7ii5cq_INSvYKv-p_L0oegwgPInKRo98M
 
 {
     "desk_number" : 3
 }
 
 ###
+
+
 # UPDATE_SPECIFIC_QUEUES'S MAX_OF_CUSTOMER WITH AUTHORIZATION
-PUT http://localhost:3001/api/queues/674702c12fc846e540c6fd49
+PUT http://localhost:3001/api/queues/676c2034860ee972d7991cae
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MjMwMDN9.9bbBpSCkxj0FA79tTV9LrB1DJOJUcRfqrGty1jraklA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzUxMzc0MDd9.e7uDV_TANf7ii5cq_INSvYKv-p_L0oegwgPInKRo98M
 
 {
     "max_of_customer" : "23"
 }
 
 ###
-# UPDATE_SPECIFIC_QUEUES'S MAX_OF_CUSTOMER WITH AUTHORIZATION
-PUT http://localhost:3001/api/queues/675151142a93ecd30b9358a6
+
+
+# UPDATE_SPECIFIC_QUEUES'S STATUS WITH AUTHORIZATION
+PUT http://localhost:3001/api/queues/676c2034860ee972d7991cae
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzUxNTA3NTJhOTNlY2QzMGI5MzU4NmUiLCJpYXQiOjE3MzMzODIzMDN9.EBEG6-k0YBH5j_eDqtYJJMmULYcKZl4WfA6p2xFKl9g
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzUxMzc0MDd9.e7uDV_TANf7ii5cq_INSvYKv-p_L0oegwgPInKRo98M
 
 {
-    "status" : "active"
+    "status" : "Nonactive"
 }
 
 ###
+
+
 # UPDATE_SPECIFIC_QUEUES'S ALL DATA WITH AUTHORIZATION
-PUT http://localhost:3001/api/queues/674997520d0d11853f22884d
+PUT http://localhost:3001/api/queues/676c2034860ee972d7991cae
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MjMwMDN9.9bbBpSCkxj0FA79tTV9LrB1DJOJUcRfqrGty1jraklA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzUxMzc0MDd9.e7uDV_TANf7ii5cq_INSvYKv-p_L0oegwgPInKRo98M
 
 {
-    "queue_name" : "Staff 1 updated from VSC",
-    "desk_number" : 2,
-    "max_of_customer" : 60
+    "queue_name" : "VSC 1 updated from VSC TWICE",
+    "desk_number" : 1,
+    "max_of_customer" : 10,
+    "status" : "Active"
 }
-
 ###
+
 
 # UPDATE_SPECIFIC_QUEUES'S QUEUE_NAME WITHOUT AUTHORIZATION
-PUT http://localhost:3001/api/queues/6746d81b11c7eace611fdaf7
+PUT http://localhost:3001/api/queues/676c2034860ee972d7991cae
 Content-Type: application/json
 
 {
     "queue_name" : "User 2 updated from VSC"
 }
 ###
+
+
 # UPDATE_SPECIFIC_QUEUES'S DESK_NUMBER WITHOUT AUTHORIZATION
 PUT http://localhost:3001/api/queues/674997520d0d11853f22884d
 Content-Type: application/json
@@ -116,10 +143,11 @@ Content-Type: application/json
 {
     "desk_number" : 2
 }
-
 ###
+
+
 # UPDATE_SPECIFIC_QUEUES'S MAX_OF_CUSTOMER WITHOUT AUTHORIZATION
-PUT http://localhost:3001/api/queues/67458fa9a5a23577554b019b
+PUT http://localhost:3001/api/queues/676c2034860ee972d7991cae
 Content-Type: application/json
 
 {
@@ -127,29 +155,48 @@ Content-Type: application/json
 }
 
 ###
+
+
+# UPDATE_SPECIFIC_QUEUES'S STATUS WITHOUT AUTHORIZATION
+PUT http://localhost:3001/api/queues/676c2034860ee972d7991cae
+
+{
+    "status" : "Nonactive"
+}
+
+###
+
+
 # UPDATE_SPECIFIC_QUEUES'S ALL DATA WITH AUTHORIZATION
-PUT http://localhost:3001/api/queues/67458fa9a5a23577554b019b
-Content-Type: application/json
+PUT http://localhost:3001/api/queues/676c2034860ee972d7991cae
+
 {
     "queue_name" : "Staff 1 updated from VSC",
     "desk_number" : "user_1_updated@queue.com",
-    "max_of_customer" : "user_1 password updated from VSC"
+    "max_of_customer" : "user_1 password updated from VSC",
+    "status" : "Active"
 }
-
 ###
+
+
 # DELETE_ALL_QUEUES WITH AUTHORIZATION
 DELETE http://localhost:3001/api/queues/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3NzgyNzJ9.IDGs1DXs6rjZfUDeaPuYStDQM6mYpngisRHax_6oZfk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzUxMzc0MDd9.e7uDV_TANf7ii5cq_INSvYKv-p_L0oegwgPInKRo98M
 
 ###
+
+
 # DELETE_ALL_QUEUES'S WITHOUT AUTHORIZATION
 DELETE http://localhost:3001/api/queues/
+###
 
-###
+
 # DELETE_SPECIFIC_QUEUES'S WITH AUTHORIZATION
-DELETE http://localhost:3001/api/queues/674702c12fc846e540c6fd49
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzQ2ZmVlOTBhN2RmOTI4OGJkNjQ5YjUiLCJpYXQiOjE3MzI3MjMwMDN9.9bbBpSCkxj0FA79tTV9LrB1DJOJUcRfqrGty1jraklA
+DELETE http://localhost:3001/api/queues/676c2416de9755600813253e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFkbWluIiwiaWQiOiI2NzU3NDIzNmM4M2NkYzBhZTI0NjQ0NzYiLCJpYXQiOjE3MzUxMzc0MDd9.e7uDV_TANf7ii5cq_INSvYKv-p_L0oegwgPInKRo98M
 ###
+
+
 # DELETE_SPECIFIC_QUEUES'S WITHOUT AUTHORIZATION
-DELETE http://localhost:3001/api/queues/67459185ba6dbc7391054617
+DELETE http://localhost:3001/api/queues/676c2034860ee972d7991cae
 

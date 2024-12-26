@@ -27,7 +27,6 @@ const Queue = ({ queues, setQueues }) => {
     }
   }, [queue]);
 
-
   const updateQueue = (event) => {
     event.preventDefault();
     const queueObject = {
@@ -45,6 +44,7 @@ const Queue = ({ queues, setQueues }) => {
         setTimeout(() => setSuccessMessage(null), 5000);
       })
   };
+
   return (
     <div className="page-container">
       <div className="left">

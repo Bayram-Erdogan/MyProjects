@@ -7,8 +7,6 @@ import desksServices from "../services/desksService";
 
 const Desk = ({ desks, setDesks }) => {
   const [deskNumber, setDeskNumber] = useState("");
-  const [createdTime, setCreatedTime] = useState({ date: "", hour: "" });
-  const [createdBy, setCreatedBy] = useState("");
   const [user, setUser] = useState("");
   const [queue, setQueue] = useState("");
   const [status, setStatus] = useState("");
@@ -21,8 +19,6 @@ const Desk = ({ desks, setDesks }) => {
   useEffect(() => {
     if (desk) {
       setDeskNumber(desk.desk_number || "");
-      setCreatedTime(desk.createdTime || { date: "", hour: "" });
-      setCreatedBy(desk.createdBy || "");
       setUser(desk.user || "");
       setQueue(desk.queue || "");
       setStatus(desk.status || "");
@@ -32,20 +28,20 @@ const Desk = ({ desks, setDesks }) => {
 
   const updateDesk = (event) => {
     event.preventDefault();
-    const updatedDesk = {
+    const deskObject = {
       desk_number: deskNumber,
-      createdTime,
-      createdBy,
-      user,
-      queue,
-      status,
-      totalCustomers,
+      user :user,
+      queue : queue,
+      status : status,
+      totalCustomers : totalCustomers,
     };
 
-    desksServices.update(id, updatedDesk).then((updatedDesk) => {
-      setDesks(desks.map((d) => (d.desk_id === id ? updatedDesk : d)));
-      setSuccessMessage("Desk updated successfully");
-      setTimeout(() => setSuccessMessage(null), 5000);
+    desksServices
+      .update(id, deskObject)
+      .then((updatedDesk) => {
+        setDesks(desks.map((d) => (d.desk_id === id ? updatedDesk : d)));
+        setSuccessMessage("Desk updated successfully");
+        setTimeout(() => setSuccessMessage(null), 5000);
     });
   };
 
@@ -61,34 +57,6 @@ const Desk = ({ desks, setDesks }) => {
               name={"desk_number"}
               value={deskNumber}
               onChange={({ target }) => setDeskNumber(target.value)}
-            />
-            <Input
-              text={"Created Time (Date) :"}
-              type={"text"}
-              placeholder={"Created Date"}
-              name={"created_date"}
-              value={createdTime.date}
-              onChange={({ target }) =>
-                setCreatedTime({ ...createdTime, date: target.value })
-              }
-            />
-            <Input
-              text={"Created Time (Hour) :"}
-              type={"text"}
-              placeholder={"Created Hour"}
-              name={"created_hour"}
-              value={createdTime.hour}
-              onChange={({ target }) =>
-                setCreatedTime({ ...createdTime, hour: target.value })
-              }
-            />
-            <Input
-              text={"Created By :"}
-              type={"text"}
-              placeholder={"Created By"}
-              name={"created_by"}
-              value={createdBy}
-              onChange={({ target }) => setCreatedBy(target.value)}
             />
             <Input
               text={"User :"}
@@ -176,4 +144,3 @@ const Desk = ({ desks, setDesks }) => {
 };
 
 export default Desk;
-
