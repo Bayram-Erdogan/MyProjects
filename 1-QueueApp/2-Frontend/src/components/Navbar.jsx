@@ -2,20 +2,20 @@ import { Link } from 'react-router-dom'
 
 export const Navbar = () => {
     return (
-      <navbar className='navbar'>
+      <div className='navbar'>
         <h2 className='brand'>
           <Link to="/"> <span>Queue</span> App</Link>
         </h2>
         <div>
           <Link to="/signIn">Sign in</Link>
         </div>
-      </navbar>
+      </div>
     );
   };
 
-  export const AdminNavbar = ({ onSignOut }) => {
+export const AdminNavbar = ({ onSignOut }) => {
     return (
-      <navbar className='navbar'>
+      <div className='navbar'>
         <h2 className='brand'>
           <Link to="/"> <span>Queue</span> App</Link>
         </h2>
@@ -29,6 +29,6 @@ export const Navbar = () => {
           <Link to="/admin/statistics">Statistics</Link>
         </div>
         <Link to="/" onClick={onSignOut}>Sign out</Link>  {/* Sign out link */}
-      </navbar>
+      </div>
     );
   };

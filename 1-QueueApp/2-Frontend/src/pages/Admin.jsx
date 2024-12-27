@@ -1,4 +1,3 @@
-
 import Card from '../components/Card'
 import userImage from "../assets/user.jpeg";
 import deskImage from "../assets/desk.jpg";

@@ -5,27 +5,28 @@ import signInServices from '../services/signInServices';
 import Notification from "../components/Notification";
 
 const SignIn = ({ setUser }) => {
-  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null)
-
+  const navigate = useNavigate();
 
   const handleSignIn = async (event) => {
     event.preventDefault();
 
     try {
-
-      const user = await signInServices.signIn({ username, password });
-      setUser(user);
+      const { token } = await signInServices.signIn({ username, password });
+      localStorage.setItem('authToken', token);
+      console.log('Token:', token);
+      setUser({ username });
       setUsername('');
       setPassword('');
       navigate('/admin');
     } catch (exception) {
-        setErrorMessage('Wrong credentials')
-        setTimeout(() => {
-            setErrorMessage(null)
-        }, 5000)
+      setErrorMessage('Wrong credentials');
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
     }
   };
 

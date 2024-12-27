@@ -35,7 +35,7 @@ const App = () => {
   const handleSignOut = () => {
     localStorage.removeItem('authToken');
     setUser(null);
-    navigate("/");  // Ana sayfaya yönlendir
+    navigate("/");
   };
 
   useEffect(() => {
