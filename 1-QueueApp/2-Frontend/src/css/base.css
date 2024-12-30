@@ -309,6 +309,13 @@ p {
   border-radius: 8px;
 }
 
+.btn-container{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem;
+  cursor: pointer;
+}
+
 .btn {
   background-color: var(--primary-color);
   color: var(--light);

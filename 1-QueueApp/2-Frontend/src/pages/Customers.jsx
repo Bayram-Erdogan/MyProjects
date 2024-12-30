@@ -1,50 +1,95 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import customersService from "../services/customersService";
-import Notification from "../components/Notification";
+import { useEffect, useState } from "react"
+import customersService from "../services/customersService"
+import Notification from "../components/Notification"
+import {Link} from 'react-router-dom'
 
-const Customers = ({ customers, setCustomers }) => {
-  const [searchParams] = useSearchParams();
-  const queue_id = searchParams.get("queue_id");
+const Customers = () => {
+  const [customers, setCustomers] = useState([]);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [totalCustomers, setTotalCustomers] = useState(0);
+  const [waitingCustomers, setWaitingCustomers] = useState(0);
+  const [processingCustomers, setProcessingCustomers] = useState(0);
+  const [completedCustomers, setCompletedCustomers] = useState(0);
 
-  useEffect(() => {   // From ChatGPT
-    if (queue_id) {
-      const customerObject = { queue_id };
+  useEffect(() => {
+    customersService.getAll().then((data) => {
+      setCustomers(data);
+      setTotalCustomers(data.length);
 
-      customersService
-        .create(customerObject)
-        .then((returnedCustomer) => {
-          if (!returnedCustomer || !returnedCustomer.customer_id) {
-            setSuccessMessage("Failed to join the queue.");
-            return;
-          }
+      const waitingCount = data.filter((customer) => customer.status === "waiting").length;
+      const processingCount = data.filter((customer) => customer.status === "process").length;
+      const completedCount = data.filter((customer) => customer.status === "done").length;
+      setWaitingCustomers(waitingCount);
+      setProcessingCustomers(processingCount)
+      setCompletedCustomers(completedCount)
+    });
+  }, [setCustomers]);
 
-          setCustomers((prevCustomers) => [...prevCustomers, returnedCustomer]);
-          setSuccessMessage("Successfully joined the queue!");
-          setTimeout(() => setSuccessMessage(null), 5000);
-        })
-        .catch((error) => {
-          console.error("Error while joining the queue:", error);
-          setSuccessMessage("Error: Could not join the queue.");
-        });
-    }
-  }, [queue_id, setCustomers]);
 
   return (
-    <div className="page-container box">
-      <h1>Customers</h1>
-      <Notification message={successMessage} />
-      <ul>
-        {customers.map((customer) => (
-          <li key={customer.queue_id}>
-            Queue Name: {customer.queue_name} - Attached Desk: {customer.attached_desk}
-          </li>
-        ))}
-      </ul>
+    <div className="page-container">
+      <div className="page-con">
+        <div className="left">
+          <div className="left-container">
+            <h2>Customer Statistics</h2>
+            <p>Total Customers : {totalCustomers}</p>
+            <p>Waiting Customers : {waitingCustomers}</p>
+            <p>Processing Customers : {processingCustomers}</p>
+            <p>Completed Customers : {completedCustomers}</p>
+          </div>
+        </div>
+
+        <div className="right">
+          <div className="container box">
+            <h2>All Customers</h2>
+            <Notification message={successMessage} />
+            <table className="active-queues-table">
+              <thead>
+                <tr>
+                  <th>Customer ID</th>
+                  <th>Queue Name</th>
+                  <th>Attached Desk</th>
+                  <th>Joining Time</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {customers.map((customer) => (
+                  <tr key={customer.customer_id}>
+                    <td>
+                      <Link to={`/admin/customers/${customer.customer_id}`}>
+                        {customer.customer_id}
+                      </Link>
+                    </td>
+                    <td>
+                      <Link to={`/admin/customers/${customer.customer_id}`}>
+                        {customer.attached_queue?.queue_name }
+                      </Link>
+                    </td>
+                    <td>
+                      <Link to={`/admin/customers/${customer.customer_id}`}>
+                        {customer.attached_queue?.attached_desk }
+                      </Link>
+                    </td>
+                    <td>
+                      <Link to={`/admin/customers/${customer.customer_id}`}>
+                        {customer.joining_time?.date } - {customer.joining_time?.hour }
+                      </Link>
+                    </td>
+                    <td>
+                      <Link to={`/admin/customers/${customer.customer_id}`}>
+                          {customer.status}
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Customers;
-

@@ -17,10 +17,9 @@ export const AdminNavbar = ({ onSignOut }) => {
     return (
       <div className='navbar'>
         <h2 className='brand'>
-          <Link to="/"> <span>Queue</span> App</Link>
+          <Link to="/admin"> <span>Queue</span> App</Link>
         </h2>
         <div>
-          <Link to="/admin">Admin</Link>
           <Link to="/admin/users">Users</Link>
           <Link to="/admin/desks">Desks</Link>
           <Link to="/admin/queues">Queues</Link>
@@ -28,7 +27,7 @@ export const AdminNavbar = ({ onSignOut }) => {
           <Link to="/admin/customers">Customers</Link>
           <Link to="/admin/statistics">Statistics</Link>
         </div>
-        <Link to="/" onClick={onSignOut}>Sign out</Link>  {/* Sign out link */}
+        <Link to="/" onClick={onSignOut}>Sign out</Link>
       </div>
     );
   };

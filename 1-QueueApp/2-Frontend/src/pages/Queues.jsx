@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Input from "../components/Input"
 import Button from "../components/Button"
 import queuesServices from "../services/queuesServices"
@@ -10,6 +10,12 @@ const Queues = ({queues, setQueues}) => {
     const [deskNumber, setDeskNumber] = useState('')
     const [maxOfCustomer, setMaxOfCustomer] = useState('')
     const [successMessage, setSuccessMessage] = useState(null)
+
+    useEffect(() => {
+      queuesServices.getAll().then(initialQueues => {
+        setQueues(initialQueues);
+      });
+    }, []);
 
     const addQueue = (event) => {
         event.preventDefault()

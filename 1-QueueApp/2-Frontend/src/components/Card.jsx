@@ -9,6 +9,7 @@ const Card = ({
     desk,
     queue,
     image,
+    customer
 
     }) => {
 
@@ -84,6 +85,17 @@ const Card = ({
                     </article>
                 </Link>
             )
+        case 'Customer':
+          return (
+            <Link to={`/admin/customers/${customer.customer_id}`} key={customer.customer_id}>
+              <article className="card">
+                <img src={image} alt="Customer profile image" />
+                <div>
+                <p> {customer.customer_id} </p>
+                </div>
+              </article>
+            </Link>
+          );
     }
 }
 

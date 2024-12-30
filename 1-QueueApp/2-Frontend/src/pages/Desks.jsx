@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Input from "../components/Input"
 import Button from "../components/Button"
 import desksService from "../services/desksService"
@@ -6,10 +6,26 @@ import Card from "../components/Card"
 import deskImage from "../assets/desk.jpg";
 import Notification from "../components/Notification"
 
-
-const Desks = ({desks, setDesks}) => {
+const Desks = () => {
+    const [desks, setDesks] = useState([]);
     const [deskNumber, setDeskNumber] = useState('')
-    const [successMessage, setSuccessMessage] = useState(null)
+    const [message, setMessage] = useState(null)
+
+    useEffect(() => {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setMessage('Token is missing');
+      } else {
+          desksService.getAll()
+          .then(initialDesks => {
+            setDesks(initialDesks);
+            })
+            .catch(() => {
+              setMessage('Error fetching desks.');
+            });
+        }
+      }, []);
+
 
     const addDesk = (event) =>{
         event.preventDefault()
@@ -23,9 +39,9 @@ const Desks = ({desks, setDesks}) => {
       .then(returnedDesk => {
         setDesks(desks.concat(returnedDesk))
         setDeskNumber('')
-        setSuccessMessage('Desk added successfully')
+        setMessage('Desk added successfully')
             setTimeout(() => {
-                setSuccessMessage(null)
+                setMessage(null)
             }, 5000)
       })
     }
@@ -47,7 +63,7 @@ const Desks = ({desks, setDesks}) => {
                   />
                 <Button text = {"Create new desk"}/>
               </form>
-              <Notification message={successMessage} />
+              <Notification message={message} />
             </div>
           </div>
           <div className="right">

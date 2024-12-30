@@ -4,8 +4,10 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import Notification from "../components/Notification";
 import usersServices from "../services/usersService";
+import profileImage from "../assets/unisex-profile.jpg"
 
-const User = ({ users, setUsers }) => {
+const User = () => {
+  const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +16,14 @@ const User = ({ users, setUsers }) => {
   const [successMessage, setSuccessMessage] = useState(null);
 
   const { id } = useParams();
-  const user = users.find((user) => user.user_id === id);
+
+  useEffect(() => {
+    usersServices
+      .getAll()
+      .then((users) => setUsers(users));
+  }, []);
+
+  const user = users.find((user) => String(user.user_id) === id);
 
   useEffect(() => {
     if (user) {
@@ -29,26 +38,31 @@ const User = ({ users, setUsers }) => {
   const updateUser = (event) => {
     event.preventDefault();
     const userObject = {
-      name : name,
-      email : email,
-      password : password,
-      desk : desk,
-      queue : queue,
+      name: name,
+      email: email,
+      password: password,
+      desk: desk,
+      queue: queue,
     };
 
-    usersServices
-      .update(id, userObject)
-      .then((updatedUser) => {
-        setUsers(users.map((u) => (u.user_id === id ? updatedUser : u)));
-        setSuccessMessage("User updated successfully");
-        setTimeout(() => setSuccessMessage(null), 5000);
+    usersServices.update(id, userObject).then((updatedUser) => {
+      setUsers(users.map((u) => (u.user_id === id ? updatedUser : u)));
+      setSuccessMessage("User updated successfully");
+      setTimeout(() => setSuccessMessage(null), 5000);
     });
   };
+
+  if (!user) {
+    return <div>Loading user data...</div>;
+  }
 
   return (
     <div className="page-container">
       <div className="left">
         <div className="left-container">
+          <div className="text-align">
+            <img src={profileImage}/>
+          </div>
           <form onSubmit={updateUser}>
             <Input
               text={"Name :"}
@@ -116,19 +130,9 @@ const User = ({ users, setUsers }) => {
               <td>{user.email}</td>
             </tr>
             <tr>
-              <td><strong>Password</strong></td>
-              <td className="middle-column">:</td>
-              <td>Buraya Password gelecek</td>
-            </tr>
-            <tr>
-              <td><strong>Created Time</strong></td>
-              <td className="middle-column">:</td>
-              <td>{user.createdTime.date} / {user.createdTime.hour}</td>
-            </tr>
-            <tr>
               <td><strong>Created By</strong></td>
               <td className="middle-column">:</td>
-              <td>{user.createdBy}</td>
+              <td>{user.createdBy.username || "N/A"}</td>
             </tr>
             <tr>
               <td><strong>Desk</strong></td>

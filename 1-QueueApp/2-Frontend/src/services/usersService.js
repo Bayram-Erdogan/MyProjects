@@ -12,6 +12,19 @@ const getConfig = () => {
   };
 };
 
+// const getConfig = () => {
+//   const token = localStorage.getItem('authToken');
+//   if (!token) {
+//     console.error("Auth token not found in localStorage");
+//   }
+//   return {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   };
+// };
+
+
 const getAll = () => {
   const request = axios.get(baseUrl, getConfig());
   return request.then(response => response.data);

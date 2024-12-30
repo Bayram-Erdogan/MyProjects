@@ -1,16 +1,33 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Input from "../components/Input"
 import Button from "../components/Button"
 import userService from '../services/usersService'
 import Card from "../components/Card"
-import userImage from "../assets/user.jpeg";
-import Notification from "../components/Notification";
+import profileImage from "../assets/unisex-profile.jpg"
+import Notification from "../components/Notification"
 
-const Users = ({users, setUsers}) => {
+
+const Users = () => {
+    const [users, setUsers] = useState([]);
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [successMessage, setSuccessMessage] = useState(null)
+    const [message, setMessage] = useState(null)
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      setMessage('Token is missing');
+    } else {
+        userService.getAll()
+          .then(initialUsers => {
+            setUsers(initialUsers);
+          })
+          .catch(() => {
+            setMessage('Error fetching users.');
+          });
+    }
+  }, []);
 
     const addUser = event => {
         event.preventDefault()
@@ -27,9 +44,9 @@ const Users = ({users, setUsers}) => {
             setUsername('')
             setEmail('')
             setPassword('')
-            setSuccessMessage('User added successfully')
+            setMessage('User added successfully')
             setTimeout(() => {
-                setSuccessMessage(null)
+              setMessage(null)
             }, 5000)
         })
       }
@@ -66,7 +83,7 @@ const Users = ({users, setUsers}) => {
               />
              <Button text={'Create new user'}/>
             </form>
-            <Notification message={successMessage} />
+            <Notification message={message} />
            </div>
           </div>
 
@@ -79,7 +96,7 @@ const Users = ({users, setUsers}) => {
                     key={user.user_id}
                     cardType="User"
                     user={user}
-                    image={userImage}
+                    image={profileImage}
                   />)
                 )}
               </div>

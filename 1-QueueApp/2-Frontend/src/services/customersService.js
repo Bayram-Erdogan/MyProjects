@@ -21,4 +21,9 @@ const create = (customerObject) => {
   return request.then(response => response.data);
 };
 
-export default { getAll, create };
+const update = (id, updateCustomer) => {
+  const request = axios.put(`${baseUrl}/${id}`, updateCustomer, getConfig());
+  return request.then(response => response.data);
+};
+
+export default { getAll, create, update };

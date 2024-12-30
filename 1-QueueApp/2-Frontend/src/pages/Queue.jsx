@@ -123,7 +123,7 @@ const Queue = ({ queues, setQueues }) => {
               <td>Buraya bağlı olduğu user gelecek</td>
             </tr>
             <tr>
-              <td><strong>Desk</strong></td>
+              <td><strong>Atteched desk</strong></td>
               <td className="middle-column">:</td>
               <td>{queue.attached_desk}</td>
             </tr>
@@ -160,7 +160,7 @@ const Queue = ({ queues, setQueues }) => {
             <tr>
               <td><strong>Created By</strong></td>
               <td className="middle-column">:</td>
-              <td>Buraya oluşturan kişi gelecek</td>
+              <td>{queue.createdBy.username}</td>
             </tr>
           </tbody>
         </table>
