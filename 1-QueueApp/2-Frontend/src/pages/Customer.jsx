@@ -4,6 +4,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import Notification from "../components/Notification";
 import customersService from "../services/customersService";
+import profileImage from "../assets/unisex-profile.jpg"
 
 const Customer = () => {
   const [customers, setCustomers] = useState([]);
@@ -41,6 +42,9 @@ const Customer = () => {
     <div className="page-container">
       <div className="left">
         <div className="left-container">
+          <div className="text-align">
+              <img src={profileImage}/>
+          </div>
           <form onSubmit={updateCustomer}>
             <Input
               text={"Status :"}
