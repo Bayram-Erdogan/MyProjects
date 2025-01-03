@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import Input from "../components/Input"
 import Button from "../components/Button"
-import queuesServices from "../services/queuesServices"
+import queuesServices from "../services/queuesService"
 import Card from "../components/Card"
 import Notification from "../components/Notification"
 

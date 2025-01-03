@@ -22,6 +22,7 @@ import { Routes, Route } from "react-router-dom";
 const App = () => {
   const [user, setUser] = useState(null);
   const [queues, setQueues] = useState([]);
+  const [customers, setCustomers] = useState([]);
 
 
   const navigate = useNavigate();
@@ -31,8 +32,6 @@ const App = () => {
     setUser(null);
     navigate("/");
   };
-
-
 
   return (
     <div className="app-container">
@@ -50,9 +49,9 @@ const App = () => {
           <Route path="/admin/desks/:id" element={<Desk />} />
           <Route path="/admin/queues" element={<Queues queues={queues} setQueues={setQueues} />} />
           <Route path="/admin/queues/:id" element={<Queue queues={queues} setQueues={setQueues} />} />
-          <Route path="/admin/queues/actives" element={<ActiveQueues />} />
-          <Route path="/admin/customers" element={<Customers />} />
-          <Route path="/admin/customers/:id" element={<Customer />} />
+          <Route path="/admin/customers" element={<Customers customers={customers} setCustomers={setCustomers} />} />
+          <Route path="/admin/customers/:id" element={<Customer customers={customers} setCustomers={setCustomers} />} />
+          <Route path="/admin/queues/actives" element={<ActiveQueues customers={customers} />} />
           <Route path="/admin/statistics" element={<Statistics />} />
         </Routes>
       </main>

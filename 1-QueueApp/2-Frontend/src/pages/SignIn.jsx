@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
-import signInServices from '../services/signInServices';
+import signInServices from '../services/signInService';
 import Notification from "../components/Notification";
 
 const SignIn = ({ setUser }) => {

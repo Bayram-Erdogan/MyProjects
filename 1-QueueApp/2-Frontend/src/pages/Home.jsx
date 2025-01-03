@@ -1,5 +1,5 @@
 import { useState , useEffect } from "react"
-import queuesServices from "../services/queuesServices"
+import queuesServices from "../services/queuesService"
 import Card from "../components/Card"
 
 const Home = () =>{

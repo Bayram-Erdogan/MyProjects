@@ -6,8 +6,7 @@ import Notification from "../components/Notification";
 import customersService from "../services/customersService";
 import profileImage from "../assets/unisex-profile.jpg"
 
-const Customer = () => {
-  const [customers, setCustomers] = useState([]);
+const Customer = ({ customers, setCustomers }) => {
   const [status, setStatus] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
 
@@ -20,7 +19,6 @@ const Customer = () => {
       .getAll()
       .then((customers) => setCustomers(customers));
   }, []);
-
 
 
   const updateCustomer = (event) => {

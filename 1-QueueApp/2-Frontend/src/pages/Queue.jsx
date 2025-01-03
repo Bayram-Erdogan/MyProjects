@@ -3,16 +3,22 @@ import { useParams } from "react-router-dom";
 import Button from '../components/Button'
 import Input from "../components/Input";
 import Notification from "../components/Notification"
-import handlePrint  from '../utils/printHelper';
-import queuesServices from "../services/queuesServices"
+import handlePrint from '../utils/printHelper';
+import queuesServices from "../services/queuesService";
+import customersService from "../services/customersService";
 
 const Queue = ({ queues, setQueues }) => {
-  const [queueName, setQueueName] = useState('')
-  const [deskNumber, setDeskNumber] = useState('')
-  const [maxOfCustomer, setMaxOfCustomer] = useState('')
-  const [user, setUser] = useState('')
-  const [status, setStatus] = useState('')
-  const [successMessage, setSuccessMessage] = useState(null)
+  const [queueName, setQueueName] = useState('');
+  const [deskNumber, setDeskNumber] = useState('');
+  const [maxOfCustomer, setMaxOfCustomer] = useState('');
+  const [user, setUser] = useState('');
+  const [status, setStatus] = useState('');
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  const [waitingCustomers, setWaitingCustomers] = useState(0);
+  const [activeCustomers, setActiveCustomers] = useState(0);
+  const [completedCustomers, setCompletedCustomers] = useState(0);
+  const [totalCustomers, setTotalCustomers] = useState(0);
 
   const { id } = useParams();
   const queue = queues.find((queue) => queue.queue_id === id);
@@ -24,8 +30,16 @@ const Queue = ({ queues, setQueues }) => {
       setMaxOfCustomer(queue.max_of_customer || '');
       setUser(queue.user || '');
       setStatus(queue.status || '');
+
+      customersService.getAll().then((data) => {
+        const queueCustomers = data.filter((customer) => customer.attached_queue?.queue_id === id);
+        setTotalCustomers(queueCustomers.length);
+        setWaitingCustomers(queueCustomers.filter((customer) => customer.status === "waiting").length);
+        setActiveCustomers(queueCustomers.filter((customer) => customer.status === "process").length);
+        setCompletedCustomers(queueCustomers.filter((customer) => customer.status === "done").length);
+      });
     }
-  }, [queue]);
+  }, [queue, id]);
 
   const updateQueue = (event) => {
     event.preventDefault();
@@ -56,53 +70,47 @@ const Queue = ({ queues, setQueues }) => {
           <form onSubmit={updateQueue}>
             <Input
               text={"Queue name : "}
-              type = {"text"}
-              placeholder = {"Queue name"}
-              name = {"queue_name"}
+              type={"text"}
+              placeholder={"Queue name"}
+              name={"queue_name"}
               value={queueName}
               onChange={({target}) => setQueueName(target.value)}
-
             />
-
             <Input
               text={"Desk number : "}
-              type = {"text"}
-              placeholder = {"Desk number"}
-              name = {"desk_number"}
+              type={"text"}
+              placeholder={"Desk number"}
+              name={"desk_number"}
               value={deskNumber}
               onChange={({target}) => setDeskNumber(target.value)}
             />
-
             <Input
               text={"Max of customer : "}
-              type = {"text"}
-              placeholder = {"Max of customer"}
-              name = {"max_of_customer"}
+              type={"text"}
+              placeholder={"Max of customer"}
+              name={"max_of_customer"}
               value={maxOfCustomer}
               onChange={({target}) => setMaxOfCustomer(target.value)}
             />
-
             <Input
               text={"User : "}
-              type = {"text"}
-              placeholder = {"User"}
-              name = {"user"}
+              type={"text"}
+              placeholder={"User"}
+              name={"user"}
               value={user}
               onChange={({target}) => setUser(target.value)}
             />
-
             <Input
               text={"Status : "}
-              type = {"text"}
-              placeholder = {"Status"}
-              name = {"status"}
+              type={"text"}
+              placeholder={"Status"}
+              name={"status"}
               value={status}
               onChange={({target}) => setStatus(target.value)}
             />
-
-            <Button text={'Update'}/>
+            <Button text={'Update'} />
           </form>
-          <Notification message={successMessage}/>
+          <Notification message={successMessage} />
         </div>
       </div>
 
@@ -120,10 +128,10 @@ const Queue = ({ queues, setQueues }) => {
             <tr>
               <td><strong>User</strong></td>
               <td className="middle-column">:</td>
-              <td>Buraya bağlı olduğu user gelecek</td>
+              <td>{queue.user}</td>
             </tr>
             <tr>
-              <td><strong>Atteched desk</strong></td>
+              <td><strong>Attached desk</strong></td>
               <td className="middle-column">:</td>
               <td>{queue.attached_desk}</td>
             </tr>
@@ -140,17 +148,22 @@ const Queue = ({ queues, setQueues }) => {
             <tr>
               <td><strong>Active Customer</strong></td>
               <td className="middle-column">:</td>
-              <td>{queue.active_customer}</td>
+              <td>{activeCustomers}</td>
             </tr>
             <tr>
               <td><strong>Waiting Customer</strong></td>
               <td className="middle-column">:</td>
-              <td>{queue.waiting_customer}</td>
+              <td>{waitingCustomers}</td>
+            </tr>
+            <tr>
+              <td><strong>Completed Customer</strong></td>
+              <td className="middle-column">:</td>
+              <td>{completedCustomers}</td>
             </tr>
             <tr>
               <td><strong>Total Customer</strong></td>
               <td className="middle-column">:</td>
-              <td>{queue.total_customer}</td>
+              <td>{totalCustomers}</td>
             </tr>
             <tr>
               <td><strong>Created Time</strong></td>

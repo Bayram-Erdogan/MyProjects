@@ -61,10 +61,20 @@ customerRouter.get('/:id', async (request, response) => {
 
 customerRouter.put('/:id', async (request, response, next) => {
   const { status } = request.body
-
+  const customer = await Customer.findById(request.params.id)
+  const queue = await Queue.findById(customer.queue_id)
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+
   if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
+    return response.status(401).json({ error: 'Token invalid' })
+  }
+
+  if (customer.status === 'waiting' && (status === 'process' || status === 'done')) {
+    queue.waiting_customer = Math.max(0, queue.waiting_customer - 1)
+    await queue.save()
+  } else if (customer.status === 'process' || customer.status === 'done' && (status === 'waiting')) {
+    queue.waiting_customer = Math.max(0, queue.waiting_customer + 1)
+    await queue.save()
   }
 
   Customer.findByIdAndUpdate(
@@ -77,9 +87,7 @@ customerRouter.put('/:id', async (request, response, next) => {
     .catch(error => next(error))
 })
 
-
 /****** */
-
 
 customerRouter.get('/auto-join/:queue_id', async (request, response) => { // From ChatGPT
   const { queue_id } = request.params
@@ -112,7 +120,6 @@ customerRouter.get('/waiting/:queue_id', async (request, response) => {
     waiting_customers: totalOfWaitingCustomers,
   })
 })
-
 
 customerRouter.get('/average-waiting-time/:queue_id', async (request, response) => { // From ChatGPT
   const { queue_id } = request.params
