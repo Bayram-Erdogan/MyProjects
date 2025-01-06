@@ -2,5 +2,5 @@ POST http://localhost:3001/api/customers/joinQueue
 Content-Type: application/json
 
 {
-    "queue_id": "677503b9dc0b37f2bd6a5a5b"
+    "queue_id": "67750818cf5b4f5b266c6051"
 }

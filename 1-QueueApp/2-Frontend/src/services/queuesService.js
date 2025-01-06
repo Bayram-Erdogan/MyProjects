@@ -2,7 +2,6 @@ import axios from "axios";
 
 const baseUrl = '/api/queues';
 
-
 const getConfig = () => {
   const token = localStorage.getItem('authToken');
   return {

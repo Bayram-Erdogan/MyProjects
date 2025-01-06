@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import Input from "../components/Input"
 import Button from "../components/Button"
-import queuesServices from "../services/queuesService"
 import Card from "../components/Card"
+import queuesService from "../services/queuesService"
 import Notification from "../components/Notification"
 
 const Queues = ({queues, setQueues}) => {
@@ -12,10 +12,10 @@ const Queues = ({queues, setQueues}) => {
     const [successMessage, setSuccessMessage] = useState(null)
 
     useEffect(() => {
-      queuesServices.getAll().then(initialQueues => {
-        setQueues(initialQueues);
-      });
-    }, []);
+        queuesService.getAll().then(initialQueues => {
+          setQueues(initialQueues);
+        });
+      }, []);
 
     const addQueue = (event) => {
         event.preventDefault()

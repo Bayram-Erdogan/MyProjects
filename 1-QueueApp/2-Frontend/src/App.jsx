@@ -1,7 +1,9 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import './css/base.css';
 import { Navbar, AdminNavbar } from "./components/Navbar";
 import Footer from "./components/Footer";
+import queuesService from "../src/services/queuesService"
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Users from "./pages/Users";
@@ -15,17 +17,18 @@ import Customers from "./pages/Customers";
 import Customer from "./pages/Customer";
 import Statistics from "./pages/Statistics";
 import SignIn from "./pages/SignIn";
-import './css/base.css';
-
-import { Routes, Route } from "react-router-dom";
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [queues, setQueues] = useState([]);
   const [customers, setCustomers] = useState([]);
-
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    queuesService.getAll().then(initialQueues => {
+      setQueues(initialQueues);
+    });
+  }, []);
 
   const handleSignOut = () => {
     localStorage.removeItem('authToken');
@@ -52,7 +55,7 @@ const App = () => {
           <Route path="/admin/customers" element={<Customers customers={customers} setCustomers={setCustomers} />} />
           <Route path="/admin/customers/:id" element={<Customer customers={customers} setCustomers={setCustomers} />} />
           <Route path="/admin/queues/actives" element={<ActiveQueues customers={customers} />} />
-          <Route path="/admin/statistics" element={<Statistics />} />
+          <Route path="/admin/statistics" element={<Statistics queues={queues} setQueues={setQueues}/>} />
         </Routes>
       </main>
       <Footer />

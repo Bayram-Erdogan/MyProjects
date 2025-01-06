@@ -360,3 +360,64 @@ p {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
+.list-container {
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: var(--light);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.list-container h3, .left-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--light);
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.list li:hover, .btn:hover {
+  background-color: var(--secondary-color);
+  color: var(--white);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.list li span {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.list li .status {
+  font-size: 1.2rem;
+  color: var(--secondary);
+}
+.list li:hover .status.Active {
+  color: var(--white);
+}
+
+.list li .status.Active {
+  color: var(--success);
+}
+
+.list li .status.Nonactive {
+  color: var(--danger);
+}
+

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Button from '../components/Button';
 import customersService from '../services/customersService';
+import queuesService from '../services/queuesService';
 import { filterByDate, prepareChartData, exportToPDF } from '../utils/statisticsHelper';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -22,12 +23,14 @@ ChartJS.register(
   Legend
 );
 
-const Statistics = () => {
+const Statistics = ({ queues, setQueues }) => {
   const [customers, setCustomers] = useState([]);
   const [content, setContent] = useState('');
   const [chart, setChart] = useState(null);
   const [statistics, setStatistics] = useState({});
   const [selectedStatistics, setSelectedStatistics] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const chartRef = useRef();
 
   useEffect(() => {
@@ -37,6 +40,18 @@ const Statistics = () => {
 
     handleDailyStatistics();
   }, []);
+
+  useEffect(() => {
+    queuesService.getAll().then((initialQueues) => {
+      setQueues(initialQueues);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (customers.length > 0) {
+      handleDailyStatistics();
+    }
+  }, [customers]);
 
   const handleDailyStatistics = () => {
     const dailyCustomers = filterByDate(customers, 'daily');
@@ -116,12 +131,51 @@ const Statistics = () => {
     setChart(prepareChartData(customers, 'monthly'));
   };
 
+  const handleCustomStatistics = () => { // From ChatGPT
+    if (!startDate || !endDate) {
+      alert('Please select both start and end dates.');
+      return;
+    }
+
+    const customCustomers = filterByDate(customers, 'custom', startDate, endDate);
+    const waitingCount = customCustomers.filter((customer) => customer.status === 'waiting').length;
+    const processingCount = customCustomers.filter((customer) => customer.status === 'process').length;
+    const completedCount = customCustomers.filter((customer) => customer.status === 'done').length;
+
+    setStatistics({
+      total: customCustomers.length,
+      waiting: waitingCount,
+      processing: processingCount,
+      completed: completedCount,
+    });
+
+    setSelectedStatistics('custom');
+    setContent(
+      <div>
+        <h2>Custom Date Range Statistics</h2>
+        <p>Total Customers: {customCustomers.length}</p>
+        <p>Waiting Customers: {waitingCount}</p>
+        <p>Processing Customers: {processingCount}</p>
+        <p>Completed Customers: {completedCount}</p>
+      </div>
+    );
+    setChart(prepareChartData(customers, 'custom', startDate, endDate));
+  };
+
   return (
     <div className="page-container">
       <div className="page-con">
         <div className="left">
-          <div className="left-container">
-            {content}
+          <div className="left-container">{content}</div>
+          <div className="list-container">
+            <h3>Queues</h3>
+            <ul className="list">
+              {queues.map((queue) => (
+                <li key={queue.queue_id}>
+                  <h4>{queue.queue_name}</h4>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
         <div className="right">
@@ -132,12 +186,31 @@ const Statistics = () => {
               <Button text="Weekly" onClick={handleWeeklyStatistics} />
               <Button text="Monthly" onClick={handleMonthlyStatistics} />
             </div>
+            <div className="date-container">
+              <h4>Select Date Range</h4>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+              <Button text="Custom Range" onClick={handleCustomStatistics} />
+            </div>
             {chart && (
-              <div ref={chartRef}>
+              <div ref={chartRef} className="chart-container">
                 <Bar data={chart} />
               </div>
             )}
-            <Button text="Export to PDF" onClick={() => exportToPDF(statistics, selectedStatistics, chartRef)} />
+            <Button
+              text="Export to PDF"
+              onClick={() =>
+                exportToPDF(statistics, selectedStatistics, chartRef)
+              }
+            />
           </div>
         </div>
       </div>

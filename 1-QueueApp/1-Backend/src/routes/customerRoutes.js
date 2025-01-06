@@ -28,6 +28,10 @@ customerRouter.post('/joinQueue', async (request, response) => {
       queue.status = 'Nonactive'
     }
 
+    if (queue.status === 'Nonactive') {
+      queue.status = 'Active'
+    }
+
     await queue.save()
 
     response.status(201).json(savedCustomer)
