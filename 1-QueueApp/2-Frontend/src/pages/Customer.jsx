@@ -10,7 +10,6 @@ const Customer = ({ customers, setCustomers }) => {
   const [status, setStatus] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
 
-
   const { id } = useParams();
   const customer = customers.find((customer) => customer.customer_id === id);
 

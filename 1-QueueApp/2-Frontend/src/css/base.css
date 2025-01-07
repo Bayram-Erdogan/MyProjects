@@ -382,6 +382,14 @@ p {
   margin: 0;
 }
 
+
+.list li a {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+}
+
 .list li {
   display: flex;
   justify-content: space-between;
@@ -392,9 +400,10 @@ p {
   margin-bottom: 0.5rem;
   border-radius: 4px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
 }
 
-.list li:hover, .btn:hover {
+.list li:hover {
   background-color: var(--secondary-color);
   color: var(--white);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -409,6 +418,7 @@ p {
   font-size: 1.2rem;
   color: var(--secondary);
 }
+
 .list li:hover .status.Active {
   color: var(--white);
 }
@@ -420,4 +430,3 @@ p {
 .list li .status.Nonactive {
   color: var(--danger);
 }
-
