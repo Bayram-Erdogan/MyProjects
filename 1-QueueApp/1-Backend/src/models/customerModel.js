@@ -16,6 +16,8 @@ const customerSchema = new mongoose.Schema({
       default: () => new Date().toISOString().slice(11, 16),
     },
   },
+  process_start_time: { type: Date },
+  done_time: { type: Date },
   status : {
     type: String,
     enum: ['waiting', 'process', 'done'],
@@ -33,7 +35,9 @@ customerSchema.set('toJSON', {
       customer_id: returnedObject.id,
       attached_queue: returnedObject.queue_id,
       joining_time: returnedObject.joining_time,
-      status:returnedObject.status
+      status:returnedObject.status,
+      process_start_time: returnedObject.process_start_time,
+      done_time: returnedObject.done_time,
     }
 
     return orderedObject

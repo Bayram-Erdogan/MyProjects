@@ -63,33 +63,45 @@ customerRouter.get('/:id', async (request, response) => {
 
 })
 
-customerRouter.put('/:id', async (request, response, next) => {
-  const { status } = request.body
-  const customer = await Customer.findById(request.params.id)
-  const queue = await Queue.findById(customer.queue_id)
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+customerRouter.put('/:id', async (req, res) => { // Updated From ChatGPT
+  const { status } = req.body
+  const customerId = req.params.id
 
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'Token invalid' })
+  try {
+    const customer = await Customer.findById(customerId)
+
+    if (!customer) {
+      return res.status(404).json({ error: 'Customer not found' })
+    }
+
+    let updateFields = {}
+
+    if (customer.status === 'waiting' && status === 'process') {
+      updateFields.process_start_time = new Date()
+      updateFields.status = 'process'
+
+      const queue = await Queue.findById(customer.attached_queue)
+      if (queue) {
+        queue.waiting_customer = Math.max(0, queue.waiting_customer - 1)
+        await queue.save()
+      }
+
+    } else if (status === 'done') {
+      updateFields.done_time = new Date()
+      updateFields.status = 'done'
+    } else {
+      updateFields.status = status
+    }
+
+    const updatedCustomer = await Customer.findByIdAndUpdate(customerId, updateFields, { new: true })
+
+    res.json(updatedCustomer)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Something went wrong' })
   }
-
-  if (customer.status === 'waiting' && (status === 'process' || status === 'done')) {
-    queue.waiting_customer = Math.max(0, queue.waiting_customer - 1)
-    await queue.save()
-  } else if (customer.status === 'process' || customer.status === 'done' && (status === 'waiting')) {
-    queue.waiting_customer = Math.max(0, queue.waiting_customer + 1)
-    await queue.save()
-  }
-
-  Customer.findByIdAndUpdate(
-    request.params.id,
-    { status },
-    { new: true, runValidators: true, context: 'query' })
-    .then(updatedCustomer => {
-      response.json(updatedCustomer)
-    })
-    .catch(error => next(error))
 })
+
 
 /****** */
 
@@ -125,11 +137,15 @@ customerRouter.get('/waiting/:queue_id', async (request, response) => {
   })
 })
 
-customerRouter.get('/average-waiting-time/:queue_id', async (request, response) => { // From ChatGPT
+customerRouter.get('/average-waiting-time/:queue_id', async (request, response) => { //Updated From ChatGPT
   const { queue_id } = request.params
-  const result = await calculateAverageWaitingTime(queue_id)
-  response.status(200).json(result)
 
+  try {
+    const averageWaitingTime = await calculateAverageWaitingTime(queue_id)
+    response.status(200).json({ queue_id, average_waiting_time: averageWaitingTime })
+  } catch (error) {
+    response.status(500).json({ error: error.message })
+  }
 })
 
 

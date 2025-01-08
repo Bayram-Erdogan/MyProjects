@@ -54,11 +54,29 @@ const Statistics = ({ queues, setQueues }) => {
     }
   }, [customers]);
 
+  useEffect(() => {
+    queuesService
+      .getActive()
+      .then(initialQueues => {
+      setQueues(initialQueues)
+    })
+  }, []);
+
   const handleDailyStatistics = () => {
     const dailyCustomers = filterByDate(customers, 'daily');
     const waitingCount = dailyCustomers.filter((customer) => customer.status === 'waiting').length;
     const processingCount = dailyCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = dailyCustomers.filter((customer) => customer.status === 'done').length;
+
+  // Beetween 103-108 from ChatGPT
+    const totalWaitTime = queues
+      .map((queue) => parseFloat(queue.average_waiting_time))
+      .reduce((acc, time) => acc + time, 0);
+
+    const hours = Math.floor(totalWaitTime / 60);
+    const minutes = Math.round(totalWaitTime % 60);
+  // End of 103-108 from ChatGPT
+
 
     setStatistics({
       total: dailyCustomers.length,
@@ -71,10 +89,11 @@ const Statistics = ({ queues, setQueues }) => {
     setContent(
       <div>
         <h2>Daily Statistics</h2>
-        <p>Total Customers: {dailyCustomers.length}</p>
         <p>Waiting Customers: {waitingCount}</p>
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
+        <p>Total Customers: {dailyCustomers.length}</p>
+        <p>Average Wait Time: {hours} hour(s) and {minutes} minute(s)</p>
       </div>
     );
     setChart(prepareChartData(customers, 'daily'));
@@ -85,6 +104,15 @@ const Statistics = ({ queues, setQueues }) => {
     const waitingCount = weeklyCustomers.filter((customer) => customer.status === 'waiting').length;
     const processingCount = weeklyCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = weeklyCustomers.filter((customer) => customer.status === 'done').length;
+
+  // Beetween 103-108 from ChatGPT
+    const totalWaitTime = queues
+      .map((queue) => parseFloat(queue.average_waiting_time))
+      .reduce((acc, time) => acc + time, 0);
+
+    const hours = Math.floor(totalWaitTime / 60);
+    const minutes = Math.round(totalWaitTime % 60);
+  // End of 103-108 from ChatGPT
 
     setStatistics({
       total: weeklyCustomers.length,
@@ -97,10 +125,11 @@ const Statistics = ({ queues, setQueues }) => {
     setContent(
       <div>
         <h2>Weekly Statistics</h2>
-        <p>Total Customers: {weeklyCustomers.length}</p>
         <p>Waiting Customers: {waitingCount}</p>
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
+        <p>Total Customers: {weeklyCustomers.length}</p>
+        <p>Average Wait Time: {hours} hour(s) and {minutes} minute(s)</p>
       </div>
     );
     setChart(prepareChartData(customers, 'weekly'));
@@ -111,6 +140,15 @@ const Statistics = ({ queues, setQueues }) => {
     const waitingCount = monthlyCustomers.filter((customer) => customer.status === 'waiting').length;
     const processingCount = monthlyCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = monthlyCustomers.filter((customer) => customer.status === 'done').length;
+
+    // Beetween 103-108 from ChatGPT
+    const totalWaitTime = queues
+    .map((queue) => parseFloat(queue.average_waiting_time))
+    .reduce((acc, time) => acc + time, 0);
+
+    const hours = Math.floor(totalWaitTime / 60);
+    const minutes = Math.round(totalWaitTime % 60);
+    // End of 103-108 from ChatGPT
 
     setStatistics({
       total: monthlyCustomers.length,
@@ -123,10 +161,11 @@ const Statistics = ({ queues, setQueues }) => {
     setContent(
       <div>
         <h2>Monthly Statistics</h2>
-        <p>Total Customers: {monthlyCustomers.length}</p>
         <p>Waiting Customers: {waitingCount}</p>
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
+        <p>Total Customers: {monthlyCustomers.length}</p>
+        <p>Average Wait Time: {hours} hour(s) and {minutes} minute(s)</p>
       </div>
     );
     setChart(prepareChartData(customers, 'monthly'));
@@ -143,6 +182,15 @@ const Statistics = ({ queues, setQueues }) => {
     const processingCount = customCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = customCustomers.filter((customer) => customer.status === 'done').length;
 
+    // Beetween 103-108 from ChatGPT
+    const totalWaitTime = queues
+    .map((queue) => parseFloat(queue.average_waiting_time))
+    .reduce((acc, time) => acc + time, 0);
+
+    const hours = Math.floor(totalWaitTime / 60);
+    const minutes = Math.round(totalWaitTime % 60);
+    // End of 103-108 from ChatGPT
+
     setStatistics({
       total: customCustomers.length,
       waiting: waitingCount,
@@ -154,10 +202,11 @@ const Statistics = ({ queues, setQueues }) => {
     setContent(
       <div>
         <h2>Custom Date Range Statistics</h2>
-        <p>Total Customers: {customCustomers.length}</p>
         <p>Waiting Customers: {waitingCount}</p>
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
+        <p>Total Customers: {customCustomers.length}</p>
+        <p>Average Wait Time: {hours} hour(s) and {minutes} minute(s)</p>
       </div>
     );
     setChart(prepareChartData(customers, 'custom', startDate, endDate));

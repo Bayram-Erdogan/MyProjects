@@ -2,5 +2,12 @@ POST http://localhost:3001/api/customers/joinQueue
 Content-Type: application/json
 
 {
-    "queue_id": "676e7e5f9a5ae9d47d782752"
+  "queue_id": "677d24a7ae0c8272a1a39f01"
+}
+###
+PUT http://localhost:3001/api/customers/677d24d2ae0c8272a1a39f29
+Content-Type: application/json
+
+{
+  "status": "process"
 }

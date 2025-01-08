@@ -26,7 +26,7 @@ const Queues = ({queues, setQueues}) => {
             max_of_customer: maxOfCustomer
         }
 
-        queuesServices
+        queuesService
           .create(queueObject)
           .then(returnedQueue => {
             setQueues(queues.concat(returnedQueue))

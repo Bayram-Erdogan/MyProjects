@@ -49,7 +49,6 @@ const Customers = () => {
                   <th>Customer ID</th>
                   <th>Queue Name</th>
                   <th>Attached Desk</th>
-                  <th>Joining Time</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -69,11 +68,6 @@ const Customers = () => {
                     <td>
                       <Link to={`/admin/customers/${customer.customer_id}`}>
                         {customer.attached_queue?.attached_desk }
-                      </Link>
-                    </td>
-                    <td>
-                      <Link to={`/admin/customers/${customer.customer_id}`}>
-                        {customer.joining_time?.date } - {customer.joining_time?.hour }
                       </Link>
                     </td>
                     <td>
