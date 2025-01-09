@@ -31,7 +31,7 @@ const Customers = () => {
       <div className="page-con">
         <div className="left">
           <div className="left-container">
-            <h2>Customer Statistics</h2>
+            <h2>Customers Statistics</h2>
             <p>Total Customers : {totalCustomers}</p>
             <p>Waiting Customers : {waitingCustomers}</p>
             <p>Processing Customers : {processingCustomers}</p>

@@ -3,6 +3,7 @@ const Queue = require('../models/queueModel')
 const Customer = require('../models/customerModel')
 const { calculateAverageWaitingTime } = require('../utils/customerHelpers')
 const jwt = require('jsonwebtoken')
+const mongoose = require('mongoose')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
@@ -63,45 +64,67 @@ customerRouter.get('/:id', async (request, response) => {
 
 })
 
-customerRouter.put('/:id', async (req, res) => { // Updated From ChatGPT
-  const { status } = req.body
-  const customerId = req.params.id
+customerRouter.put('/:id', async (request, response) => { // Updated From ChatGPT
+  const { status } = request.body
+  const customerId = request.params.id
 
   try {
     const customer = await Customer.findById(customerId)
 
     if (!customer) {
-      return res.status(404).json({ error: 'Customer not found' })
+      return response.status(404).json({ error: 'Customer not found' })
     }
 
     let updateFields = {}
-
     if (customer.status === 'waiting' && status === 'process') {
       updateFields.process_start_time = new Date()
       updateFields.status = 'process'
 
-      const queue = await Queue.findById(customer.attached_queue)
-      if (queue) {
-        queue.waiting_customer = Math.max(0, queue.waiting_customer - 1)
-        await queue.save()
-      }
+      if (customer.queue_id) {
+        try {
+          const queueId = new mongoose.Types.ObjectId(customer.queue_id)
+          const queue = await Queue.findById(queueId)
 
+          if (queue) {
+            queue.waiting_customer = Math.max(0, queue.waiting_customer - 1)
+            await queue.save()
+          } else {
+            console.log('Queue not found for the attached_queue ID.')
+          }
+        } catch (err) {
+          console.error('Error in finding or updating queue:', err)
+        }
+      } else {
+        console.log('No queue_id for customer.')
+      }
     } else if (status === 'done') {
       updateFields.done_time = new Date()
       updateFields.status = 'done'
+
+      if (customer.queue_id) {
+        try {
+          const queueId = new mongoose.Types.ObjectId(customer.queue_id)
+          const queue = await Queue.findById(queueId)
+          if (queue) {
+            await queue.save()
+          } else {
+            console.log('Queue not found for the attached_queue ID.')
+          }
+        } catch (err) {
+          console.error('Error in updating queue for done status:', err)
+        }
+      }
     } else {
       updateFields.status = status
     }
-
     const updatedCustomer = await Customer.findByIdAndUpdate(customerId, updateFields, { new: true })
+    response.json(updatedCustomer)
 
-    res.json(updatedCustomer)
   } catch (error) {
     console.error(error)
-    res.status(500).json({ error: 'Something went wrong' })
+    response.status(500).json({ error: 'Something went wrong' })
   }
 })
-
 
 /****** */
 

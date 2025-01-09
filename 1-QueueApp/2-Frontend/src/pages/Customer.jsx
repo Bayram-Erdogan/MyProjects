@@ -76,9 +76,11 @@ const Customer = ({ customers, setCustomers }) => {
               <td><strong>Joining Time</strong></td>
               <td className="middle-column">:</td>
               <td>
-                {customer.joining_time
-                  ? `${customer.joining_time.date} - ${customer.joining_time.hour}`
-                  : "Loading..."}
+                {(() => {
+                  if (!customer.joining_time) return "Loading...";
+                  const joiningTime = new Date(`${customer.joining_time.date}T${customer.joining_time.hour}:00Z`);
+                  return joiningTime.toLocaleString();
+                })()}
               </td>
             </tr>
             <tr>

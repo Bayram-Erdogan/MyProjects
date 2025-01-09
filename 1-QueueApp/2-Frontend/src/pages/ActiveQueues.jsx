@@ -11,6 +11,7 @@ const ActiveQueues = () => {
                 setQueues(initialQueues)
             })
         }, []);
+
     return (
         <div className="page-container box">
         <h1>Active Queues</h1>

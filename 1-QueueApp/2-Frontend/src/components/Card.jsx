@@ -52,7 +52,7 @@ const Card = ({
             )
         case 'Queue__home':
             const navigate = useNavigate();
-            const handleProtectedPageAccess = (e) => {
+            const handleProtectedPageAccess = (e) => { // From ChatGPT
                 if (!user) {
                   e.preventDefault();
                   if (window.confirm("You need to sign in to access this page.")) {
