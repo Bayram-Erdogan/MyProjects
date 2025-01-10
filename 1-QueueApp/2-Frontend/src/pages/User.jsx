@@ -130,6 +130,11 @@ const User = () => {
               <td>{user.email}</td>
             </tr>
             <tr>
+              <td><strong>Status</strong></td>
+              <td className="middle-column">:</td>
+              <td>{user.status}</td>
+            </tr>
+            <tr>
               <td><strong>Created By</strong></td>
               <td className="middle-column">:</td>
               <td>{user.createdBy.username || "N/A"}</td>

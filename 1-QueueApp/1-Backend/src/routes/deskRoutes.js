@@ -2,6 +2,7 @@ const deskRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Desk = require('../models/deskModel')
 const Admin = require('../models/adminModel')
+const User = require('../models/userModel')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
@@ -13,17 +14,24 @@ const getTokenFrom = request => {
 
 deskRouter.post('/', async (request, response) => {
   const body = request.body
-
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
 
   const admin = await Admin.findById(decodedToken.id)
+  const user = await User.findById(body.userId)
+  if (!user || user.status !== 'Free') {
+    return response.status(400).json({ error: 'User is not available' })
+  }
+
+  user.status = 'Onwork'
+  await user.save()
 
   const desk = new Desk({
     desk_number: body.desk_number,
-    createdBy: admin._id
+    createdBy: admin._id,
+    user: user._id
   })
 
   const savedDesk = await desk.save()

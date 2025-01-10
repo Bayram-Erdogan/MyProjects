@@ -26,6 +26,10 @@ const deskSchema = new mongoose.Schema({
       ref: 'Queue',
     }
   ],
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
 })
 
 deskSchema.set('toJSON', {
@@ -41,6 +45,7 @@ deskSchema.set('toJSON', {
       queues:returnedObject.queues,
       createdTime: returnedObject.createdTime,
       createdBy: returnedObject.createdBy,
+      atteched_user: returnedObject.user,
     }
     return orderedObject
   },

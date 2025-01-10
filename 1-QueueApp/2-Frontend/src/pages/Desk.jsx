@@ -123,7 +123,7 @@ const Desk = () => {
             <tr>
               <td><strong>User</strong></td>
               <td className="middle-column">:</td>
-              <td>{desk.user || "N/A"}</td>
+              <td>{desk.user?.name || "N/A"}</td>
             </tr>
             <tr>
               <td><strong>Queue</strong></td>

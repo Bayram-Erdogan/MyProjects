@@ -12,6 +12,11 @@ const userSchema = new mongoose.Schema({
     unique:true
   },
   passwordHash: String,
+  status: {
+    type: String,
+    enum: ['Free', 'Onwork'],
+    default: 'Free',
+  },
   createdTime: {
     date: {
       type: String,
@@ -39,6 +44,7 @@ userSchema.set('toJSON', {
       name: returnedObject.name,
       email: returnedObject.email,
       user_id: returnedObject.id,
+      status: returnedObject.status,
       createdTime: returnedObject.createdTime,
       createdBy:returnedObject.createdBy
     }

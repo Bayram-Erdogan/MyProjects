@@ -1,90 +1,129 @@
-import { useState, useEffect } from "react"
-import Input from "../components/Input"
-import Button from "../components/Button"
-import desksService from "../services/desksService"
-import Card from "../components/Card"
+import { useState, useEffect } from "react";
+import Input from "../components/Input";
+import Button from "../components/Button";
+import desksService from "../services/desksService";
+import usersService from "../services/usersService";
+import Card from "../components/Card";
 import deskImage from "../assets/desk.jpg";
-import Notification from "../components/Notification"
+import Notification from "../components/Notification";
 
 const Desks = () => {
-    const [desks, setDesks] = useState([]);
-    const [deskNumber, setDeskNumber] = useState('')
-    const [message, setMessage] = useState(null)
+  const [users, setUsers] = useState([]);
+  const [desks, setDesks] = useState([]);
+  const [deskNumber, setDeskNumber] = useState("");
+  const [message, setMessage] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
 
-    useEffect(() => {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
-        setMessage('Token is missing');
-      } else {
-          desksService.getAll()
-          .then(initialDesks => {
-            setDesks(initialDesks);
-            })
-            .catch(() => {
-              setMessage('Error fetching desks.');
-            });
-        }
-      }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      setMessage("Token is missing");
+    } else {
+      desksService
+        .getAll()
+        .then((initialDesks) => {
+          setDesks(initialDesks);
+        })
+        .catch(() => {
+          setMessage("Error fetching desks.");
+        });
+    }
+  }, []);
 
+  useEffect(() => {
+    usersService.getAll().then((initialUsers) => {
+      setUsers(initialUsers);
+    });
+  }, []);
 
-    const addDesk = (event) =>{
-        event.preventDefault()
+  const addDesk = (event) => {
+    event.preventDefault();
 
-        const deskObject = {
-            desk_number :deskNumber
-        }
-
-    desksService
-      .create(deskObject)
-      .then(returnedDesk => {
-        setDesks(desks.concat(returnedDesk))
-        setDeskNumber('')
-        setMessage('Desk added successfully')
-            setTimeout(() => {
-                setMessage(null)
-            }, 5000)
-      })
+    if (!selectedUser) {
+      setMessage("Please select a user.");
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
+      return;
     }
 
-    return (
-      <div className="page-container">
-        <div className="page-con">
-          <div className="left">
+    const deskObject = {
+      desk_number: deskNumber,
+      userId: selectedUser,
+    };
 
-            <div className="left-container">
-              <h2>Add new desk</h2>
-              <form onSubmit={addDesk}>
-                <Input
-                      type = {"text"}
-                      placeholder = {"Desk number"}
-                      name = {"desk_number"}
-                      value={deskNumber}
-                      onChange={({target}) => setDeskNumber(target.value)}
-                  />
-                <Button text = {"Create new desk"}/>
-              </form>
-              <Notification message={message} />
-            </div>
-          </div>
-          <div className="right">
-            <div className="container box">
-              <h2>All Desks</h2>
-              <div className="articles-container">
-                {desks.map((desk) => (
-                  <Card
-                    key={desk.desk_id}
-                    cardType="Desk"
-                    desk = {desk}
-                    image={deskImage}
-                  />)
-                 )}
+    desksService.create(deskObject).then((returnedDesk) => {
+      setDesks(desks.concat(returnedDesk));
+      setDeskNumber("");
+      setSelectedUser(null);
+      setMessage("Desk added successfully");
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
+    });
+  };
+
+  return (
+    <div className="page-container">
+      <div className="page-con">
+        <div className="left">
+          <div className="left-container">
+            <h2>Add new desk</h2>
+            <form onSubmit={addDesk}>
+              <Input
+                type={"text"}
+                placeholder={"Desk number"}
+                name={"desk_number"}
+                value={deskNumber}
+                onChange={({ target }) => setDeskNumber(target.value)}
+              />
+
+              <div>
+                <h3>Select User</h3>
+                <ul>
+                  {users
+                    .filter((user) => user.status === "Free")
+                    .map((user) => (
+                      <li key={user.user_id}>
+                        <label>
+                          <input
+                            type="radio"
+                            name="user"
+                            value={user.user_id}
+                            checked={selectedUser === user.user_id}
+                            onChange={() => setSelectedUser(user.user_id)}
+                          />
+                          {user.name}
+                        </label>
+                      </li>
+                    ))}
+                </ul>
               </div>
+
+              <Button text={"Create new desk"} />
+            </form>
+            <Notification message={message} />
+          </div>
+        </div>
+
+        <div className="right">
+          <div className="container box">
+            <h2>All Desks</h2>
+            <div className="articles-container">
+              {desks.map((desk) => (
+                <Card
+                  key={desk.desk_id}
+                  cardType="Desk"
+                  desk={desk}
+                  image={deskImage}
+                />
+              ))}
             </div>
           </div>
         </div>
       </div>
+    </div>
+  );
+};
 
-    )
-}
-
-export default Desks
+export default Desks;
