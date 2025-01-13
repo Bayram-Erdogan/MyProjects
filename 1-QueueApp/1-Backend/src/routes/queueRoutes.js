@@ -35,6 +35,7 @@ queueRouter.post('/', async (request, response) => {
     status:body.status || 'Nonactive',
   })
 
+  desk.status = 'Active'
   const qrUrl = `http://localhost:3001/api/customers/auto-join/${queue._id.toString()}`
   let qrCode
 

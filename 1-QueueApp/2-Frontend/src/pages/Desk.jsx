@@ -4,32 +4,67 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import Notification from "../components/Notification";
 import desksServices from "../services/desksService";
+import usersService from "../services/usersService";
+import customersService from "../services/customersService";
 
 const Desk = () => {
   const [desks, setDesks] = useState([]);
+  const [users, setUsers] = useState([]);
   const [deskNumber, setDeskNumber] = useState("");
   const [user, setUser] = useState("");
-  const [queue, setQueue] = useState("");
+  const [queueName, setQueueName] = useState("N/A");
   const [status, setStatus] = useState("");
-  const [totalCustomers, setTotalCustomers] = useState("");
+  const [waitingCustomers, setWaitingCustomers] = useState(0);
+  const [activeCustomers, setActiveCustomers] = useState(0);
+  const [completedCustomers, setCompletedCustomers] = useState(0);
+  const [totalCustomers, setTotalCustomers] = useState(0);
   const [successMessage, setSuccessMessage] = useState(null);
 
   const { id } = useParams();
   const desk = desks.find((desk) => desk.desk_id === id);
 
   useEffect(() => {
-    desksServices
-      .getAll()
-      .then((desks) => setDesks(desks));
+    desksServices.getAll().then((desks) => setDesks(desks));
+    usersService.getAll().then((users) => setUsers(users));
   }, []);
 
   useEffect(() => {
-    if (desk) {
-      setDeskNumber(desk?.desk_number || "");
-      setUser(desk?.user || "");
-      setQueue(desk?.queue || "");
-      setStatus(desk?.status || "");
-      setTotalCustomers(desk?.totalCustomers || "");
+    if (desk && users.length > 0) {
+      const foundUser = users.find((user) => user.user_id === desk.user);
+      setUser(foundUser || "N/A");
+    }
+  }, [desk, users]);
+
+  useEffect(() => { // From ChatGPT
+    if (desk && Array.isArray(desk.queues)) {
+      const queueId = desk.queues[0]?.queue_id;
+      const foundQueue = desk.queues.find((q) => q.queue_id === queueId);
+
+      if (foundQueue) {
+        setQueueName(foundQueue.queue_name);
+        customersService.getAll().then((data) => {
+          const queueCustomers = data.filter(
+            (customer) => customer.attached_queue?.queue_id === queueId
+          );
+          setTotalCustomers(queueCustomers.length);
+          setWaitingCustomers(
+            queueCustomers.filter((customer) => customer.status === "waiting")
+              .length
+          );
+          setActiveCustomers(
+            queueCustomers.filter((customer) => customer.status === "process")
+              .length
+          );
+          setCompletedCustomers(
+            queueCustomers.filter((customer) => customer.status === "done")
+              .length
+          );
+        });
+      } else {
+        setQueueName("N/A");
+      }
+    } else {
+      setQueueName("N/A");
     }
   }, [desk]);
 
@@ -37,19 +72,16 @@ const Desk = () => {
     event.preventDefault();
     const deskObject = {
       desk_number: deskNumber,
-      user,
-      queue,
+      user: user.user_id,
+      queue: desk.queue,
       status,
-      totalCustomers,
     };
 
-    desksServices
-      .update(id, deskObject)
-      .then((updatedDesk) => {
-        setDesks(desks.map((d) => (d.desk_id === id ? updatedDesk : d)));
-        setSuccessMessage("Desk updated successfully");
-        setTimeout(() => setSuccessMessage(null), 5000);
-      });
+    desksServices.update(id, deskObject).then((updatedDesk) => {
+      setDesks(desks.map((d) => (d.desk_id === id ? updatedDesk : d)));
+      setSuccessMessage("Desk updated successfully");
+      setTimeout(() => setSuccessMessage(null), 5000);
+    });
   };
 
   if (!desk) {
@@ -62,52 +94,45 @@ const Desk = () => {
         <div className="left-container">
           <form onSubmit={updateDesk}>
             <Input
-              text={"Desk Number :"}
+              text={"Desk Number:"}
               type={"text"}
               placeholder={"Desk Number"}
               name={"desk_number"}
-              value={deskNumber}
+              value={desk.desk_number}
               onChange={({ target }) => setDeskNumber(target.value)}
             />
             <Input
-              text={"User :"}
+              text={"User:"}
               type={"text"}
               placeholder={"User"}
               name={"user"}
-              value={user}
+              value={user ? user.name : ""}
               onChange={({ target }) => setUser(target.value)}
             />
             <Input
-              text={"Queue :"}
+              text={"Queue:"}
               type={"text"}
               placeholder={"Queue"}
               name={"queue"}
-              value={queue}
-              onChange={({ target }) => setQueue(target.value)}
+              value={queueName}
+              onChange={({ target }) => setQueueName(target.value)}
             />
             <Input
-              text={"Status :"}
+              text={"Status:"}
               type={"text"}
               placeholder={"Status"}
               name={"status"}
-              value={status}
+              value={desk.status}
               onChange={({ target }) => setStatus(target.value)}
-            />
-            <Input
-              text={"Total Customers :"}
-              type={"text"}
-              placeholder={"Total Customers"}
-              name={"total_customers"}
-              value={totalCustomers}
-              onChange={({ target }) => setTotalCustomers(target.value)}
             />
             <Button text={"Update"} />
           </form>
           <Notification message={successMessage} />
         </div>
       </div>
+
       <div className="right">
-        <h1> Desk {desk?.desk_number || "Unknown"} Details</h1>
+        <h1> Desk {desk.desk_number || "Unknown"} Details</h1>
         <table className="details-table">
           <tbody>
             <tr>
@@ -123,12 +148,12 @@ const Desk = () => {
             <tr>
               <td><strong>User</strong></td>
               <td className="middle-column">:</td>
-              <td>{desk.user?.name || "N/A"}</td>
+              <td>{user ? user.name : "N/A"}</td>
             </tr>
             <tr>
               <td><strong>Queue</strong></td>
               <td className="middle-column">:</td>
-              <td>{desk.queue || "N/A"}</td>
+              <td>{queueName}</td>
             </tr>
             <tr>
               <td><strong>Status</strong></td>
@@ -136,9 +161,24 @@ const Desk = () => {
               <td>{desk.status || "N/A"}</td>
             </tr>
             <tr>
+              <td><strong>Active Customer</strong></td>
+              <td className="middle-column">:</td>
+              <td>{activeCustomers}</td>
+            </tr>
+            <tr>
+              <td><strong>Waiting Customer</strong></td>
+              <td className="middle-column">:</td>
+              <td>{waitingCustomers}</td>
+            </tr>
+            <tr>
+              <td><strong>Completed Customer</strong></td>
+              <td className="middle-column">:</td>
+              <td>{completedCustomers}</td>
+            </tr>
+            <tr>
               <td><strong>Total Customers</strong></td>
               <td className="middle-column">:</td>
-              <td>{desk.totalCustomers || "N/A"}</td>
+              <td>{totalCustomers}</td>
             </tr>
             <tr>
               <td><strong>Created Time</strong></td>

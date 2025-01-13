@@ -2,7 +2,7 @@ POST http://localhost:3001/api/customers/joinQueue
 Content-Type: application/json
 
 {
-  "queue_id": "677ec30fa024555091f81fd5"
+  "queue_id": "67813c1834fc829b2f71e388"
 }
 ###
 PUT http://localhost:3001/api/customers/677d24d2ae0c8272a1a39f29

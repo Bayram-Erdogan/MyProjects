@@ -3,11 +3,13 @@ import { useParams } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Notification from "../components/Notification";
+import desksServices from "../services/desksService";
 import usersServices from "../services/usersService";
-import profileImage from "../assets/unisex-profile.jpg"
+import profileImage from "../assets/unisex-profile.jpg";
 
 const User = () => {
   const [users, setUsers] = useState([]);
+  const [desks, setDesks] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,19 +23,24 @@ const User = () => {
     usersServices
       .getAll()
       .then((users) => setUsers(users));
+
+    desksServices
+      .getAll()
+      .then((desks) => setDesks(desks));
   }, []);
 
   const user = users.find((user) => String(user.user_id) === id);
+  const userDesk = desks.find((desk) => String(desk.user) === String(user?.user_id));
 
   useEffect(() => {
     if (user) {
       setName(user.name || "");
       setEmail(user.email || "");
       setPassword("");
-      setDesk(user.desk || "");
+      setDesk(userDesk ? userDesk.desk_number : "");
       setQueue(user.queue || "");
     }
-  }, [user]);
+  }, [user, userDesk]);
 
   const updateUser = (event) => {
     event.preventDefault();
@@ -61,7 +68,7 @@ const User = () => {
       <div className="left">
         <div className="left-container">
           <div className="text-align">
-            <img src={profileImage}/>
+            <img src={profileImage} alt="User Profile" />
           </div>
           <form onSubmit={updateUser}>
             <Input
@@ -142,7 +149,7 @@ const User = () => {
             <tr>
               <td><strong>Desk</strong></td>
               <td className="middle-column">:</td>
-              <td>{user.desk}</td>
+              <td>{userDesk ? userDesk.desk_number : "N/A"}</td>
             </tr>
             <tr>
               <td><strong>Queue</strong></td>

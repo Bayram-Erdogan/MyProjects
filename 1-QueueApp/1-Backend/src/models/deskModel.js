@@ -30,6 +30,11 @@ const deskSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
+  status: {
+    type: String,
+    enum: ['Active', 'Nonactive'],
+    default: 'Nonactive',
+  },
 })
 
 deskSchema.set('toJSON', {
@@ -45,7 +50,8 @@ deskSchema.set('toJSON', {
       queues:returnedObject.queues,
       createdTime: returnedObject.createdTime,
       createdBy: returnedObject.createdBy,
-      atteched_user: returnedObject.user,
+      user: returnedObject.user,
+      status: returnedObject.status,
     }
     return orderedObject
   },

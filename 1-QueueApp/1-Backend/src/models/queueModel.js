@@ -11,6 +11,10 @@ const queueSchema = new mongoose.Schema({
     ref: 'Desk',
     required: true,
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
   max_of_customer: Number,
   active_customer:{
     type: Number,

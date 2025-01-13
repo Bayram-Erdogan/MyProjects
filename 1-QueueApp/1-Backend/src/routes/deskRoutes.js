@@ -25,14 +25,14 @@ deskRouter.post('/', async (request, response) => {
     return response.status(400).json({ error: 'User is not available' })
   }
 
-  user.status = 'Onwork'
-  await user.save()
-
   const desk = new Desk({
     desk_number: body.desk_number,
     createdBy: admin._id,
     user: user._id
   })
+
+  user.status = 'Onwork'
+  await user.save()
 
   const savedDesk = await desk.save()
   admin.desks = admin.desks.concat(savedDesk._id)
@@ -60,7 +60,10 @@ deskRouter.get('/:id', async (request, response) => {
     return response.status(401).json({ error: 'token invalid' })
   }
 
-  const user = await Desk.findById(request.params.id).populate('createdBy', 'username')
+  const user = await Desk.findById(request.params.id)
+    .populate('createdBy', 'username')
+    .populate('user', 'name email status')
+    .populate('queues', 'queue_name total_customer waiting_customer active_customer')
   if (user) {
     response.json(user)
   } else {
