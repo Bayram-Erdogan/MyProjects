@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const Queue = require('../models/queueModel')
 const Admin = require('../models/adminModel')
 const Desk = require('../models/deskModel')
+const User = require('../models/userModel')
 const QRCode = require('qrcode')
 const { findWaitingCustomers, calculateAverageWaitingTime } = require('../utils/customerHelpers')
 
@@ -13,35 +14,37 @@ const getTokenFrom = request => {
   }
   return null
 }
-
 queueRouter.post('/', async (request, response) => {
-
   const body = request.body
 
   const desk = await Desk.findOne({ desk_number: body.desk_number })
+  if (!desk) {
+    return response.status(400).json({ error: 'Desk not found' })
+  }
 
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
-  const admin = await Admin.findById(decodedToken.id)
 
+  const admin = await Admin.findById(decodedToken.id)
+  const user = await User.findById(desk.user)
+  if (!user) {
+    return response.status(400).json({ error: 'User not found' })
+  }
   const queue = new Queue({
     queue_name: body.queue_name,
     desk: desk.id,
     desk_number: desk.desk_number,
-    max_of_customer:body.max_of_customer,
+    max_of_customer: body.max_of_customer,
     createdBy: admin._id,
-    status:body.status || 'Nonactive',
+    status: body.status || 'Nonactive',
+    user: user._id,
   })
 
-  desk.status = 'Active'
   const qrUrl = `http://localhost:3001/api/customers/auto-join/${queue._id.toString()}`
-  let qrCode
-
-  try { //try-catch blog is from ChatGPT
-    //qrCode = await QRCode.toDataURL(queue._id.toString())
-    qrCode = await QRCode.toDataURL(qrUrl)
+  try {
+    const qrCode = await QRCode.toDataURL(qrUrl)
     queue.qr_code = qrCode
   } catch (error) {
     console.error('QR Code generation failed:', error)
@@ -49,13 +52,20 @@ queueRouter.post('/', async (request, response) => {
   }
 
   const savedQueue = await queue.save()
-  admin.queues = admin.queues.concat(savedQueue._id)
+
   desk.queues.push(savedQueue._id)
-  await admin.save().then(console.log('Queue successfully created'))
+  desk.status = 'Active'
   await desk.save()
-  response.json({ //response is updated from ChatGPT
+
+  user.queues.push(savedQueue._id)
+  await user.save()
+
+  admin.queues = admin.queues.concat(savedQueue._id)
+  await admin.save()
+
+  response.json({
     ...savedQueue.toJSON(),
-    qr_code: qrCode
+    qr_code: queue.qr_code,
   })
 })
 
@@ -67,7 +77,7 @@ queueRouter.get('/', async (request, response) => {
   // }
 
   const queues = await Queue.find({})
-    .populate('createdBy', 'username') // populates fron ChatGPT
+    .populate('createdBy', 'username').populate('user','name') // populates fron ChatGPT
   response.json(queues)
 })
 

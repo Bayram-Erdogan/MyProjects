@@ -122,7 +122,7 @@ const Desk = () => {
               type={"text"}
               placeholder={"Status"}
               name={"status"}
-              value={desk.status}
+              value={status}
               onChange={({ target }) => setStatus(target.value)}
             />
             <Button text={"Update"} />
@@ -132,7 +132,7 @@ const Desk = () => {
       </div>
 
       <div className="right">
-        <h1> Desk {desk.desk_number || "Unknown"} Details</h1>
+        <h1> Desk {desk?.desk_number || "Unknown"} Details</h1>
         <table className="details-table">
           <tbody>
             <tr>
@@ -146,12 +146,12 @@ const Desk = () => {
               <td>{desk.createdBy.username || "N/A"}</td>
             </tr>
             <tr>
-              <td><strong>User</strong></td>
+              <td><strong>Attached user</strong></td>
               <td className="middle-column">:</td>
               <td>{user ? user.name : "N/A"}</td>
             </tr>
             <tr>
-              <td><strong>Queue</strong></td>
+              <td><strong>Attached queue</strong></td>
               <td className="middle-column">:</td>
               <td>{queueName}</td>
             </tr>

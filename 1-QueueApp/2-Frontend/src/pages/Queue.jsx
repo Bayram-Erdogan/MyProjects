@@ -74,7 +74,7 @@ const Queue = ({ queues, setQueues }) => {
               placeholder={"Queue name"}
               name={"queue_name"}
               value={queueName}
-              onChange={({target}) => setQueueName(target.value)}
+              onChange={({ target }) => setQueueName(target.value)}
             />
             <Input
               text={"Desk number : "}
@@ -82,7 +82,7 @@ const Queue = ({ queues, setQueues }) => {
               placeholder={"Desk number"}
               name={"desk_number"}
               value={deskNumber}
-              onChange={({target}) => setDeskNumber(target.value)}
+              onChange={({ target }) => setDeskNumber(target.value)}
             />
             <Input
               text={"Max of customer : "}
@@ -90,15 +90,15 @@ const Queue = ({ queues, setQueues }) => {
               placeholder={"Max of customer"}
               name={"max_of_customer"}
               value={maxOfCustomer}
-              onChange={({target}) => setMaxOfCustomer(target.value)}
+              onChange={({ target }) => setMaxOfCustomer(target.value)}
             />
             <Input
               text={"User : "}
               type={"text"}
               placeholder={"User"}
               name={"user"}
-              value={user}
-              onChange={({target}) => setUser(target.value)}
+              value={user.name}
+              onChange={({ target }) => setUser(target.value)}
             />
             <Input
               text={"Status : "}
@@ -106,9 +106,9 @@ const Queue = ({ queues, setQueues }) => {
               placeholder={"Status"}
               name={"status"}
               value={status}
-              onChange={({target}) => setStatus(target.value)}
+              onChange={({ target }) => setStatus(target.value)}
             />
-            <Button text={'Update'} />
+            <Button text={"Update"} />
           </form>
           <Notification message={successMessage} />
         </div>
@@ -126,9 +126,9 @@ const Queue = ({ queues, setQueues }) => {
               <td>{queue.queue_id}</td>
             </tr>
             <tr>
-              <td><strong>User</strong></td>
+              <td><strong>Attached user</strong></td>
               <td className="middle-column">:</td>
-              <td>{queue.user}</td>
+              <td>{user.name}</td>
             </tr>
             <tr>
               <td><strong>Attached desk</strong></td>
@@ -168,12 +168,18 @@ const Queue = ({ queues, setQueues }) => {
             <tr>
               <td><strong>Created Time</strong></td>
               <td className="middle-column">:</td>
-              <td>{queue.createdTime.date} / {queue.createdTime.hour}</td>
+              <td>
+                {queue.createdTime
+                  ? `${queue.createdTime.date} / ${queue.createdTime.hour}`
+                  : 'N/A'}
+              </td>
             </tr>
             <tr>
               <td><strong>Created By</strong></td>
               <td className="middle-column">:</td>
-              <td>{queue.createdBy.username}</td>
+              <td>
+                {queue.createdBy ? queue.createdBy.username : 'N/A'}
+              </td>
             </tr>
           </tbody>
         </table>

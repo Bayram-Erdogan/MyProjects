@@ -34,33 +34,21 @@ const Statistics = ({ queues, setQueues }) => {
   const [endDate, setEndDate] = useState('');
   const chartRef = useRef();
 
-  useEffect(() => {
-    customersService.getAll().then((data) => {
+   useEffect(() => {
+      customersService.getAll().then((data) => {
       setCustomers(data);
     });
 
-    handleDailyStatistics();
-  }, []);
-
-  useEffect(() => {
-    queuesService.getAll().then((initialQueues) => {
+    queuesService.getActive().then((initialQueues) => {
       setQueues(initialQueues);
     });
   }, []);
 
   useEffect(() => {
-    if (customers.length > 0) {
-      handleDailyStatistics();
+    if (customers.length > 0 && queues.length > 0) {
+      handleDailyStatistics(customers, queues);
     }
-  }, [customers]);
-
-  useEffect(() => {
-    queuesService
-      .getActive()
-      .then(initialQueues => {
-      setQueues(initialQueues)
-    })
-  }, []);
+  }, [customers, queues]);
 
   const handleDailyStatistics = () => {
     const dailyCustomers = filterByDate(customers, 'daily');
@@ -271,3 +259,5 @@ const Statistics = ({ queues, setQueues }) => {
 };
 
 export default Statistics;
+
+

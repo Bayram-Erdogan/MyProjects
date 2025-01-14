@@ -1,4 +1,4 @@
-// All functions from ChatGPT
+//All functions from ChatGPT
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -91,6 +91,5 @@ export const exportToPDF = (statistics, selectedStatistics, chartRef) => {
     doc.save(`${selectedStatistics}_statistics_with_chart.pdf`);
   });
 };
-
 
 

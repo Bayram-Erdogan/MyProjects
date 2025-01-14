@@ -5,11 +5,13 @@ import Input from "../components/Input";
 import Notification from "../components/Notification";
 import desksServices from "../services/desksService";
 import usersServices from "../services/usersService";
+import queuesServices from "../services/queuesService";
 import profileImage from "../assets/unisex-profile.jpg";
 
 const User = () => {
   const [users, setUsers] = useState([]);
   const [desks, setDesks] = useState([]);
+  const [queues, setQueues] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,10 +29,16 @@ const User = () => {
     desksServices
       .getAll()
       .then((desks) => setDesks(desks));
+
+      queuesServices.getAll().then((queues) => setQueues(queues));
   }, []);
 
   const user = users.find((user) => String(user.user_id) === id);
   const userDesk = desks.find((desk) => String(desk.user) === String(user?.user_id));
+  const attached_queue = user?.queues && user.queues.length > 0
+  ? queues.find(queue => queue.queue_id === user.queues[0].queue_id)
+  : null; //From ChatGPT
+
 
   useEffect(() => {
     if (user) {
@@ -41,6 +49,8 @@ const User = () => {
       setQueue(user.queue || "");
     }
   }, [user, userDesk]);
+
+
 
   const updateUser = (event) => {
     event.preventDefault();
@@ -142,19 +152,19 @@ const User = () => {
               <td>{user.status}</td>
             </tr>
             <tr>
-              <td><strong>Created By</strong></td>
+              <td><strong>Created by</strong></td>
               <td className="middle-column">:</td>
               <td>{user.createdBy.username || "N/A"}</td>
             </tr>
             <tr>
-              <td><strong>Desk</strong></td>
+              <td><strong>Attached desk</strong></td>
               <td className="middle-column">:</td>
               <td>{userDesk ? userDesk.desk_number : "N/A"}</td>
             </tr>
             <tr>
-              <td><strong>Queue</strong></td>
+              <td><strong>Attached queue</strong></td>
               <td className="middle-column">:</td>
-              <td>{user.queue}</td>
+              <td>{attached_queue ? attached_queue.queue_name : "N/A"}</td>
             </tr>
           </tbody>
         </table>

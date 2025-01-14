@@ -74,7 +74,8 @@ queueSchema.set('toJSON', {
       active_customer:returnedObject.active_customer,
       waiting_customer:returnedObject.waiting_customer,
       total_customer:returnedObject.total_customer,
-      qr_code: returnedObject.qr_code
+      qr_code: returnedObject.qr_code,
+      user: returnedObject.user
     }
     return orderedObject
 

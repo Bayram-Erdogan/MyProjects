@@ -30,7 +30,13 @@ const userSchema = new mongoose.Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Admin'
-  }
+  },
+  queues: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Queue',
+    }
+  ],
 })
 
 userSchema.set('toJSON', {
@@ -46,7 +52,8 @@ userSchema.set('toJSON', {
       user_id: returnedObject.id,
       status: returnedObject.status,
       createdTime: returnedObject.createdTime,
-      createdBy:returnedObject.createdBy
+      createdBy:returnedObject.createdBy,
+      queues: returnedObject.queues
     }
     return orderedObject
   }

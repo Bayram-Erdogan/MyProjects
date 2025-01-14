@@ -46,7 +46,7 @@ userRouter.get('/', async (request, response) => {
     return response.status(401).json({ error: 'token invalid' })
   }
 
-  const users = await User.find({}).populate('createdBy', 'username') //  Populate from ChatGPT
+  const users = await User.find({}).populate('createdBy', 'username').populate('queues', 'queue_name') //  Populate from ChatGPT
   response.json(users)
 })
 
