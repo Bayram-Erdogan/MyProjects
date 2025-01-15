@@ -98,14 +98,6 @@ const User = () => {
               onChange={({ target }) => setEmail(target.value)}
             />
             <Input
-              text={"Password :"}
-              type={"password"}
-              placeholder={"Password"}
-              name={"password"}
-              value={password}
-              onChange={({ target }) => setPassword(target.value)}
-            />
-            <Input
               text={"Desk :"}
               type={"text"}
               placeholder={"Desk"}
@@ -118,7 +110,7 @@ const User = () => {
               type={"text"}
               placeholder={"Queue"}
               name={"queue"}
-              value={queue}
+              value={attached_queue ? attached_queue.queue_name : "N/A"}
               onChange={({ target }) => setQueue(target.value)}
             />
             <Button text={"Update"} />

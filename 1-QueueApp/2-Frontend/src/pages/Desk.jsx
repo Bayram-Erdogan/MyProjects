@@ -122,7 +122,7 @@ const Desk = () => {
               type={"text"}
               placeholder={"Status"}
               name={"status"}
-              value={status}
+              value={desk.status}
               onChange={({ target }) => setStatus(target.value)}
             />
             <Button text={"Update"} />

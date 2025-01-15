@@ -5,6 +5,7 @@ import Input from "../components/Input";
 import Notification from "../components/Notification";
 import customersService from "../services/customersService";
 import profileImage from "../assets/unisex-profile.jpg";
+import { calculateWaitingTime, calculateProcessingTime, calculateDoneTime } from "../utils/customersHelper";
 
 const Customer = ({ customers, setCustomers }) => {
   const [status, setStatus] = useState("");
@@ -86,53 +87,22 @@ const Customer = ({ customers, setCustomers }) => {
             <tr>
               <td><strong>Waiting Time</strong></td>
               <td className="middle-column">:</td>
-              <td> {/*  This comes from ChatGPT */}
-                {(() => {
-                  if (!customer.joining_time) return "Loading...";
-                  if (!customer.process_start_time) return "Still waiting...";
-                  const joiningTime = new Date(
-                    `${customer.joining_time.date}T${customer.joining_time.hour}:00Z`
-                  );
-                  const processStartTime = new Date(customer.process_start_time);
-                  const waitingTimeInMinutes = Math.floor(
-                    (processStartTime - joiningTime) / (1000 * 60)
-                  );
-                  const hours = Math.floor(waitingTimeInMinutes / 60);
-                  const minutes = waitingTimeInMinutes % 60;
-                  return `${hours} hours ${minutes} minutes`.replace(/^0 hours\s*/, "");
-                })()}
+              <td>
+                {calculateWaitingTime(customer.joining_time, customer.process_start_time)}
               </td>
             </tr>
             <tr>
               <td><strong>Processing Time</strong></td>
               <td className="middle-column">:</td>
               <td>
-                {(() => {
-                  if (!customer.process_start_time) return "Not in process yet";
-                  const processStartTime = new Date(customer.process_start_time);
-                  const endTime = customer.done_time
-                    ? new Date(customer.done_time)
-                    : new Date();
-                  const processingTimeInMinutes = Math.floor(
-                    (endTime - processStartTime) / (1000 * 60)
-                  );
-                  const hours = Math.floor(processingTimeInMinutes / 60);
-                  const minutes = processingTimeInMinutes % 60;
-                  return `${hours} hours ${minutes} minutes`.replace(/^0 hours\s*/, "");
-                })()}
+                {calculateProcessingTime(customer.process_start_time, customer.done_time)}
               </td>
             </tr>
             <tr>
               <td><strong>Done Time</strong></td>
               <td className="middle-column">:</td>
               <td>
-                {(() => {
-                  if (!customer.done_time) {
-                    return "Not completed yet";
-                  }
-                  const doneTime = new Date(customer.done_time);
-                  return doneTime.toLocaleString();
-                })()}
+              {calculateDoneTime(customer.done_time)}
               </td>
             </tr>
           </tbody>

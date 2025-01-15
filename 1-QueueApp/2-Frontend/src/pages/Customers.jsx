@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
-import customersService from "../services/customersService"
-import Notification from "../components/Notification"
-import {Link} from 'react-router-dom'
+import { useEffect, useState } from "react";
+import customersService from "../services/customersService";
+import Notification from "../components/Notification";
+import { Link } from "react-router-dom";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -20,11 +20,10 @@ const Customers = () => {
       const processingCount = data.filter((customer) => customer.status === "process").length;
       const completedCount = data.filter((customer) => customer.status === "done").length;
       setWaitingCustomers(waitingCount);
-      setProcessingCustomers(processingCount)
-      setCompletedCustomers(completedCount)
+      setProcessingCustomers(processingCount);
+      setCompletedCustomers(completedCount);
     });
   }, [setCustomers]);
-
 
   return (
     <div className="page-container">
@@ -53,30 +52,32 @@ const Customers = () => {
                 </tr>
               </thead>
               <tbody>
-                {customers.map((customer) => (
-                  <tr key={customer.customer_id}>
-                    <td>
-                      <Link to={`/admin/customers/${customer.customer_id}`}>
-                        {customer.customer_id}
-                      </Link>
-                    </td>
-                    <td>
-                      <Link to={`/admin/customers/${customer.customer_id}`}>
-                        {customer.attached_queue?.queue_name }
-                      </Link>
-                    </td>
-                    <td>
-                      <Link to={`/admin/customers/${customer.customer_id}`}>
-                        {customer.attached_queue?.attached_desk }
-                      </Link>
-                    </td>
-                    <td>
-                      <Link to={`/admin/customers/${customer.customer_id}`}>
+                {customers.map((customer) => {
+                  return (
+                    <tr key={customer.customer_id}>
+                      <td>
+                        <Link to={`/admin/customers/${customer.customer_id}`}>
+                          {customer.customer_id}
+                        </Link>
+                      </td>
+                      <td>
+                        <Link to={`/admin/customers/${customer.customer_id}`}>
+                          {customer.attached_queue?.queue_name}
+                        </Link>
+                      </td>
+                      <td>
+                        <Link to={`/admin/customers/${customer.customer_id}`}>
+                          {customer.attached_queue?.attached_desk}
+                        </Link>
+                      </td>
+                      <td>
+                        <Link to={`/admin/customers/${customer.customer_id}`}>
                           {customer.status}
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

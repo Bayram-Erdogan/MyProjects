@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import Button from '../components/Button';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import customersService from '../services/customersService';
 import queuesService from '../services/queuesService';
 import { filterByDate, prepareChartData, exportToPDF } from '../utils/statisticsHelper';
+import { calculateWaitingTime } from '../utils/customersHelper';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -15,14 +16,7 @@ import {
   Legend,
 } from 'chart.js';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Statistics = ({ queues, setQueues }) => {
   const [customers, setCustomers] = useState([]);
@@ -34,8 +28,8 @@ const Statistics = ({ queues, setQueues }) => {
   const [endDate, setEndDate] = useState('');
   const chartRef = useRef();
 
-   useEffect(() => {
-      customersService.getAll().then((data) => {
+  useEffect(() => {
+    customersService.getAll().then((data) => {
       setCustomers(data);
     });
 
@@ -56,15 +50,18 @@ const Statistics = ({ queues, setQueues }) => {
     const processingCount = dailyCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = dailyCustomers.filter((customer) => customer.status === 'done').length;
 
-  // Beetween 103-108 from ChatGPT
-    const totalWaitTime = queues
-      .map((queue) => parseFloat(queue.average_waiting_time))
-      .reduce((acc, time) => acc + time, 0);
+    const waitingTimes = dailyCustomers.map((customer) => {
+      const waitingTime = calculateWaitingTime(
+        customer.joining_time,
+        customer.process_start_time
+      );
+      return waitingTime >= 0 ? waitingTime : 0;
+    });
 
-    const hours = Math.floor(totalWaitTime / 60);
-    const minutes = Math.round(totalWaitTime % 60);
-  // End of 103-108 from ChatGPT
-
+    const totalWaitingTime = waitingTimes.reduce((acc, time) => acc + time, 0);
+    const averageWaitingTime = waitingTimes.length > 0
+      ? totalWaitingTime / waitingTimes.length
+      : 0;
 
     setStatistics({
       total: dailyCustomers.length,
@@ -81,7 +78,7 @@ const Statistics = ({ queues, setQueues }) => {
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
         <p>Total Customers: {dailyCustomers.length}</p>
-        <p>Average Wait Time: {hours} hour(s) and {minutes} minute(s)</p>
+        <p>Average Waiting Time: {averageWaitingTime.toFixed(2)} minutes</p>
       </div>
     );
     setChart(prepareChartData(customers, 'daily'));
@@ -93,14 +90,18 @@ const Statistics = ({ queues, setQueues }) => {
     const processingCount = weeklyCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = weeklyCustomers.filter((customer) => customer.status === 'done').length;
 
-  // Beetween 103-108 from ChatGPT
-    const totalWaitTime = queues
-      .map((queue) => parseFloat(queue.average_waiting_time))
-      .reduce((acc, time) => acc + time, 0);
+    const waitingTimes = weeklyCustomers.map((customer) => {
+      const waitingTime = calculateWaitingTime(
+        customer.joining_time,
+        customer.process_start_time
+      );
+      return waitingTime >= 0 ? waitingTime : 0;
+    });
 
-    const hours = Math.floor(totalWaitTime / 60);
-    const minutes = Math.round(totalWaitTime % 60);
-  // End of 103-108 from ChatGPT
+    const totalWaitingTime = waitingTimes.reduce((acc, time) => acc + time, 0);
+    const averageWaitingTime = waitingTimes.length > 0
+      ? totalWaitingTime / waitingTimes.length
+      : 0;
 
     setStatistics({
       total: weeklyCustomers.length,
@@ -117,7 +118,7 @@ const Statistics = ({ queues, setQueues }) => {
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
         <p>Total Customers: {weeklyCustomers.length}</p>
-        <p>Average Wait Time: {hours} hour(s) and {minutes} minute(s)</p>
+        <p>Average Waiting Time: {averageWaitingTime.toFixed(2)} minutes</p>
       </div>
     );
     setChart(prepareChartData(customers, 'weekly'));
@@ -129,14 +130,18 @@ const Statistics = ({ queues, setQueues }) => {
     const processingCount = monthlyCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = monthlyCustomers.filter((customer) => customer.status === 'done').length;
 
-    // Beetween 103-108 from ChatGPT
-    const totalWaitTime = queues
-    .map((queue) => parseFloat(queue.average_waiting_time))
-    .reduce((acc, time) => acc + time, 0);
+    const waitingTimes = monthlyCustomers.map((customer) => {
+      const waitingTime = calculateWaitingTime(
+        customer.joining_time,
+        customer.process_start_time
+      );
+      return waitingTime >= 0 ? waitingTime : 0;
+    });
 
-    const hours = Math.floor(totalWaitTime / 60);
-    const minutes = Math.round(totalWaitTime % 60);
-    // End of 103-108 from ChatGPT
+    const totalWaitingTime = waitingTimes.reduce((acc, time) => acc + time, 0);
+    const averageWaitingTime = waitingTimes.length > 0
+      ? totalWaitingTime / waitingTimes.length
+      : 0;
 
     setStatistics({
       total: monthlyCustomers.length,
@@ -153,13 +158,13 @@ const Statistics = ({ queues, setQueues }) => {
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
         <p>Total Customers: {monthlyCustomers.length}</p>
-        <p>Average Wait Time: {hours} hour(s) and {minutes} minute(s)</p>
+        <p>Average Waiting Time: {averageWaitingTime.toFixed(2)} minutes</p>
       </div>
     );
     setChart(prepareChartData(customers, 'monthly'));
   };
 
-  const handleCustomStatistics = () => { // From ChatGPT
+  const handleCustomStatistics = () => {
     if (!startDate || !endDate) {
       alert('Please select both start and end dates.');
       return;
@@ -170,14 +175,18 @@ const Statistics = ({ queues, setQueues }) => {
     const processingCount = customCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = customCustomers.filter((customer) => customer.status === 'done').length;
 
-    // Beetween 103-108 from ChatGPT
-    const totalWaitTime = queues
-    .map((queue) => parseFloat(queue.average_waiting_time))
-    .reduce((acc, time) => acc + time, 0);
+    const waitingTimes = customCustomers.map((customer) => {
+      const waitingTime = calculateWaitingTime(
+        customer.joining_time,
+        customer.process_start_time
+      );
+      return waitingTime >= 0 ? waitingTime : 0;
+    });
 
-    const hours = Math.floor(totalWaitTime / 60);
-    const minutes = Math.round(totalWaitTime % 60);
-    // End of 103-108 from ChatGPT
+    const totalWaitingTime = waitingTimes.reduce((acc, time) => acc + time, 0);
+    const averageWaitingTime = waitingTimes.length > 0
+      ? totalWaitingTime / waitingTimes.length
+      : 0;
 
     setStatistics({
       total: customCustomers.length,
@@ -194,7 +203,7 @@ const Statistics = ({ queues, setQueues }) => {
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
         <p>Total Customers: {customCustomers.length}</p>
-        <p>Average Wait Time: {hours} hour(s) and {minutes} minute(s)</p>
+        <p>Average Waiting Time: {averageWaitingTime.toFixed(2)} minutes</p>
       </div>
     );
     setChart(prepareChartData(customers, 'custom', startDate, endDate));
@@ -209,11 +218,11 @@ const Statistics = ({ queues, setQueues }) => {
             <h3>Queues</h3>
             <ul className="list">
               {queues.map((queue) => (
-               <li key={queue.queue_id}>
-               <Link to={`/admin/queues/${queue.queue_id}/statistics`}>
-                 <h4>{queue.queue_name}</h4>
-               </Link>
-             </li>
+                <li key={queue.queue_id}>
+                  <Link to={`/admin/queues/${queue.queue_id}/statistics`}>
+                    <h4>{queue.queue_name}</h4>
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>
@@ -259,5 +268,3 @@ const Statistics = ({ queues, setQueues }) => {
 };
 
 export default Statistics;
-
-
