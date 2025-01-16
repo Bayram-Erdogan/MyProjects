@@ -12,7 +12,6 @@ import Desks from "./pages/Desks";
 import Desk from "./pages/Desk";
 import Queues from "./pages/Queues";
 import Queue from "./pages/Queue";
-import QueueStatistics from "./pages/QueueStatistics";
 import ActiveQueues from "./pages/ActiveQueues";
 import Customers from "./pages/Customers";
 import Customer from "./pages/Customer";
@@ -57,7 +56,6 @@ const App = () => {
           <Route path="/admin/customers/:id" element={<Customer customers={customers} setCustomers={setCustomers} />} />
           <Route path="/admin/queues/actives" element={<ActiveQueues customers={customers} />} />
           <Route path="/admin/statistics" element={<Statistics queues={queues} setQueues={setQueues}/>} />
-          <Route path="/admin/queues/:id/statistics" element={<QueueStatistics queues={queues} customers = {customers} setCustomers = {setCustomers} />} />
         </Routes>
       </main>
       <Footer />

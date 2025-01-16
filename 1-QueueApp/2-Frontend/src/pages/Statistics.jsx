@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import Button from '../components/Button';
-import { Link } from 'react-router-dom';
 import customersService from '../services/customersService';
 import queuesService from '../services/queuesService';
 import { filterByDate, prepareChartData, exportToPDF } from '../utils/statisticsHelper';
@@ -214,18 +213,6 @@ const Statistics = ({ queues, setQueues }) => {
       <div className="page-con">
         <div className="left">
           <div className="left-container">{content}</div>
-          <div className="list-container">
-            <h3>Queues</h3>
-            <ul className="list">
-              {queues.map((queue) => (
-                <li key={queue.queue_id}>
-                  <Link to={`/admin/queues/${queue.queue_id}/statistics`}>
-                    <h4>{queue.queue_name}</h4>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
         <div className="right">
           <div className="container box">
