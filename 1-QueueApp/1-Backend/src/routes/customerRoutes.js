@@ -134,6 +134,14 @@ customerRouter.get('/auto-join/:queue_id', async (request, response) => { // Fro
   const queue = await Queue.findById(queue_id)
   const customer = new Customer({ queue_id: queue._id })
 
+  if (queue.waiting_customer >= queue.max_of_customer) {
+    queue.status = 'Nonactive'
+  }
+
+  if (queue.status === 'Nonactive') {
+    queue.status = 'Active'
+  }
+
   await customer.save()
 
   queue.waiting_customer += 1

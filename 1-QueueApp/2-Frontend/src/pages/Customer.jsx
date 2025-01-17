@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Button from "../components/Button";
-import Input from "../components/Input";
 import Notification from "../components/Notification";
 import customersService from "../services/customersService";
 import profileImage from "../assets/unisex-profile.jpg";
@@ -41,14 +40,38 @@ const Customer = ({ customers, setCustomers }) => {
             <img src={profileImage} alt="Profile" />
           </div>
           <form onSubmit={updateCustomer}>
-            <Input
-              text={"Status :"}
-              type={"text"}
-              placeholder={"Status"}
-              name={"status"}
-              value={status}
-              onChange={({ target }) => setStatus(target.value)}
-            />
+            <div>
+              <label>Status :</label>
+              <div className="radio-group">
+                <label>
+                  <input
+                    type="radio"
+                    value="waiting"
+                    checked={status === "waiting"}
+                    onChange={({ target }) => setStatus(target.value)}
+                  />
+                  Waiting
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="process"
+                    checked={status === "process"}
+                    onChange={({ target }) => setStatus(target.value)}
+                  />
+                  In Progress
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="done"
+                    checked={status === "done"}
+                    onChange={({ target }) => setStatus(target.value)}
+                  />
+                  Completed
+                </label>
+              </div>
+            </div>
             <Button text={"Update"} />
           </form>
           <Notification message={successMessage} />
@@ -102,7 +125,7 @@ const Customer = ({ customers, setCustomers }) => {
               <td><strong>Done Time</strong></td>
               <td className="middle-column">:</td>
               <td>
-              {calculateDoneTime(customer.done_time)}
+                {calculateDoneTime(customer.done_time)}
               </td>
             </tr>
           </tbody>

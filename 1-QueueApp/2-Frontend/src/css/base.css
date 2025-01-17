@@ -430,3 +430,17 @@ p {
 .list li .status.Nonactive {
   color: var(--danger);
 }
+
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.radio-group label {
+  margin-bottom: 10px;
+}
+
+.radio-group input {
+  margin-right: 10px;
+}

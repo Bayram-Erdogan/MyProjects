@@ -71,25 +71,45 @@ export const prepareChartData = (customers, period, startDate = null, endDate = 
   };
 };
 
-export const exportToPDF = (statistics, selectedStatistics, chartRef) => {
-  if (!selectedStatistics) {
-    alert('Please select a statistics type first.');
-    return;
-  }
-
-  const doc = new jsPDF();
-
-  doc.text(`${selectedStatistics.charAt(0).toUpperCase() + selectedStatistics.slice(1)} Statistics`, 10, 10);
-  doc.text(`Total Customers: ${statistics.total}`, 10, 20);
-  doc.text(`Waiting Customers: ${statistics.waiting}`, 10, 30);
-  doc.text(`Processing Customers: ${statistics.processing}`, 10, 40);
-  doc.text(`Completed Customers: ${statistics.completed}`, 10, 50);
-
-  html2canvas(chartRef.current).then((canvas) => {
-    const imgData = canvas.toDataURL('image/png');
-    doc.addImage(imgData, 'PNG', 10, 60, 180, 100);
-    doc.save(`${selectedStatistics}_statistics_with_chart.pdf`);
-  });
+const addTextToPDF = (doc, text, yOffset) => {
+    // text'in geçerli bir string olup olmadığını kontrol et
+    if (typeof text === 'string' && text.trim() !== '') {
+      doc.text(text, 10, yOffset);
+      yOffset += 10; // Bir sonraki metin için yOffset'i artır
+    }
+    return yOffset; // Güncellenmiş yOffset'i geri döndürüyoruz
 };
 
+export const exportToPDF = (statistics, selectedStatistics, chartRef, content) => {
+    if (!selectedStatistics) {
+      alert('Please select a statistics type first.');
+      return;
+    }
 
+    const doc = new jsPDF();
+    let yOffset = 20;
+    const averageWaitingTime = statistics.averageWaitingTime !== undefined ? statistics.averageWaitingTime : 0;
+
+    if (statistics.date) {
+      yOffset = addTextToPDF(doc, `Date: ${statistics.date}`, yOffset);
+    } else if (statistics.weekNumber) {
+      yOffset = addTextToPDF(doc, `Week Number: ${statistics.weekNumber}`, yOffset);
+    } else if (statistics.monthName) {
+      yOffset = addTextToPDF(doc, `Month: ${statistics.monthName}`, yOffset);
+    } else if (statistics.dateRange) {
+      yOffset = addTextToPDF(doc, `Date Range: ${statistics.dateRange}`, yOffset);
+    }
+
+    doc.text(`${selectedStatistics.charAt(0).toUpperCase() + selectedStatistics.slice(1)} Statistics`, 10, 10);
+    yOffset = addTextToPDF(doc, `Waiting Customers: ${statistics.waiting || 0}`, yOffset);
+    yOffset = addTextToPDF(doc, `Processing Customers: ${statistics.processing || 0}`, yOffset);
+    yOffset = addTextToPDF(doc, `Completed Customers: ${statistics.completed || 0}`, yOffset);
+    yOffset = addTextToPDF(doc, `Total Customers: ${statistics.total || 0}`, yOffset);
+    yOffset = addTextToPDF(doc, `Average Waiting Time: ${averageWaitingTime.toFixed(2)} minutes`, yOffset);
+
+    html2canvas(chartRef.current).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      doc.addImage(imgData, 'PNG', 10, yOffset, 180, 100);
+      doc.save(`${selectedStatistics}_statistics_with_chart.pdf`);
+    });
+  };

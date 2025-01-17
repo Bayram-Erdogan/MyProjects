@@ -3,7 +3,7 @@ import Button from '../components/Button';
 import customersService from '../services/customersService';
 import queuesService from '../services/queuesService';
 import { filterByDate, prepareChartData, exportToPDF } from '../utils/statisticsHelper';
-import { calculateWaitingTime } from '../utils/customersHelper';
+import { calculateAverageWaitingTime } from '../utils/customersHelper';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -49,30 +49,23 @@ const Statistics = ({ queues, setQueues }) => {
     const processingCount = dailyCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = dailyCustomers.filter((customer) => customer.status === 'done').length;
 
-    const waitingTimes = dailyCustomers.map((customer) => {
-      const waitingTime = calculateWaitingTime(
-        customer.joining_time,
-        customer.process_start_time
-      );
-      return waitingTime >= 0 ? waitingTime : 0;
-    });
+    const averageWaitingTime = calculateAverageWaitingTime(dailyCustomers);
 
-    const totalWaitingTime = waitingTimes.reduce((acc, time) => acc + time, 0);
-    const averageWaitingTime = waitingTimes.length > 0
-      ? totalWaitingTime / waitingTimes.length
-      : 0;
-
+    const todayDate = new Date().toLocaleDateString();
     setStatistics({
       total: dailyCustomers.length,
       waiting: waitingCount,
       processing: processingCount,
       completed: completedCount,
+      averageWaitingTime,
+      date: todayDate,
     });
 
     setSelectedStatistics('daily');
     setContent(
       <div>
         <h2>Daily Statistics</h2>
+        <h4>Date: {todayDate}</h4>
         <p>Waiting Customers: {waitingCount}</p>
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
@@ -89,30 +82,25 @@ const Statistics = ({ queues, setQueues }) => {
     const processingCount = weeklyCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = weeklyCustomers.filter((customer) => customer.status === 'done').length;
 
-    const waitingTimes = weeklyCustomers.map((customer) => {
-      const waitingTime = calculateWaitingTime(
-        customer.joining_time,
-        customer.process_start_time
-      );
-      return waitingTime >= 0 ? waitingTime : 0;
-    });
+    const averageWaitingTime = calculateAverageWaitingTime(weeklyCustomers);
 
-    const totalWaitingTime = waitingTimes.reduce((acc, time) => acc + time, 0);
-    const averageWaitingTime = waitingTimes.length > 0
-      ? totalWaitingTime / waitingTimes.length
-      : 0;
-
+    const currentWeekNumber = Math.ceil(
+        (new Date().getDate() - new Date(new Date().getFullYear(), 0, 1).getDate()) / 7
+      ); // From ChatGPT
     setStatistics({
       total: weeklyCustomers.length,
       waiting: waitingCount,
       processing: processingCount,
       completed: completedCount,
+      averageWaitingTime,
+      weekNumber: currentWeekNumber,
     });
 
     setSelectedStatistics('weekly');
     setContent(
       <div>
         <h2>Weekly Statistics</h2>
+        <h4>Week Number: {currentWeekNumber}</h4>
         <p>Waiting Customers: {waitingCount}</p>
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
@@ -128,31 +116,23 @@ const Statistics = ({ queues, setQueues }) => {
     const waitingCount = monthlyCustomers.filter((customer) => customer.status === 'waiting').length;
     const processingCount = monthlyCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = monthlyCustomers.filter((customer) => customer.status === 'done').length;
-
-    const waitingTimes = monthlyCustomers.map((customer) => {
-      const waitingTime = calculateWaitingTime(
-        customer.joining_time,
-        customer.process_start_time
-      );
-      return waitingTime >= 0 ? waitingTime : 0;
-    });
-
-    const totalWaitingTime = waitingTimes.reduce((acc, time) => acc + time, 0);
-    const averageWaitingTime = waitingTimes.length > 0
-      ? totalWaitingTime / waitingTimes.length
-      : 0;
+    const averageWaitingTime = calculateAverageWaitingTime(monthlyCustomers);
+    const monthName = new Date().toLocaleString('en-US', { month: 'long' });
 
     setStatistics({
-      total: monthlyCustomers.length,
-      waiting: waitingCount,
-      processing: processingCount,
-      completed: completedCount,
-    });
+        total: monthlyCustomers.length,
+        waiting: waitingCount,
+        processing: processingCount,
+        completed: completedCount,
+        averageWaitingTime,
+        monthName,
+      });
 
     setSelectedStatistics('monthly');
     setContent(
       <div>
         <h2>Monthly Statistics</h2>
+        <h4>Month: {monthName}</h4>
         <p>Waiting Customers: {waitingCount}</p>
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
@@ -173,31 +153,22 @@ const Statistics = ({ queues, setQueues }) => {
     const waitingCount = customCustomers.filter((customer) => customer.status === 'waiting').length;
     const processingCount = customCustomers.filter((customer) => customer.status === 'process').length;
     const completedCount = customCustomers.filter((customer) => customer.status === 'done').length;
-
-    const waitingTimes = customCustomers.map((customer) => {
-      const waitingTime = calculateWaitingTime(
-        customer.joining_time,
-        customer.process_start_time
-      );
-      return waitingTime >= 0 ? waitingTime : 0;
-    });
-
-    const totalWaitingTime = waitingTimes.reduce((acc, time) => acc + time, 0);
-    const averageWaitingTime = waitingTimes.length > 0
-      ? totalWaitingTime / waitingTimes.length
-      : 0;
+    const averageWaitingTime = calculateAverageWaitingTime(customCustomers);
 
     setStatistics({
-      total: customCustomers.length,
-      waiting: waitingCount,
-      processing: processingCount,
-      completed: completedCount,
-    });
+        total: customCustomers.length,
+        waiting: waitingCount,
+        processing: processingCount,
+        completed: completedCount,
+        averageWaitingTime,
+        dateRange: `${startDate} - ${endDate}`,
+      });
 
     setSelectedStatistics('custom');
     setContent(
       <div>
         <h2>Custom Date Range Statistics</h2>
+        <h4>Date Range: {startDate} / {endDate}</h4>
         <p>Waiting Customers: {waitingCount}</p>
         <p>Processing Customers: {processingCount}</p>
         <p>Completed Customers: {completedCount}</p>
@@ -242,11 +213,11 @@ const Statistics = ({ queues, setQueues }) => {
               </div>
             )}
             <Button
-              text="Export to PDF"
-              onClick={() =>
-                exportToPDF(statistics, selectedStatistics, chartRef)
-              }
-            />
+  text="Export to PDF"
+  onClick={() =>
+    exportToPDF(statistics, selectedStatistics, chartRef, content)
+  }
+/>
           </div>
         </div>
       </div>
