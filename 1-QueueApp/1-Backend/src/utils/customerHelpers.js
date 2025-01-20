@@ -9,12 +9,12 @@ const findWaitingCustomers = async (queue_id) => {
       status: 'waiting',
     })
   } catch (error) {
-    console.error('Error finding waiting customers:', error)
+    console.error('Error finding waiting customers for queue:', queue_id, error.message)
+    console.error(error.stack)
     throw new Error('Error finding waiting customers')
   }
 }
 
-// Tek bir müşterinin bekleme süresini hesaplar.
 const calculateCustomerWaitingTime = (customer) => {
   try {
     const customerJoiningTime = `${customer.joining_time.date}T${customer.joining_time.hour}:00`
@@ -30,7 +30,6 @@ const calculateCustomerWaitingTime = (customer) => {
   }
 }
 
-//Belirli bir kuyruğun ortalama bekleme süresini hesaplar.
 const calculateAverageWaitingTime = async (queue_id) => {
   try {
     const waitingCustomers = await findWaitingCustomers(queue_id)
@@ -53,7 +52,6 @@ const calculateAverageWaitingTime = async (queue_id) => {
   }
 }
 
-//Tek bir müşterinin işlem tamamlanana kadar geçen toplam bekleme süresini hesaplar.
 const calculateTotalWaitingTimeForCustomer = (customer) => {
   if (!customer.done_time) {
     return null
@@ -68,7 +66,6 @@ const calculateTotalWaitingTimeForCustomer = (customer) => {
   return totalWaitingTime
 }
 
-//Belirli bir kuyruğun tamamlanan işlemleri için ortalama toplam bekleme süresini hesaplar.
 const calculateAverageTotalWaitingTime = async (queue_id) => {
   try {
     const completedCustomers = await Customer.find({ queue_id, done_time: { $ne: null } })
@@ -91,10 +88,83 @@ const calculateAverageTotalWaitingTime = async (queue_id) => {
   }
 }
 
+const calculateCustomerPosition = async (queue_id) => {
+  try {
+    // Kuyruğun mevcut bekleyen müşteri sayısını alıyoruz
+    const waitingCustomers = await Customer.find({
+      queue_id: queue_id,
+      status: 'waiting',
+    })
+
+    // Yeni pozisyon, mevcut bekleyen müşteri sayısının bir fazlasıdır
+    const position = waitingCustomers.length
+
+    return position
+  } catch (error) {
+    console.error('Error calculating position for queue:', queue_id, error.message)
+    console.error(error.stack)
+    throw new Error('Could not calculate position.')
+  }
+}
+
+const calculateAverageProcessingTime = async (queue_id) => {
+  try {
+    // Tamamlanan müşterileri alın
+    const completedCustomers = await Customer.find({
+      queue_id,
+      done_time: { $ne: null } // Sadece 'done_time' değeri olanları al
+    })
+
+    if (completedCustomers.length === 0) {
+      // Eğer tamamlanan müşteri yoksa, varsayılan bir değer döndür
+      console.log('No completed customers found. Returning default processing time.')
+      return 5 // Varsayılan işlem süresi 5 dakika
+    }
+
+    const totalProcessingTime = completedCustomers.reduce((total, customer) => {
+      // Eğer 'done_time' mevcutsa işleme devam et
+      if (customer.done_time && customer.process_start_time) {
+        const processStartTime = DateTime.fromISO(customer.process_start_time.toISOString(), { zone: 'UTC' })
+        const doneTime = DateTime.fromISO(customer.done_time.toISOString(), { zone: 'UTC' })
+        const processingTime = doneTime.diff(processStartTime, 'minutes').minutes
+        return total + processingTime
+      }
+      return total // 'done_time' veya 'process_start_time' yoksa işlem yapma
+    }, 0)
+
+    // Ortalama işlem süresini döndür
+    return parseFloat((totalProcessingTime / completedCustomers.length).toFixed(2))
+  } catch (error) {
+    console.error('Error calculating average processing time:', error.message)
+    console.error(error.stack)
+    throw new Error('Error calculating average processing time')
+  }
+}
+
+const calculateEstimatedWaitTime = async (queue_id, position) => {
+  try {
+    // Kuyruğun ortalama işlem süresi alınır
+    const averageProcessingTime = await calculateAverageProcessingTime(queue_id)
+
+    // Eğer ortalama işlem süresi bulunmazsa, varsayılan bir değer döndür
+    const processingTime = averageProcessingTime || 5
+
+    // Pozisyon-1, kuyruğun başındaki bekleyenleri ifade eder
+    return (position - 1) * processingTime
+  } catch (error) {
+    console.error('Error calculating estimated wait time for queue:', queue_id, error.message)
+    console.error(error.stack)
+    throw new Error('Error calculating estimated wait time')
+  }
+}
+
 module.exports = {
   findWaitingCustomers,
   calculateCustomerWaitingTime,
   calculateAverageWaitingTime,
   calculateTotalWaitingTimeForCustomer,
   calculateAverageTotalWaitingTime,
+  calculateCustomerPosition,
+  calculateAverageProcessingTime,
+  calculateEstimatedWaitTime
 }

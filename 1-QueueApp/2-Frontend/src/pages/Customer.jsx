@@ -9,6 +9,7 @@ import { calculateWaitingTime, calculateProcessingTime, calculateDoneTime } from
 const Customer = ({ customers, setCustomers }) => {
   const [status, setStatus] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const { id } = useParams();
   const customer = customers.find((customer) => customer.customer_id === id);
@@ -19,6 +20,13 @@ const Customer = ({ customers, setCustomers }) => {
 
   const updateCustomer = (event) => {
     event.preventDefault();
+
+    if (customer.status === "waiting" && status === "done") {
+      setErrorMessage("Customer must go through the 'process' stage before being marked as 'done'.");
+      setTimeout(() => setErrorMessage(null), 5000);
+      return;
+    }
+
     const customerObject = { status };
 
     customersService.update(id, customerObject).then((updatedCustomer) => {
@@ -74,7 +82,8 @@ const Customer = ({ customers, setCustomers }) => {
             </div>
             <Button text={"Update"} />
           </form>
-          <Notification message={successMessage} />
+          {successMessage && <Notification message={successMessage} type="success" />}
+          {errorMessage && <Notification message={errorMessage} type="error" />}
         </div>
       </div>
       <div className="right">
@@ -100,7 +109,7 @@ const Customer = ({ customers, setCustomers }) => {
               <td><strong>Joining Time</strong></td>
               <td className="middle-column">:</td>
               <td>
-                {(() => {
+                {(() => { // From ChatGPT
                   if (!customer.joining_time) return "Loading...";
                   const joiningTime = new Date(`${customer.joining_time.date}T${customer.joining_time.hour}:00Z`);
                   return joiningTime.toLocaleString();

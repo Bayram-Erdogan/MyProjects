@@ -192,6 +192,10 @@ const Statistics = ({ queues, setQueues }) => {
               <Button text="Daily ( Today )" onClick={handleDailyStatistics} />
               <Button text="Weekly" onClick={handleWeeklyStatistics} />
               <Button text="Monthly" onClick={handleMonthlyStatistics} />
+              <Button text="Export to PDF" onClick={() =>
+                  exportToPDF(statistics, selectedStatistics, chartRef, content)
+                }
+              />
             </div>
             <div className="date-container">
               <h4>Select Date Range</h4>
@@ -212,12 +216,6 @@ const Statistics = ({ queues, setQueues }) => {
                 <Bar data={chart} />
               </div>
             )}
-            <Button
-  text="Export to PDF"
-  onClick={() =>
-    exportToPDF(statistics, selectedStatistics, chartRef, content)
-  }
-/>
           </div>
         </div>
       </div>

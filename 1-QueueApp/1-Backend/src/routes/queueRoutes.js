@@ -14,61 +14,6 @@ const getTokenFrom = request => {
   }
   return null
 }
-// queueRouter.post('/', async (request, response) => {
-//   const body = request.body
-
-//   const desk = await Desk.findOne({ desk_number: body.desk_number })
-//   if (!desk) {
-//     return response.status(400).json({ error: 'Desk not found' })
-//   }
-
-//   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-//   if (!decodedToken.id) {
-//     return response.status(401).json({ error: 'token invalid' })
-//   }
-
-//   const admin = await Admin.findById(decodedToken.id)
-//   const user = await User.findById(desk.user)
-//   if (!user) {
-//     return response.status(400).json({ error: 'User not found' })
-//   }
-//   const queue = new Queue({
-//     queue_name: body.queue_name,
-//     desk: desk.id,
-//     desk_number: desk.desk_number,
-//     max_of_customer: body.max_of_customer,
-//     createdBy: admin._id,
-//     status: body.status || 'Nonactive',
-//     user: user._id,
-//   })
-
-//   const qrUrl = `http://localhost:3001/api/customers/auto-join/${queue._id.toString()}`
-//   try {
-//     const qrCode = await QRCode.toDataURL(qrUrl)
-//     queue.qr_code = qrCode
-//   } catch (error) {
-//     console.error('QR Code generation failed:', error)
-//     return response.status(500).json({ error: 'Failed to generate QR Code' })
-//   }
-
-//   const savedQueue = await queue.save()
-
-//   desk.queues.push(savedQueue._id)
-//   desk.status = 'Active'
-//   await desk.save()
-
-//   user.queues.push(savedQueue._id)
-//   await user.save()
-
-//   admin.queues = admin.queues.concat(savedQueue._id)
-//   await admin.save()
-
-//   response.json({
-//     ...savedQueue.toJSON(),
-//     qr_code: queue.qr_code,
-//   })
-// })
-
 queueRouter.post('/', async (request, response) => {
   const body = request.body
 
@@ -245,7 +190,6 @@ queueRouter.put('/:id', async (request, response, next) => {
 })
 
 /* Qr routes */
-
 queueRouter.get('/qr-code/:id', async (request, response) => { // updated from ChatGPT
   const queueId = request.params.id
   const url = `http://localhost:3001/api/customers?queue_id=${queueId}`
@@ -257,7 +201,6 @@ queueRouter.get('/qr-code/:id', async (request, response) => { // updated from C
     response.status(500).json({ error: 'Failed to generate QR Code' })
   }
 })
-
 
 queueRouter.post('/auto-join/:queue_id', async (request, response) => { //From ChatGPT
   const { queue_id } = request.params
