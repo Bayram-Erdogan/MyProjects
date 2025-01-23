@@ -7,6 +7,7 @@ export const Navbar = () => {
           <Link to="/"> <span>Queue</span> App</Link>
         </h2>
         <div>
+          <Link to="/checkQueue">Check Queue</Link>
           <Link to="/signIn">Sign in</Link>
         </div>
       </div>

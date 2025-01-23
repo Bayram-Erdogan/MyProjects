@@ -22,6 +22,10 @@ const customerSchema = new mongoose.Schema({
     type: String,
     enum: ['waiting', 'process', 'done'],
     default: 'waiting',
+  },
+  waiting_before_me: {
+    type: Number,
+    default: 0, // Varsayılan değer
   }
 })
 
@@ -38,6 +42,7 @@ customerSchema.set('toJSON', {
       status:returnedObject.status,
       process_start_time: returnedObject.process_start_time,
       done_time: returnedObject.done_time,
+      waiting_before_me: returnedObject.waiting_before_me,
     }
 
     return orderedObject
