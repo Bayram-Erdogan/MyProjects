@@ -145,7 +145,7 @@ customerRouter.put('/:id', async (request, response) => { // Updated From ChatGP
   }
 })
 
-/****** */
+/*******/
 
 customerRouter.get('/auto-join/:queue_id', async (request, response) => {
   const { queue_id } = request.params
