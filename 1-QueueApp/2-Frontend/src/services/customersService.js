@@ -26,4 +26,8 @@ const update = (id, updateCustomer) => {
   return request.then(response => response.data);
 };
 
-export default { getAll, create, update };
+const leaveQueue = (id) => {
+  const request = axios.put(`${baseUrl}/${id}`, { status: 'abandoned' }, getConfig());
+  return request.then(response => response.data);
+};
+export default { getAll, create, update,leaveQueue };

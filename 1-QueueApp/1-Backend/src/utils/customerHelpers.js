@@ -117,7 +117,6 @@ const calculateAverageProcessingTime = async (queue_id) => {
 
     if (completedCustomers.length === 0) {
       // Eğer tamamlanan müşteri yoksa, varsayılan bir değer döndür
-      console.log('No completed customers found. Returning default processing time.')
       return 5 // Varsayılan işlem süresi 5 dakika
     }
 

@@ -20,12 +20,12 @@ const customerSchema = new mongoose.Schema({
   done_time: { type: Date },
   status : {
     type: String,
-    enum: ['waiting', 'process', 'done'],
+    enum: ['waiting', 'process', 'done', 'abandoned'],
     default: 'waiting',
   },
   waiting_before_me: {
     type: Number,
-    default: 0, // Varsayılan değer
+    default: 0,
   }
 })
 

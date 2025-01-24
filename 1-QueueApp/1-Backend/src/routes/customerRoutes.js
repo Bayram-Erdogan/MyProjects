@@ -130,12 +130,39 @@ customerRouter.put('/:id', async (request, response) => { // Updated From ChatGP
           console.error('Error in updating queue for done status:', err)
         }
       }
-    } else if (customer.status === 'waiting' && status === 'done') {
-      return
+    } else if (customer.status === 'waiting' && status === 'abandoned') {
+      updateFields.status = 'abandoned'
+      const customers = await Customer.find({})
+
+      await Promise.all(customers.map(async (customer) => {
+        customer.waiting_before_me = Math.max(0, customer.waiting_before_me - 1)
+        await customer.save()
+      }))
+
+      if (customer.queue_id) {
+        try {
+          const queueId = new mongoose.Types.ObjectId(customer.queue_id)
+          const queue = await Queue.findById(queueId)
+
+          if (queue) {
+            queue.waiting_customer = Math.max(0, queue.waiting_customer - 1)
+
+            if (queue.status === 'Nonactive' && queue.waiting_customer < queue.max_of_customer) {
+              queue.status = 'Active'
+            }
+            await queue.save()
+          } else {
+            console.log('Queue not found for the attached_queue ID.')
+          }
+        } catch (err) {
+          console.error('Error in finding or updating queue:', err)
+        }
+      }
     } else {
       console.error(`Geçersiz durum geçişi: ${customer.status} -> ${status}`)
       return
     }
+
     const updatedCustomer = await Customer.findByIdAndUpdate(customerId, updateFields, { new: true })
     response.json(updatedCustomer)
 
@@ -253,6 +280,5 @@ customerRouter.get('/average-waiting-time/:queue_id', async (request, response) 
     response.status(500).json({ error: error.message })
   }
 })
-
 
 module.exports = customerRouter
