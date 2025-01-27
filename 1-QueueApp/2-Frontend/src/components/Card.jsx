@@ -36,6 +36,17 @@ const Card = ({
                     </article>
                 </Link>
             )
+        case 'CustomerDesk':
+            return(
+                <Link to={`/customerDesks/${desk.desk_id}`}>
+                    <article className="card">
+                        <img src={image}/>
+                        <div>
+                            <h3> Desk : {desk.desk_number} </h3>
+                        </div>
+                    </article>
+                </Link>
+            )
         case 'Queue':
             return(
                 <Link to={`/admin/queues/${queue.queue_id}`}>

@@ -32,6 +32,10 @@ queueRouter.post('/', async (request, response) => {
   if (!user) {
     return response.status(400).json({ error: 'User not found' })
   }
+
+  const expiration_date = new Date()
+  expiration_date.setDate(expiration_date.getDate() + 1)
+
   const queue = new Queue({
     queue_name: body.queue_name,
     desk: desk.id,
@@ -40,6 +44,7 @@ queueRouter.post('/', async (request, response) => {
     createdBy: admin._id,
     status: body.status || 'Nonactive',
     user: user._id,
+    expiration_date: expiration_date,
   })
 
   const BASE_URL = 'http://192.168.101.105:3001'
@@ -70,7 +75,6 @@ queueRouter.post('/', async (request, response) => {
     qr_code: queue.qr_code,
   })
 })
-
 
 queueRouter.get('/', async (request, response) => {
 

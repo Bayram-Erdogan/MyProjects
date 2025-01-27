@@ -42,13 +42,17 @@ const queueSchema = new mongoose.Schema({
       default: () => new Date().toISOString().slice(11, 16),
     },
   },
+  expiration_date: {
+    type: Date,
+    default: () => new Date(),
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Admin',
   },
   status: {
     type: String,
-    enum: ['Active', 'Nonactive'],
+    enum: ['Active', 'Nonactive', 'Invalid'],
     default: 'Nonactive',
   },
   qr_code: {

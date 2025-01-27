@@ -54,6 +54,14 @@ deskRouter.get('/', async (request, response) => {
   response.json(desks)
 })
 
+
+deskRouter.get('/customerDesks/:id', async (request, response) => {
+  const desks = await Desk.find({})
+    .populate('queues')
+    .populate('createdBy', 'username')
+  response.json(desks)
+})
+
 deskRouter.get('/:id', async (request, response) => {
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id) {

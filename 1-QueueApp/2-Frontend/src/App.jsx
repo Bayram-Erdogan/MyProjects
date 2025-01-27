@@ -15,9 +15,12 @@ import Queue from "./pages/Queue";
 import ActiveQueues from "./pages/ActiveQueues";
 import Customers from "./pages/Customers";
 import Customer from "./pages/Customer";
+import CustomerDesks from "./pages/CustomerDesks";
+import CustomerDesk from "./pages/CustomerDesk";
 import Statistics from "./pages/Statistics";
 import CheckQueue from "./pages/CheckQueue";
 import SignIn from "./pages/SignIn";
+
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -46,6 +49,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/checkQueue" element = {<CheckQueue customers={customers} setCustomers={setCustomers} />} />
+          <Route path="/customerDesks" element = {<CustomerDesks/>} />
+          <Route path="/customerDesks/:id" element={<CustomerDesk customers={customers} setCustomers={setCustomers} />} />
           <Route path="/signIn" element={<SignIn setUser={setUser} />} />
           <Route path="/admin" element={<Admin  queues={queues} />} />
           <Route path="/admin/users" element={<Users />} />

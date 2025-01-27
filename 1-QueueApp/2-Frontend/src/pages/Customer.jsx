@@ -78,6 +78,15 @@ const Customer = ({ customers, setCustomers }) => {
                   />
                   Completed
                 </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="abandoned"
+                    checked={status === "abandoned"}
+                    onChange={({ target }) => setStatus(target.value)}
+                  />
+                  Abandoned
+                </label>
               </div>
             </div>
             <Button text={"Update"} />
