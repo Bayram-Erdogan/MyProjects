@@ -41,12 +41,9 @@ userRouter.post('/', async (request, response) => {
 })
 
 userRouter.get('/', async (request, response) => {
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
-
-  const users = await User.find({}).populate('createdBy', 'username').populate('queues', 'queue_name') //  Populate from ChatGPT
+  const users = await User.find({})
+    .populate('createdBy', 'username')
+    .populate('queues', 'queue_name') //  Populate from ChatGPT
   response.json(users)
 })
 

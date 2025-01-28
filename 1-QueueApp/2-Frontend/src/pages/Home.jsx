@@ -32,7 +32,7 @@ const Home = () =>{
             {queues.map((queue) => (
               <Card
               key={queue.queue_id}
-              cardType = "Queue__home"
+              cardType = "CustomerQueue"
               queue={queue}
               image={queue.qr_code}
               />)

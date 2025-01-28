@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Notification from "../components/Notification";
 import desksServices from "../services/desksService";
 import usersService from "../services/usersService";
 import customersService from "../services/customersService";
@@ -8,15 +7,13 @@ import customersService from "../services/customersService";
 const CustomerDesk = () => {
   const [desks, setDesks] = useState([]);
   const [users, setUsers] = useState([]);
-  const [deskNumber, setDeskNumber] = useState("");
   const [user, setUser] = useState("");
   const [queueName, setQueueName] = useState("N/A");
-  const [status, setStatus] = useState("");
   const [waitingCustomers, setWaitingCustomers] = useState(0);
   const [activeCustomers, setActiveCustomers] = useState(0);
   const [completedCustomers, setCompletedCustomers] = useState(0);
   const [totalCustomers, setTotalCustomers] = useState(0);
-  const [successMessage, setSuccessMessage] = useState(null);
+
 
   const { id } = useParams();
   const desk = desks.find((desk) => desk.desk_id === id);

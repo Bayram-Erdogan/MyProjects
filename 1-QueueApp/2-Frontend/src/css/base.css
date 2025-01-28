@@ -93,6 +93,14 @@ p {
   background-attachment: fixed;
 }
 
+#queue .main-header {
+  height: 100vh;
+  background-image: url('../assets/queue.jpg');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
 .main-header .content {
   display: flex;
   flex-direction: column;
@@ -145,6 +153,12 @@ p {
 }
 
 #desk .box {
+  color: #fff;
+  text-align: center;
+  padding: 1rem 8rem;
+}
+
+#queue .box {
   color: #fff;
   text-align: center;
   padding: 1rem 8rem;

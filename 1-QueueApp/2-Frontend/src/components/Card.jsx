@@ -1,7 +1,6 @@
 import Button from './Button'
 import {Link} from 'react-router-dom'
 import  handlePrint  from '../utils/printHelper'
-import { useNavigate } from "react-router-dom";
 
 const Card = ({
     cardType,
@@ -47,6 +46,17 @@ const Card = ({
                     </article>
                 </Link>
             )
+        case 'CustomerQueue':
+            return(
+                <Link to={`/customerQueues/${queue.queue_id}`}>
+                    <article className="card">
+                        <img src={image}/>
+                        <div>
+                            <h3> Queue : {queue.queue_name} </h3>
+                        </div>
+                    </article>
+                </Link>
+                )
         case 'Queue':
             return(
                 <Link to={`/admin/queues/${queue.queue_id}`}>
@@ -62,17 +72,8 @@ const Card = ({
                 </Link>
             )
         case 'Queue__home':
-            const navigate = useNavigate();
-            const handleProtectedPageAccess = (e) => { // From ChatGPT
-                if (!user) {
-                  e.preventDefault();
-                  if (window.confirm("You need to sign in to access this page.")) {
-                    navigate('/signIn');
-                  }
-                }
-              };
             return(
-                <Link to={`/admin/queues/${queue.queue_id}`} onClick={handleProtectedPageAccess}>
+                <Link to={`/admin/queues/${queue.queue_id}`} >
                     <article className="card">
                         <img src={image} alt="qr_code" />
                         <div>

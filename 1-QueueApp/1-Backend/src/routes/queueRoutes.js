@@ -88,6 +88,13 @@ queueRouter.get('/', async (request, response) => {
   response.json(queues)
 })
 
+queueRouter.get('/customerQueues/:id', async (request, response) => {
+  const queues = await Desk.find({})
+    .populate('queues')
+    .populate('createdBy', 'username')
+  response.json(queues)
+})
+
 queueRouter.get('/active', async (request, response) => { // updated from ChatGPT
   try {
 

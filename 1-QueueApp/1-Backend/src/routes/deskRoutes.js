@@ -43,23 +43,22 @@ deskRouter.post('/', async (request, response) => {
 
 deskRouter.get('/', async (request, response) => {
 
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
-
   const desks = await Desk.find({})
     .populate('queues')
     .populate('createdBy', 'username')
   response.json(desks)
 })
 
-
 deskRouter.get('/customerDesks/:id', async (request, response) => {
-  const desks = await Desk.find({})
-    .populate('queues')
+  const user = await Desk.findById(request.params.id)
     .populate('createdBy', 'username')
-  response.json(desks)
+    .populate('user', 'name email status')
+    .populate('queues', 'queue_name total_customer waiting_customer active_customer')
+  if (user) {
+    response.json(user)
+  } else {
+    response.status(404).end()
+  }
 })
 
 deskRouter.get('/:id', async (request, response) => {
