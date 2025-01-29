@@ -51,8 +51,7 @@ const CustomerQueue = () => {
 
   return (
     <div className="page-container">
-      <div className="right">
-        <h1>Queue {queue.queue_name || "Unknown"}</h1>
+        <h1> {queue.queue_name || "Unknown"}</h1>
         <table className="details-table">
           <tbody>
             <tr>
@@ -99,7 +98,6 @@ const CustomerQueue = () => {
         </table>
         {successMessage && <Notification message={successMessage} />}
       </div>
-    </div>
   );
 };
 

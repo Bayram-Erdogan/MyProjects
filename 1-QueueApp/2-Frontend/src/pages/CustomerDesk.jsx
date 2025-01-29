@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import Notification from "../components/Notification";
 import desksServices from "../services/desksService";
 import usersService from "../services/usersService";
 import customersService from "../services/customersService";
@@ -13,7 +14,7 @@ const CustomerDesk = () => {
   const [activeCustomers, setActiveCustomers] = useState(0);
   const [completedCustomers, setCompletedCustomers] = useState(0);
   const [totalCustomers, setTotalCustomers] = useState(0);
-
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const { id } = useParams();
   const desk = desks.find((desk) => desk.desk_id === id);
@@ -58,43 +59,41 @@ const CustomerDesk = () => {
 
   return (
     <div className="page-container">
-      <div className="right">
-        <h1> Desk {desk?.desk_number || "Unknown"}</h1>
-        <table className="details-table">
-          <tbody>
-            <tr>
-              <td><strong>Attached queue</strong></td>
-              <td className="middle-column">:</td>
-              <td>{queueName}</td>
-            </tr>
-            <tr>
-              <td><strong>Status</strong></td>
-              <td className="middle-column">:</td>
-              <td>{desk.status || "N/A"}</td>
-            </tr>
-            <tr>
-              <td><strong>Active Customer</strong></td>
-              <td className="middle-column">:</td>
-              <td>{activeCustomers}</td>
-            </tr>
-            <tr>
-              <td><strong>Waiting Customer</strong></td>
-              <td className="middle-column">:</td>
-              <td>{waitingCustomers}</td>
-            </tr>
-            <tr>
-              <td><strong>Completed Customer</strong></td>
-              <td className="middle-column">:</td>
-              <td>{completedCustomers}</td>
-            </tr>
-            <tr>
-              <td><strong>Total Customers</strong></td>
-              <td className="middle-column">:</td>
-              <td>{totalCustomers}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <h1> Desk {desk?.desk_number || "Unknown"}</h1>
+      <table className="details-table">
+        <tbody>
+          <tr>
+            <td><strong>Attached queue</strong></td>
+            <td className="middle-column">:</td>
+            <td>{queueName}</td>
+          </tr>
+          <tr>
+            <td><strong>Status</strong></td>
+            <td className="middle-column">:</td>
+            <td>{desk.status || "N/A"}</td>
+          </tr>
+          <tr>
+            <td><strong>Active Customer</strong></td>
+            <td className="middle-column">:</td>
+            <td>{activeCustomers}</td>
+          </tr>
+          <tr>
+            <td><strong>Waiting Customer</strong></td>
+            <td className="middle-column">:</td>
+            <td>{waitingCustomers}</td>
+          </tr>
+          <tr>
+            <td><strong>Completed Customer</strong></td>
+            <td className="middle-column">:</td>
+            <td>{completedCustomers}</td>
+          </tr>
+          <tr>
+            <td><strong>Total Customers</strong></td>
+            <td className="middle-column">:</td>
+            <td>{totalCustomers}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };

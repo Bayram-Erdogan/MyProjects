@@ -13,6 +13,28 @@ const Card = ({
     }) => {
 
     switch(cardType){
+        case 'CustomerDesk':
+            return(
+                <Link to={`/customerDesks/${desk.desk_id}`}>
+                    <article className="card">
+                        <img src={image}/>
+                        <div className='card-body'>
+                            <h3> {desk.desk_number} </h3>
+                        </div>
+                    </article>
+                </Link>
+            )
+        case 'CustomerQueue':
+            return(
+                <Link to={`/customerQueues/${queue.queue_id}`}>
+                    <article className="card">
+                        <img src={image}/>
+                        <div className='card-body'>
+                            <h3> {queue.queue_name} </h3>
+                        </div>
+                    </article>
+                </Link>
+            )
         case 'User':
             return(
                 <Link to={`/admin/users/${user.user_id}`}>
@@ -35,28 +57,6 @@ const Card = ({
                     </article>
                 </Link>
             )
-        case 'CustomerDesk':
-            return(
-                <Link to={`/customerDesks/${desk.desk_id}`}>
-                    <article className="card">
-                        <img src={image}/>
-                        <div>
-                            <h3> Desk : {desk.desk_number} </h3>
-                        </div>
-                    </article>
-                </Link>
-            )
-        case 'CustomerQueue':
-            return(
-                <Link to={`/customerQueues/${queue.queue_id}`}>
-                    <article className="card">
-                        <img src={image}/>
-                        <div>
-                            <h3> Queue : {queue.queue_name} </h3>
-                        </div>
-                    </article>
-                </Link>
-                )
         case 'Queue':
             return(
                 <Link to={`/admin/queues/${queue.queue_id}`}>
@@ -76,7 +76,7 @@ const Card = ({
                 <Link to={`/admin/queues/${queue.queue_id}`} >
                     <article className="card">
                         <img src={image} alt="qr_code" />
-                        <div>
+                        <div className='card-body'>
                             <h3> {queue.queue_name} </h3>
                         </div>
                     </article>

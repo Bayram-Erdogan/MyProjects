@@ -22,18 +22,21 @@ const CustomerQueues = () => {
               </header>
             </div>
           </div>
-
         </div>
         <div className="container">
-          <div className="articles-container">
-            {queues.map((queue) => (
-              <Card
-                key={queue.queue_id}
-                cardType="CustomerQueue"
-                queue={queue}
-                image={queue.qr_code}
-              />
-            ))}
+          <div className="row card-container">
+            {queues.length === 0 ? (
+              <p>No queues available</p>
+            ) : (
+              queues.map((queue) => (
+                <Card
+                  key={queue.queue_id}
+                  cardType="CustomerQueue"
+                  queue={queue}
+                  image={queue.qr_code}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useState , useEffect } from "react"
 import desksService from "../services/desksService";
 import Card from "../components/Card"
+import deskImage from "../assets/desk.jpg";
 
 
 const CustomerDesks = () => {
@@ -16,21 +17,17 @@ const CustomerDesks = () => {
       <div id="desk">
         <div className="main-header">
           <div className="content">
-            <div className="box">
-              <header className="section-header">
-                <h2>All Desks</h2>
-              </header>
-            </div>
+            <span>All Desks</span>
           </div>
-
         </div>
         <div className="container">
-          <div className="articles-container">
+          <div className="row card-container">
             {desks.map((desk) => (
               <Card
                 key={desk.desk_id}
                 cardType="CustomerDesk"
                 desk={desk}
+                image={deskImage}
               />
             ))}
           </div>
