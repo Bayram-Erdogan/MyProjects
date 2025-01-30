@@ -120,7 +120,9 @@ const User = () => {
       </div>
 
       <div className="right">
-        <h1>{user.name} Details</h1>
+        <div className="section-header">
+          <h1>{user.name} Details</h1>
+        </div>
         <table className="details-table">
           <tbody>
             <tr>

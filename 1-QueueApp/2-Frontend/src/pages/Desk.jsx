@@ -132,7 +132,9 @@ const Desk = () => {
       </div>
 
       <div className="right">
+      <div className="section-header">
         <h1> Desk {desk?.desk_number || "Unknown"} Details</h1>
+      </div>
         <table className="details-table">
           <tbody>
             <tr>

@@ -40,7 +40,7 @@ const Card = ({
                 <Link to={`/admin/users/${user.user_id}`}>
                     <article className="card">
                         <img src={image}/>
-                        <div>
+                        <div className='card-body'>
                             <h3> {user.name} </h3>
                         </div>
                     </article>
@@ -51,7 +51,7 @@ const Card = ({
                 <Link to={`/admin/desks/${desk.desk_id}`}>
                     <article className="card">
                         <img src={image}/>
-                        <div>
+                        <div className='card-body'>
                             <h3> Desk : {desk.desk_number} </h3>
                         </div>
                     </article>
@@ -62,7 +62,7 @@ const Card = ({
                 <Link to={`/admin/queues/${queue.queue_id}`}>
                     <article className="card bg-light">
                         <img src={image} alt="qr_code" />
-                        <div>
+                        <div className='card-body'>
                             <h3> {queue.queue_name} </h3>
                             <p><strong>Attached desk :</strong> {queue.attached_desk}</p>
                             <p><strong>Max of customer:</strong> {queue.max_of_customer}</p>
@@ -104,6 +104,7 @@ const Card = ({
                 <img src={image} alt="Customer profile image" />
                 <div>
                 <p> {customer.customer_id} </p>
+                <p>{customer.attached_queue?.queue_name || "Loading..."}</p>
                 </div>
               </article>
             </Link>

@@ -58,42 +58,44 @@ const CustomerDesk = () => {
   }
 
   return (
-    <div className="page-container">
-      <h1> Desk {desk?.desk_number || "Unknown"}</h1>
-      <table className="details-table">
-        <tbody>
-          <tr>
-            <td><strong>Attached queue</strong></td>
-            <td className="middle-column">:</td>
-            <td>{queueName}</td>
-          </tr>
-          <tr>
-            <td><strong>Status</strong></td>
-            <td className="middle-column">:</td>
-            <td>{desk.status || "N/A"}</td>
-          </tr>
-          <tr>
-            <td><strong>Active Customer</strong></td>
-            <td className="middle-column">:</td>
-            <td>{activeCustomers}</td>
-          </tr>
-          <tr>
-            <td><strong>Waiting Customer</strong></td>
-            <td className="middle-column">:</td>
-            <td>{waitingCustomers}</td>
-          </tr>
-          <tr>
-            <td><strong>Completed Customer</strong></td>
-            <td className="middle-column">:</td>
-            <td>{completedCustomers}</td>
-          </tr>
-          <tr>
-            <td><strong>Total Customers</strong></td>
-            <td className="middle-column">:</td>
-            <td>{totalCustomers}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div className="container">
+      <div className="page-container">
+        <h1> Desk {desk?.desk_number || "Unknown"}</h1>
+        <table className="details-table">
+          <tbody>
+            <tr>
+              <td><strong>Attached queue</strong></td>
+              <td className="middle-column">:</td>
+              <td>{queueName}</td>
+            </tr>
+            <tr>
+              <td><strong>Status</strong></td>
+              <td className="middle-column">:</td>
+              <td>{desk.status || "N/A"}</td>
+            </tr>
+            <tr>
+              <td><strong>Active Customer</strong></td>
+              <td className="middle-column">:</td>
+              <td>{activeCustomers}</td>
+            </tr>
+            <tr>
+              <td><strong>Waiting Customer</strong></td>
+              <td className="middle-column">:</td>
+              <td>{waitingCustomers}</td>
+            </tr>
+            <tr>
+              <td><strong>Completed Customer</strong></td>
+              <td className="middle-column">:</td>
+              <td>{completedCustomers}</td>
+            </tr>
+            <tr>
+              <td><strong>Total Customers</strong></td>
+              <td className="middle-column">:</td>
+              <td>{totalCustomers}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

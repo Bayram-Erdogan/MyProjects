@@ -22,7 +22,9 @@ const Home = () => {
     <div>
       <section id="home" className="showcase">
         <div className="content">
-          <span>Welcome to Queue App</span>
+            <header className="section-header">
+              <h2>Welcome to Queue App</h2>
+            </header>
         </div>
       </section>
 
@@ -54,12 +56,12 @@ const Home = () => {
       </section>
 
       <section id="queues">
-        <div className="container">
+        <div className="page-container">
           <div className="row">
             <h2 className="section-title">Join a Queue</h2>
           </div>
 
-          <div className="row card-container">
+          <div className="row cards-row">
             {queues.length === 0 ? (
               <p>No queues available</p>
             ) : (

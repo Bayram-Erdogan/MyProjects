@@ -14,7 +14,7 @@ const CustomerQueues = () => {
     }, []);
     return(
       <div id="queue">
-        <div className="main-header">
+        <div className="showcase">
           <div className="content">
             <div className="box">
               <header className="section-header">
@@ -24,7 +24,7 @@ const CustomerQueues = () => {
           </div>
         </div>
         <div className="container">
-          <div className="row card-container">
+          <div className="row cards-row">
             {queues.length === 0 ? (
               <p>No queues available</p>
             ) : (

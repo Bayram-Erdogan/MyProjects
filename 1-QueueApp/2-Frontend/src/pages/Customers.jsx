@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import customersService from "../services/customersService";
 import Notification from "../components/Notification";
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -10,6 +10,7 @@ const Customers = () => {
   const [waitingCustomers, setWaitingCustomers] = useState(0);
   const [processingCustomers, setProcessingCustomers] = useState(0);
   const [completedCustomers, setCompletedCustomers] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     customersService.getAll().then((data) => {
@@ -54,27 +55,15 @@ const Customers = () => {
               <tbody>
                 {customers.map((customer) => {
                   return (
-                    <tr key={customer.customer_id}>
-                      <td>
-                        <Link to={`/admin/customers/${customer.customer_id}`}>
-                          {customer.customer_id}
-                        </Link>
-                      </td>
-                      <td>
-                        <Link to={`/admin/customers/${customer.customer_id}`}>
-                          {customer.attached_queue?.queue_name}
-                        </Link>
-                      </td>
-                      <td>
-                        <Link to={`/admin/customers/${customer.customer_id}`}>
-                          {customer.attached_queue?.attached_desk}
-                        </Link>
-                      </td>
-                      <td>
-                        <Link to={`/admin/customers/${customer.customer_id}`}>
-                          {customer.status}
-                        </Link>
-                      </td>
+                    <tr
+                      key={customer.customer_id}
+                      onClick={() => navigate(`/admin/customers/${customer.customer_id}`)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <td>{customer.customer_id}</td>
+                      <td>{customer.attached_queue?.queue_name}</td>
+                      <td>{customer.attached_queue?.attached_desk}</td>
+                      <td>{customer.status}</td>
                     </tr>
                   );
                 })}

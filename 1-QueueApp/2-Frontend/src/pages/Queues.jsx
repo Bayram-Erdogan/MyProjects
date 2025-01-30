@@ -77,7 +77,7 @@ const Queues = ({queues, setQueues}) => {
           <div className="right">
             <div className="container box">
               <h2>All Queues</h2>
-              <div className="articles-container">
+              <div className="cards-row">
                 {queues.map((queue) => (
                   <Card
                     key={queue.queue_id}

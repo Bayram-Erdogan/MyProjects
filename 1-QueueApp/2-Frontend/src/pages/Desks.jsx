@@ -109,7 +109,7 @@ const Desks = () => {
         <div className="right">
           <div className="container box">
             <h2>All Desks</h2>
-            <div className="articles-container">
+            <div className="cards-row">
               {desks.map((desk) => (
                 <Card
                   key={desk.desk_id}

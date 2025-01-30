@@ -90,7 +90,7 @@ const Users = () => {
           <div className="right">
             <div className="container box">
               <h2>All users</h2>
-              <div className="articles-container">
+              <div className="cards-row">
                 {users.map((user) => (
                   <Card
                     key={user.user_id}

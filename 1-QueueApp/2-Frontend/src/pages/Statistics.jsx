@@ -38,7 +38,7 @@ const Statistics = ({ queues, setQueues }) => {
   }, []);
 
   useEffect(() => {
-    if (customers.length > 0 && queues.length > 0) {
+    if (customers.length >= 0 && queues.length >= 0) {
       handleDailyStatistics(customers, queues);
     }
   }, [customers, queues]);

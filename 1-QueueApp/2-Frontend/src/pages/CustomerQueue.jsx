@@ -20,7 +20,6 @@ const CustomerQueue = () => {
   const [queue, setQueue] = useState(null);
 
   useEffect(() => {
-    // Fetch all queues and filter by id
     queuesServices.getAll().then((queues) => {
       const queueData = queues.find((queue) => queue.queue_id === id);
       if (queueData) {
@@ -31,7 +30,6 @@ const CustomerQueue = () => {
         setUser(queueData.user || "N/A");
         setStatus(queueData.status || "N/A");
 
-        // Fetch customers for the queue
         customersService.getAll().then((data) => {
           const queueCustomers = data.filter((customer) => customer.attached_queue?.queue_id === id);
           setTotalCustomers(queueCustomers.length);
@@ -50,54 +48,56 @@ const CustomerQueue = () => {
   }
 
   return (
+
     <div className="page-container">
-        <h1> {queue.queue_name || "Unknown"}</h1>
-        <table className="details-table">
-          <tbody>
-            <tr>
-              <td><strong>Queue Name</strong></td>
-              <td className="middle-column">:</td>
-              <td>{queueName}</td>
-            </tr>
-            <tr>
-              <td><strong>Attached Desk</strong></td>
-              <td className="middle-column">:</td>
-              <td>{deskNumber}</td>
-            </tr>
-            <tr>
-              <td><strong>Status</strong></td>
-              <td className="middle-column">:</td>
-              <td>{status}</td>
-            </tr>
-            <tr>
-              <td><strong>Max Customer</strong></td>
-              <td className="middle-column">:</td>
-              <td>{maxOfCustomer}</td>
-            </tr>
-            <tr>
-              <td><strong>Active Customer</strong></td>
-              <td className="middle-column">:</td>
-              <td>{activeCustomers}</td>
-            </tr>
-            <tr>
-              <td><strong>Waiting Customer</strong></td>
-              <td className="middle-column">:</td>
-              <td>{waitingCustomers}</td>
-            </tr>
-            <tr>
-              <td><strong>Completed Customer</strong></td>
-              <td className="middle-column">:</td>
-              <td>{completedCustomers}</td>
-            </tr>
-            <tr>
-              <td><strong>Total Customers</strong></td>
-              <td className="middle-column">:</td>
-              <td>{totalCustomers}</td>
-            </tr>
-          </tbody>
-        </table>
-        {successMessage && <Notification message={successMessage} />}
+          <h1> {queue.queue_name || "Unknown"}</h1>
+          <table className="details-table">
+            <tbody>
+              <tr>
+                <td><strong>Queue Name</strong></td>
+                <td className="middle-column">:</td>
+                <td>{queueName}</td>
+              </tr>
+              <tr>
+                <td><strong>Attached Desk</strong></td>
+                <td className="middle-column">:</td>
+                <td>{deskNumber}</td>
+              </tr>
+              <tr>
+                <td><strong>Status</strong></td>
+                <td className="middle-column">:</td>
+                <td>{status}</td>
+              </tr>
+              <tr>
+                <td><strong>Max Customer</strong></td>
+                <td className="middle-column">:</td>
+                <td>{maxOfCustomer}</td>
+              </tr>
+              <tr>
+                <td><strong>Active Customer</strong></td>
+                <td className="middle-column">:</td>
+                <td>{activeCustomers}</td>
+              </tr>
+              <tr>
+                <td><strong>Waiting Customer</strong></td>
+                <td className="middle-column">:</td>
+                <td>{waitingCustomers}</td>
+              </tr>
+              <tr>
+                <td><strong>Completed Customer</strong></td>
+                <td className="middle-column">:</td>
+                <td>{completedCustomers}</td>
+              </tr>
+              <tr>
+                <td><strong>Total Customers</strong></td>
+                <td className="middle-column">:</td>
+                <td>{totalCustomers}</td>
+              </tr>
+            </tbody>
+          </table>
+          {successMessage && <Notification message={successMessage} />}
       </div>
+
   );
 };
 
