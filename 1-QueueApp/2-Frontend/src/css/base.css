@@ -422,66 +422,35 @@ table tr:last-child td {
 
 }
 
-/************ Karisik *********************/
+/******* Sign In **********/
 
-.articles-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-}
-
-.sign-in {
+.sign-in-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  text-align: center;
+  align-items: center;
   height: 100vh;
-  color: #fff;
+  background-image: url('../assets/login.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+}
+
+.sign-in-form-container {
+  background-color: rgba(0, 0, 0, 0.2);
   padding: 20px;
-  text-transform: uppercase;
-  letter-spacing: 10px;
-  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-.page-container {
-  max-width: var(--max-width);
-  margin: 8rem auto;
-}
-
-.footer {
-  background-color: var(--dark);
-  color: #fff;
-  text-align: center;
+.sign-in-input {
   padding: 10px;
-  width: 100%;
-  position: relative;
-  bottom: 0;
-  left: 0;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  width: 300px;
 }
 
-.qr-code {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-.app-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.app-content {
-  flex: 1;
-  width: 100%;
-}
-
-.text-align {
-  text-align: center;
-}
 
 /** Responsive **/
 @media (max-width: 768px) {

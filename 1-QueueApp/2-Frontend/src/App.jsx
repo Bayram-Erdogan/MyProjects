@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import './css/base.css';
-//import './css/denemeBase.css';
+//import './css/base.css';
+import './css/denemeBase.css';
 import { Navbar, AdminNavbar } from "./components/Navbar";
 import Footer from "./components/Footer";
 import queuesService from "../src/services/queuesService"

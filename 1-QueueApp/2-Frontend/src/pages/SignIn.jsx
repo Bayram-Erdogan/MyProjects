@@ -31,32 +31,36 @@ const SignIn = ({ setUser }) => {
   };
 
   return (
-    <div className="sign-in ">
-      <h1>Sign In</h1>
-      <form onSubmit={handleSignIn}>
-        <div>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            name="username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            name="password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <Button text={'Sign in'} />
-      </form>
-      <Notification message={errorMessage} />
+    <div className="sign-in-container">
+      <div className="sign-in-form-container">
+        <h1>Sign In</h1>
+        <Notification message={errorMessage} />
+        <form onSubmit={handleSignIn}>
+          <div>
+            <input
+              type="text"
+              value={username}
+              name="Username"
+              placeholder="Username"
+              className="sign-in-input"
+              onChange={({ target }) => setUsername(target.value)}
+            />
+          </div>
+          <div>
+            <input
+              type="password"
+              value={password}
+              name="Password"
+              placeholder="Password"
+              className="sign-in-input"
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </div>
+          <Button text="Sign In" />
+        </form>
+      </div>
     </div>
+
   );
 };
 

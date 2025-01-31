@@ -102,11 +102,13 @@ const Card = ({
             <Link to={`/admin/customers/${customer.customer_id}`} key={customer.customer_id}>
               <article className="card">
                 <img src={image} alt="Customer profile image" />
-                <div>
-                <p> {customer.customer_id} </p>
-                <p>{customer.attached_queue?.queue_name || "Loading..."}</p>
+                <div className='card-body'>
+                    <h3> Customer Id </h3>
+                    <p> {customer.customer_id} </p>
+                    <p>{customer.attached_queue?.queue_name || "Loading..."}</p>
                 </div>
               </article>
+
             </Link>
           );
     }
