@@ -6,6 +6,7 @@ import Notification from "../components/Notification"
 import handlePrint from '../utils/printHelper';
 import queuesServices from "../services/queuesService";
 import customersService from "../services/customersService";
+import desksService from "../services/desksService";
 
 const Queue = ({ queues, setQueues }) => {
   const [queueName, setQueueName] = useState('');
@@ -19,6 +20,8 @@ const Queue = ({ queues, setQueues }) => {
   const [activeCustomers, setActiveCustomers] = useState(0);
   const [completedCustomers, setCompletedCustomers] = useState(0);
   const [totalCustomers, setTotalCustomers] = useState(0);
+
+  const [desks, setDesks] = useState([]);
 
   const { id } = useParams();
   const queue = queues.find((queue) => queue.queue_id === id);
@@ -39,6 +42,10 @@ const Queue = ({ queues, setQueues }) => {
         setCompletedCustomers(queueCustomers.filter((customer) => customer.status === "done").length);
       });
     }
+
+    desksService.getAll().then((initialDesks) => {
+      setDesks(initialDesks);
+    });
   }, [queue, id]);
 
   const updateQueue = (event) => {
@@ -47,7 +54,7 @@ const Queue = ({ queues, setQueues }) => {
       queue_name: queueName,
       desk_number: deskNumber,
       max_of_customer: maxOfCustomer,
-      user: user,
+      user: user.id,
       status: status
     };
     queuesServices
@@ -76,14 +83,23 @@ const Queue = ({ queues, setQueues }) => {
               value={queueName}
               onChange={({ target }) => setQueueName(target.value)}
             />
-            <Input
-              text={"Desk number : "}
-              type={"text"}
-              placeholder={"Desk number"}
-              name={"desk_number"}
-              value={deskNumber}
-              onChange={({ target }) => setDeskNumber(target.value)}
-            />
+
+            <div>
+              <select className="select"
+                value={deskNumber}
+                onChange={({ target }) => setDeskNumber(target.value)}
+              >
+                <option value="" >Select a desk</option>
+                {desks
+                  .filter(desk => desk.status === "Nonactive")
+                  .map(desk => (
+                    <option key={desk.desk_id} value={desk.desk_number}>
+                      {desk.desk_number}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
             <Input
               text={"Max of customer : "}
               type={"text"}
@@ -92,22 +108,19 @@ const Queue = ({ queues, setQueues }) => {
               value={maxOfCustomer}
               onChange={({ target }) => setMaxOfCustomer(target.value)}
             />
-            <Input
-              text={"User : "}
-              type={"text"}
-              placeholder={"User"}
-              name={"user"}
-              value={user.name}
-              onChange={({ target }) => setUser(target.value)}
-            />
-            <Input
-              text={"Status : "}
-              type={"text"}
-              placeholder={"Status"}
-              name={"status"}
+
+            <label>Status:</label>
+            <select className="select"
               value={status}
               onChange={({ target }) => setStatus(target.value)}
-            />
+            >
+              <option value="" disabled>
+                Select status
+              </option>
+              <option value="Active">Active</option>
+              <option value="Nonactive">Nonactive</option>
+            </select>
+
             <Button text={"Update"} />
           </form>
           <Notification message={successMessage} />
@@ -189,3 +202,4 @@ const Queue = ({ queues, setQueues }) => {
 };
 
 export default Queue;
+

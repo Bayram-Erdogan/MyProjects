@@ -79,25 +79,21 @@ const Desks = () => {
               />
 
               <div>
-                <h3>Select User</h3>
-                <ul>
+                <select className="select"
+                  value={selectedUser || ""}
+                  onChange={({ target }) => setSelectedUser(target.value)}
+                >
+                  <option value="" disabled>
+                    Select a user
+                  </option>
                   {users
                     .filter((user) => user.status === "Free")
                     .map((user) => (
-                      <li key={user.user_id}>
-                        <label>
-                          <input
-                            type="radio"
-                            name="user"
-                            value={user.user_id}
-                            checked={selectedUser === user.user_id}
-                            onChange={() => setSelectedUser(user.user_id)}
-                          />
-                          {user.name}
-                        </label>
-                      </li>
+                      <option key={user.user_id} value={user.user_id}>
+                        {user.name}
+                      </option>
                     ))}
-                </ul>
+                </select>
               </div>
 
               <Button text={"Create new desk"} />

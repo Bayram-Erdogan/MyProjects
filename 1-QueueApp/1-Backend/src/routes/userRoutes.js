@@ -92,22 +92,35 @@ userRouter.delete('/:id', (request, response, next) => {
 
 })
 
-userRouter.put('/:id', async (request, response, next) => {
-  const { name, email, password, desk, queue } = request.body
+userRouter.put('/:id', async (request, response, next) => { // updated from ChatGPT
+  const { name, email, status } = request.body
 
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
 
-  User.findByIdAndUpdate(
-    request.params.id,
-    { name, email, password, desk, queue },
-    { new: true, runValidators: true, context: 'query' })
-    .then(updatedUser => {
-      response.json(updatedUser)
-    })
-    .catch(error => next(error))
+  try {
+    const existingUser = await User.findById(request.params.id)
+    if (!existingUser) {
+      return response.status(404).json({ error: 'User not found' })
+    }
+
+    const updatedFields = {
+      name: name || existingUser.name,
+      email: email || existingUser.email,
+      status: status || existingUser.status,
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      request.params.id,
+      updatedFields,
+      { new: true, runValidators: true, context: 'query' }
+    )
+    response.json(updatedUser)
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = userRouter

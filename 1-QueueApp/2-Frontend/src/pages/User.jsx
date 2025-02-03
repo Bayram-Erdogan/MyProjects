@@ -17,6 +17,7 @@ const User = () => {
   const [password, setPassword] = useState("");
   const [desk, setDesk] = useState("");
   const [queue, setQueue] = useState("");
+  const [status, setStatus] = useState('');
   const [successMessage, setSuccessMessage] = useState(null);
 
   const { id } = useParams();
@@ -60,6 +61,7 @@ const User = () => {
       password: password,
       desk: desk,
       queue: queue,
+      status: status,
     };
 
     usersServices.update(id, userObject).then((updatedUser) => {
@@ -97,22 +99,17 @@ const User = () => {
               value={email}
               onChange={({ target }) => setEmail(target.value)}
             />
-            <Input
-              text={"Desk :"}
-              type={"text"}
-              placeholder={"Desk"}
-              name={"desk"}
-              value={desk}
-              onChange={({ target }) => setDesk(target.value)}
-            />
-            <Input
-              text={"Queue :"}
-              type={"text"}
-              placeholder={"Queue"}
-              name={"queue"}
-              value={attached_queue ? attached_queue.queue_name : "N/A"}
-              onChange={({ target }) => setQueue(target.value)}
-            />
+
+            <select className="select"
+              value={status}
+              onChange={({ target }) => setStatus(target.value)}
+            >
+              <option value="" disabled>
+                Select status
+              </option>
+              <option value="Free">Free</option>
+              <option value="Onwork">Onwork</option>
+            </select>
             <Button text={"Update"} />
           </form>
           <Notification message={successMessage} />

@@ -72,9 +72,7 @@ const Desk = () => {
     event.preventDefault();
     const deskObject = {
       desk_number: deskNumber,
-      user: user.user_id,
-      queue: desk.queue,
-      status,
+      status : status,
     };
 
     desksServices.update(id, deskObject).then((updatedDesk) => {
@@ -98,33 +96,20 @@ const Desk = () => {
               type={"text"}
               placeholder={"Desk Number"}
               name={"desk_number"}
-              value={desk.desk_number}
+              value={deskNumber}
               onChange={({ target }) => setDeskNumber(target.value)}
+
             />
-            <Input
-              text={"User:"}
-              type={"text"}
-              placeholder={"User"}
-              name={"user"}
-              value={user ? user.name : ""}
-              onChange={({ target }) => setUser(target.value)}
-            />
-            <Input
-              text={"Queue:"}
-              type={"text"}
-              placeholder={"Queue"}
-              name={"queue"}
-              value={queueName}
-              onChange={({ target }) => setQueueName(target.value)}
-            />
-            <Input
-              text={"Status:"}
-              type={"text"}
-              placeholder={"Status"}
-              name={"status"}
-              value={desk.status}
+            <select className="select"
+              value={status}
               onChange={({ target }) => setStatus(target.value)}
-            />
+            >
+              <option value="" disabled>
+                Select status
+              </option>
+              <option value="Active">Active</option>
+              <option value="Nonactive">Nonactive</option>
+            </select>
             <Button text={"Update"} />
           </form>
           <Notification message={successMessage} />

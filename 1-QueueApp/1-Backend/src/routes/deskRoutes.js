@@ -109,7 +109,7 @@ deskRouter.delete('/:id', (request, response, next) => {
 })
 
 deskRouter.put('/:id', async (request, response, next) => {
-  const {  desk_number } = request.body
+  const {  desk_number , status } = request.body
 
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id) {
@@ -118,7 +118,7 @@ deskRouter.put('/:id', async (request, response, next) => {
 
   Desk.findByIdAndUpdate(
     request.params.id,
-    {  desk_number },
+    {  desk_number, status },
     { new: true, runValidators: true, context: 'query' })
     .then(updatedQueue => {
       response.json(updatedQueue)
