@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const Desk = require('../models/deskModel')
 const Admin = require('../models/adminModel')
 const User = require('../models/userModel')
+const Queue = require('../models/queueModel')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
@@ -15,29 +16,34 @@ const getTokenFrom = request => {
 deskRouter.post('/', async (request, response) => {
   const body = request.body
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
 
   const admin = await Admin.findById(decodedToken.id)
-  const user = await User.findById(body.userId)
-  if (!user || user.status !== 'Free') {
+  const user = body.userId ? await User.findById(body.userId) : null
+
+  if (user && user.status !== 'Free') {
     return response.status(400).json({ error: 'User is not available' })
   }
 
   const desk = new Desk({
     desk_number: body.desk_number,
     createdBy: admin._id,
-    user: user._id
+    user: user ? user._id : null
   })
 
-  user.status = 'Onwork'
-  await user.save()
+  if (user) {
+    user.status = 'Busy'
+    await user.save()
+  }
 
   const savedDesk = await desk.save()
   admin.desks = admin.desks.concat(savedDesk._id)
-  await admin.save().then(console.log('Desk successfully created'))
+  await admin.save()
 
+  console.log('Desk successfully created')
   response.json(savedDesk)
 })
 
@@ -109,21 +115,87 @@ deskRouter.delete('/:id', (request, response, next) => {
 })
 
 deskRouter.put('/:id', async (request, response, next) => {
-  const {  desk_number , status } = request.body
+  const { desk_number, status, userId } = request.body
 
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
 
-  Desk.findByIdAndUpdate(
-    request.params.id,
-    {  desk_number, status },
-    { new: true, runValidators: true, context: 'query' })
-    .then(updatedQueue => {
-      response.json(updatedQueue)
-    })
-    .catch(error => next(error))
+  try {
+    const existingDesk = await Desk.findById(request.params.id)
+    if (!existingDesk) {
+      return response.status(404).json({ error: 'Desk not found' })
+    }
+
+    if (userId) {
+      await User.findByIdAndUpdate(
+        userId,
+        { status: 'Busy' },
+        { new: true }
+      )
+    }
+
+    let updatedDesk = await Desk.findByIdAndUpdate(
+      request.params.id,
+      {
+        desk_number: desk_number || existingDesk.desk_number,
+        status: status || existingDesk.status,
+        user: userId || existingDesk.user,
+      },
+      { new: true, runValidators: true, context: 'query' }
+    )
+
+    if (userId) {
+      const queue = await Queue.findOne({ desk: existingDesk._id })
+
+      if (queue) {
+        await Queue.findByIdAndUpdate(
+          queue._id,
+          { user: userId },
+          { new: true }
+        )
+      }
+    }
+
+    if (status === 'Active' && userId) {
+      await User.findByIdAndUpdate(
+        userId,
+        { status: 'Onwork' },
+        { new: true }
+      )
+    }
+
+    if (status === 'Nonactive') {
+      if (userId) {
+        await User.findByIdAndUpdate(
+          userId,
+          { status: 'Free' },
+          { new: true }
+        )
+      }
+
+      updatedDesk = await Desk.findByIdAndUpdate(
+        request.params.id,
+        { user: null },
+        { new: true }
+      )
+
+      const queue = await Queue.findOne({ desk: existingDesk._id })
+      if (queue) {
+        await Queue.findByIdAndUpdate(
+          queue._id,
+          { user: null },
+          { new: true }
+        )
+      }
+    }
+
+    response.json(updatedDesk)
+  } catch (error) {
+    next(error)
+  }
 })
+
 
 module.exports = deskRouter

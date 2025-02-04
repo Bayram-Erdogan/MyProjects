@@ -39,17 +39,9 @@ const Desks = () => {
   const addDesk = (event) => {
     event.preventDefault();
 
-    if (!selectedUser) {
-      setMessage("Please select a user.");
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
-      return;
-    }
-
     const deskObject = {
       desk_number: deskNumber,
-      userId: selectedUser,
+      userId: selectedUser || null,
     };
 
     desksService.create(deskObject).then((returnedDesk) => {

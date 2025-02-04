@@ -1,5 +1,7 @@
 const customerRouter = require('express').Router()
 const Queue = require('../models/queueModel')
+const Desk = require('../models/deskModel')
+const User = require('../models/userModel')
 const Customer = require('../models/customerModel')
 const { calculateAverageWaitingTime, calculateEstimatedWaitTime } = require('../utils/customerHelpers')
 const jwt = require('jsonwebtoken')
@@ -206,7 +208,7 @@ customerRouter.put('/:id', async (request, response) => {
 
 /*******/
 
-customerRouter.get('/auto-join/:queue_id', async (request, response) => {
+customerRouter.get('/auto-join/:queue_id', async (request, response) => { // Updated ChatGPT
   const { queue_id } = request.params
 
   try {
@@ -228,7 +230,10 @@ customerRouter.get('/auto-join/:queue_id', async (request, response) => {
       return response.status(400).send('<h1>Expired QR code</h1>')
     }
 
-    const deskNumber = queue.desk_number
+    const attached_desk = queue.desk_number
+    const desk = await Desk.findOne({ desk_number: attached_desk })
+    const user = await User.findOne({ _id: desk.user })
+
     const customersInQueue = await Customer.countDocuments({ queue_id: queue_id, status: 'waiting' })
     const customer = new Customer({
       queue_id: queue._id,
@@ -236,8 +241,8 @@ customerRouter.get('/auto-join/:queue_id', async (request, response) => {
       waiting_before_me: customersInQueue,
       joining_time: {
         date: new Date().toISOString().slice(0, 10),
-        hour: new Date().toISOString().slice(11, 16)
-      }
+        hour: new Date().toISOString().slice(11, 16),
+      },
     })
 
     if (queue.waiting_customer >= queue.max_of_customer) {
@@ -249,6 +254,16 @@ customerRouter.get('/auto-join/:queue_id', async (request, response) => {
     if (queue.waiting_customer < queue.max_of_customer && queue.status === 'Nonactive') {
       queue.status = 'Active'
       await queue.save()
+
+      if (desk && desk.status !== 'Active') {
+        desk.status = 'Active'
+        await desk.save()
+      }
+
+      if (user && user.status !== 'Onwork') {
+        user.status = 'Onwork'
+        await user.save()
+      }
     }
 
     await customer.save()
@@ -264,21 +279,21 @@ customerRouter.get('/auto-join/:queue_id', async (request, response) => {
         <head>
           <script type="text/javascript">
             window.onload = function() {
-              const modal = document.createElement('div')
-              modal.style.position = 'fixed'
-              modal.style.top = '0'
-              modal.style.left = '0'
-              modal.style.width = '100%'
-              modal.style.height = '100%'
-              modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'
-              modal.style.display = 'flex'
-              modal.style.justifyContent = 'center'
-              modal.style.alignItems = 'center'
+              const modal = document.createElement('div');
+              modal.style.position = 'fixed';
+              modal.style.top = '0';
+              modal.style.left = '0';
+              modal.style.width = '100%';
+              modal.style.height = '100%';
+              modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+              modal.style.display = 'flex';
+              modal.style.justifyContent = 'center';
+              modal.style.alignItems = 'center';
               modal.innerHTML = \`
                 <div style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
                   <h2>You have successfully joined the queue!</h2>
                   <p>Your position in the queue: ${position}</p>
-                  <p>Desk Number: ${deskNumber}</p>
+                  <p>Desk Number: ${desk ? desk.number : 'N/A'}</p>
                   <p>Estimated wait time: ${estimatedWaitTime} minutes</p>
                   <p>Number of customers currently waiting: ${position - 1}</p>
                   <p>Your Customer ID: ${customer._id}</p>
@@ -286,8 +301,8 @@ customerRouter.get('/auto-join/:queue_id', async (request, response) => {
                   <br><br>
                   <button onclick="document.body.removeChild(modal)">Close</button>
                 </div>
-              \`
-              document.body.appendChild(modal)
+              \`;
+              document.body.appendChild(modal);
             }
           </script>
         </head>

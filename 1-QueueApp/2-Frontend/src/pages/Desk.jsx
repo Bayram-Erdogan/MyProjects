@@ -11,7 +11,7 @@ const Desk = () => {
   const [desks, setDesks] = useState([]);
   const [users, setUsers] = useState([]);
   const [deskNumber, setDeskNumber] = useState("");
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(null);
   const [queueName, setQueueName] = useState("N/A");
   const [status, setStatus] = useState("");
   const [waitingCustomers, setWaitingCustomers] = useState(0);
@@ -19,6 +19,7 @@ const Desk = () => {
   const [completedCustomers, setCompletedCustomers] = useState(0);
   const [totalCustomers, setTotalCustomers] = useState(0);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState("");
 
   const { id } = useParams();
   const desk = desks.find((desk) => desk.desk_id === id);
@@ -31,11 +32,11 @@ const Desk = () => {
   useEffect(() => {
     if (desk && users.length > 0) {
       const foundUser = users.find((user) => user.user_id === desk.user);
-      setUser(foundUser || "N/A");
+      setUser(foundUser || null);
     }
   }, [desk, users]);
 
-  useEffect(() => { // From ChatGPT
+  useEffect(() => {
     if (desk && Array.isArray(desk.queues)) {
       const queueId = desk.queues[0]?.queue_id;
       const foundQueue = desk.queues.find((q) => q.queue_id === queueId);
@@ -68,19 +69,32 @@ const Desk = () => {
     }
   }, [desk]);
 
-  const updateDesk = (event) => {
+  const updateDesk = async (event) => {
     event.preventDefault();
+
+    const selectedUser = users.find((u) => u.user_id === selectedUserId);
+
     const deskObject = {
       desk_number: deskNumber,
-      status : status,
+      status: status,
+      userId: selectedUser ? selectedUser.user_id : null,
     };
 
-    desksServices.update(id, deskObject).then((updatedDesk) => {
-      setDesks(desks.map((d) => (d.desk_id === id ? updatedDesk : d)));
+    try {
+      await desksServices.update(id, deskObject);
+
+      const updatedDesks = await desksServices.getAll();
+      setDesks(updatedDesks);
+
+      setUser(selectedUser);
+
       setSuccessMessage("Desk updated successfully");
       setTimeout(() => setSuccessMessage(null), 5000);
-    });
+    } catch (error) {
+      console.error("Error updating desk:", error);
+    }
   };
+
 
   if (!desk) {
     return <div>Loading desk data...</div>;
@@ -98,9 +112,9 @@ const Desk = () => {
               name={"desk_number"}
               value={deskNumber}
               onChange={({ target }) => setDeskNumber(target.value)}
-
             />
-            <select className="select"
+            <select
+              className="select"
               value={status}
               onChange={({ target }) => setStatus(target.value)}
             >
@@ -110,6 +124,24 @@ const Desk = () => {
               <option value="Active">Active</option>
               <option value="Nonactive">Nonactive</option>
             </select>
+
+            <select
+              className="select"
+              value={selectedUserId}
+              onChange={({ target }) => setSelectedUserId(target.value)}
+            >
+              <option value="" disabled>
+                Select a user
+              </option>
+              {users
+                .filter((user) => user.status === "Free")
+                .map((user) => (
+                  <option key={user.user_id} value={user.user_id}>
+                    {user.name}
+                  </option>
+                ))}
+            </select>
+
             <Button text={"Update"} />
           </form>
           <Notification message={successMessage} />
@@ -117,9 +149,9 @@ const Desk = () => {
       </div>
 
       <div className="right">
-      <div className="section-header">
-        <h1> Desk {desk?.desk_number || "Unknown"} Details</h1>
-      </div>
+        <div className="section-header">
+          <h1> Desk {desk?.desk_number || "Unknown"} Details</h1>
+        </div>
         <table className="details-table">
           <tbody>
             <tr>

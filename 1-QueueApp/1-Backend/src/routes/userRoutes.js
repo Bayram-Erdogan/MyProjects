@@ -3,6 +3,8 @@ const userRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 const Admin = require('../models/adminModel')
+const Desk = require('../models/deskModel')
+const Queue = require('../models/queueModel')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
@@ -92,7 +94,7 @@ userRouter.delete('/:id', (request, response, next) => {
 
 })
 
-userRouter.put('/:id', async (request, response, next) => { // updated from ChatGPT
+userRouter.put('/:id', async (request, response, next) => {
   const { name, email, status } = request.body
 
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
@@ -112,15 +114,33 @@ userRouter.put('/:id', async (request, response, next) => { // updated from Chat
       status: status || existingUser.status,
     }
 
+    if (status === 'Free') {
+      const desks = await Desk.find({ user: existingUser._id })
+
+      if (desks.length > 0) {
+        await Desk.updateMany(
+          { user: existingUser._id },
+          { $set: { user: null } }
+        )
+        const deskIds = desks.map(desk => desk._id)
+        await Queue.updateMany(
+          { desk: { $in: deskIds } },
+          { $set: { user: null } }
+        )
+      }
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       request.params.id,
       updatedFields,
       { new: true, runValidators: true, context: 'query' }
     )
+
     response.json(updatedUser)
   } catch (error) {
     next(error)
   }
 })
+
 
 module.exports = userRouter

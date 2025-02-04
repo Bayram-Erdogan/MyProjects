@@ -89,7 +89,7 @@ const Queue = ({ queues, setQueues }) => {
                 value={deskNumber}
                 onChange={({ target }) => setDeskNumber(target.value)}
               >
-                <option value="" >Select a desk</option>
+                <option value="" dis>Select a desk</option>
                 {desks
                   .filter(desk => desk.status === "Nonactive")
                   .map(desk => (
@@ -141,7 +141,7 @@ const Queue = ({ queues, setQueues }) => {
             <tr>
               <td><strong>Attached user</strong></td>
               <td className="middle-column">:</td>
-              <td>{user.name}</td>
+              <td>{user? user.name : "N/A"}</td>
             </tr>
             <tr>
               <td><strong>Attached desk</strong></td>

@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
   passwordHash: String,
   status: {
     type: String,
-    enum: ['Free', 'Onwork'],
+    enum: ['Free', 'Busy', 'Onwork'],
     default: 'Free',
   },
   createdTime: {

@@ -20,6 +20,7 @@ const User = () => {
   const [status, setStatus] = useState('');
   const [successMessage, setSuccessMessage] = useState(null);
 
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -31,15 +32,14 @@ const User = () => {
       .getAll()
       .then((desks) => setDesks(desks));
 
-      queuesServices.getAll().then((queues) => setQueues(queues));
+    queuesServices.getAll().then((queues) => setQueues(queues));
   }, []);
 
   const user = users.find((user) => String(user.user_id) === id);
   const userDesk = desks.find((desk) => String(desk.user) === String(user?.user_id));
   const attached_queue = user?.queues && user.queues.length > 0
-  ? queues.find(queue => queue.queue_id === user.queues[0].queue_id)
-  : null; //From ChatGPT
-
+    ? queues.find(queue => queue.queue_id === user.queues[0].queue_id)
+    : null;
 
   useEffect(() => {
     if (user) {
@@ -50,8 +50,6 @@ const User = () => {
       setQueue(user.queue || "");
     }
   }, [user, userDesk]);
-
-
 
   const updateUser = (event) => {
     event.preventDefault();
@@ -65,7 +63,16 @@ const User = () => {
     };
 
     usersServices.update(id, userObject).then((updatedUser) => {
-      setUsers(users.map((u) => (u.user_id === id ? updatedUser : u)));
+      usersServices.getAll().then((updatedUsers) => {
+        setUsers(updatedUsers);
+      });
+
+      if (userDesk) {
+        desksServices.getAll().then((updatedDesks) => {
+          setDesks(updatedDesks);
+        });
+      }
+
       setSuccessMessage("User updated successfully");
       setTimeout(() => setSuccessMessage(null), 5000);
     });
@@ -85,6 +92,7 @@ const User = () => {
           <form onSubmit={updateUser}>
             <Input
               text={"Name :"}
+
               type={"text"}
               placeholder={"Name"}
               name={"name"}
@@ -93,6 +101,7 @@ const User = () => {
             />
             <Input
               text={"Email :"}
+
               type={"email"}
               placeholder={"Email"}
               name={"email"}
@@ -108,6 +117,7 @@ const User = () => {
                 Select status
               </option>
               <option value="Free">Free</option>
+              <option value="Busy">Busy</option>
               <option value="Onwork">Onwork</option>
             </select>
             <Button text={"Update"} />
@@ -155,7 +165,11 @@ const User = () => {
             <tr>
               <td><strong>Attached queue</strong></td>
               <td className="middle-column">:</td>
-              <td>{attached_queue ? attached_queue.queue_name : "N/A"}</td>
+              <td>
+                {user.status === "Free" ? "N/A" : (attached_queue ? attached_queue.queue_name : "N/A")}
+              </td>
+
+
             </tr>
           </tbody>
         </table>
