@@ -60,29 +60,59 @@ const queueSchema = new mongoose.Schema({
   }
 })
 
+// queueSchema.set('toJSON', {
+//   transform: (document, returnedObject) => {
+//     returnedObject.id = returnedObject._id.toString()
+//     delete returnedObject._id
+//     delete returnedObject.__v
+//     delete returnedObject.passwordHash
+
+//     const orderedObject = {
+//       queue_name: returnedObject.queue_name,
+//       attached_desk: returnedObject.desk_number,
+//       max_of_customer:returnedObject.max_of_customer,
+//       queue_id: returnedObject.id,
+//       createdTime: returnedObject.createdTime,
+//       createdBy:returnedObject.createdBy,
+//       status: returnedObject.status,
+//       active_customer:returnedObject.active_customer,
+//       waiting_customer:returnedObject.waiting_customer,
+//       total_customer:returnedObject.total_customer,
+//       qr_code: returnedObject.qr_code,
+//       user: returnedObject.user
+//     }
+//     return orderedObject
+
+//   }
+// })
+
+
 queueSchema.set('toJSON', {
   transform: (document, returnedObject) => {
+    if (!returnedObject._id) {
+      //console.error('Error: returnedObject._id is undefined', returnedObject)
+      return returnedObject
+    }
+
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
     delete returnedObject.__v
     delete returnedObject.passwordHash
 
-    const orderedObject = {
+    return {
       queue_name: returnedObject.queue_name,
       attached_desk: returnedObject.desk_number,
-      max_of_customer:returnedObject.max_of_customer,
+      max_of_customer: returnedObject.max_of_customer,
       queue_id: returnedObject.id,
       createdTime: returnedObject.createdTime,
-      createdBy:returnedObject.createdBy,
+      createdBy: returnedObject.createdBy,
       status: returnedObject.status,
-      active_customer:returnedObject.active_customer,
-      waiting_customer:returnedObject.waiting_customer,
-      total_customer:returnedObject.total_customer,
+      active_customer: returnedObject.active_customer,
+      waiting_customer: returnedObject.waiting_customer,
+      total_customer: returnedObject.total_customer,
       qr_code: returnedObject.qr_code,
       user: returnedObject.user
     }
-    return orderedObject
-
   }
 })
 

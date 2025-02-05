@@ -180,51 +180,8 @@ queueRouter.delete('/:id', (request, response, next) => {
 
 })
 
-// queueRouter.put('/:id', async (request, response, next) => {
-//   const { queue_name, desk_number, max_of_customer, user, status } = request.body
-
-//   try {
-//     const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-//     if (!decodedToken.id) {
-//       return response.status(401).json({ error: 'token invalid' })
-//     }
-
-//     const updatedQueue = await Queue.findByIdAndUpdate(
-//       request.params.id,
-//       { queue_name, desk_number, max_of_customer, user, status },
-//       { new: true, runValidators: true, context: 'query' }
-//     )
-
-//     if (!updatedQueue) {
-//       return response.status(404).json({ error: 'Queue not found' })
-//     }
-
-//     console.log('Queue status updated successfully')
-
-//     if (status === 'Active') {
-//       const desk = await Desk.findOne({ desk_number: desk_number })
-//       if (desk && desk.status !== 'Active') {
-//         desk.status = 'Active'
-//         await desk.save()
-//         console.log(`Desk ${desk_number} status updated to Active`)
-//       }
-
-//       const userData = await User.findById(user)
-//       if (userData && userData.status !== 'Onwork') {
-//         userData.status = 'Onwork'
-//         await userData.save()
-//         console.log(`User ${user} status updated to Onwork`)
-//       }
-//     }
-
-//     response.json(updatedQueue)
-//   } catch (error) {
-//     next(error)
-//   }
-// })
-
-queueRouter.put('/:id', async (request, response, next) => {
-  const { queue_name, desk_number, max_of_customer, user, status } = request.body
+queueRouter.put('/:id', async (request, response, next) => {  // updated from ChatGPT
+  const { queue_name, desk_number, max_of_customer, status } = request.body
 
   try {
     const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
@@ -232,9 +189,72 @@ queueRouter.put('/:id', async (request, response, next) => {
       return response.status(401).json({ error: 'token invalid' })
     }
 
+    const queue = await Queue.findById(request.params.id)
+    const oldDeskNumber = queue.desk_number
+    const oldUser = queue.user
+
+    const oldDesk = await Desk.findOne({ desk_number: oldDeskNumber })
+    if (oldDesk) {
+      oldDesk.queues = oldDesk.queues.filter(q => q.toString() !== request.params.id)
+      await oldDesk.save()
+      console.log(`Queue removed from Desk ${oldDeskNumber}`)
+    }
+
+    if (oldUser) {
+      const oldUserData = await User.findById(oldUser)
+      if (oldUserData) {
+        oldUserData.queues = oldUserData.queues.filter(q => q.toString() !== request.params.id)
+        await oldUserData.save()
+        console.log(`Queue removed from User ${oldUserData.name} queues`)
+
+        if (oldUserData.status !== 'Busy') {
+          oldUserData.status = 'Busy'
+          await oldUserData.save()
+          console.log(`User ${oldUserData.name} status updated to Busy`)
+        }
+      }
+    }
+
+    const desk = await Desk.findOne({ desk_number: desk_number })
+    if (!desk) {
+      return response.status(404).json({ error: 'Desk not found' })
+    }
+
+
+    const deskUser = desk.user
+    if (!deskUser) {
+      return response.status(400).json({ error: 'No user associated with this desk' })
+    }
+
+    desk.queues.push(queue._id)
+    await desk.save()
+    console.log(`Queue added to Desk ${desk_number}`)
+
+    const userData = await User.findById(deskUser)
+    if (userData) {
+      userData.queues.push(queue._id)
+      await userData.save()
+      console.log(`Queue added to User ${userData.name} queues`)
+
+
+      if (userData.status !== 'Busy') {
+        userData.status = 'Busy'
+        await userData.save()
+        console.log(`User ${userData.name} status updated to Busy`)
+      }
+    }
+
+
     const updatedQueue = await Queue.findByIdAndUpdate(
       request.params.id,
-      { queue_name, desk_number, max_of_customer, user, status },
+      {
+        queue_name,
+        desk_number,
+        max_of_customer,
+        user: deskUser,
+        status,
+        desk_id: desk._id,
+      },
       { new: true, runValidators: true, context: 'query' }
     )
 
@@ -245,17 +265,11 @@ queueRouter.put('/:id', async (request, response, next) => {
     console.log('Queue status updated successfully')
 
     if (status === 'Active') {
-      const desk = await Desk.findOne({ desk_number: desk_number })
-      if (desk && desk.status !== 'Active') {
-        desk.status = 'Active'
-        await desk.save()
-        console.log(`Desk ${desk_number} status updated to Active`)
-      }
-
       const userData = await User.findById(updatedQueue.user)
       if (userData && userData.status !== 'Onwork') {
         userData.status = 'Onwork'
         await userData.save()
+        console.log(`User ${userData.name} status updated to Onwork`)
       }
     }
 

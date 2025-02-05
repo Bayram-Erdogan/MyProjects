@@ -128,12 +128,8 @@ deskRouter.put('/:id', async (request, response, next) => {
       return response.status(404).json({ error: 'Desk not found' })
     }
 
-    if (userId) {
-      await User.findByIdAndUpdate(
-        userId,
-        { status: 'Busy' },
-        { new: true }
-      )
+    if (userId && existingDesk.status === 'Nonactive') {
+      await User.findByIdAndUpdate(userId, { status: 'Busy' }, { new: true })
     }
 
     let updatedDesk = await Desk.findByIdAndUpdate(
@@ -148,31 +144,39 @@ deskRouter.put('/:id', async (request, response, next) => {
 
     if (userId) {
       const queue = await Queue.findOne({ desk: existingDesk._id })
-
       if (queue) {
-        await Queue.findByIdAndUpdate(
-          queue._id,
-          { user: userId },
-          { new: true }
-        )
+        await Queue.findByIdAndUpdate(queue._id, { user: userId }, { new: true })
       }
     }
 
-    if (status === 'Active' && userId) {
-      await User.findByIdAndUpdate(
-        userId,
-        { status: 'Onwork' },
-        { new: true }
-      )
+    if (desk_number) {
+      const queue = await Queue.findOne({ desk: existingDesk._id })
+      if (queue) {
+        await Queue.findByIdAndUpdate(queue._id, { desk: updatedDesk._id }, { new: true })
+      }
+    }
+
+    if (status === 'Active') {
+      const activeUserId = userId || updatedDesk.user
+
+      if (activeUserId) {
+        const existingUser = await User.findById(activeUserId)
+
+        if (existingUser && existingUser.status !== 'Onwork') {
+          await User.findByIdAndUpdate(
+            activeUserId,
+            { status: 'Onwork' },
+            { new: true }
+          )
+        }
+      }
     }
 
     if (status === 'Nonactive') {
-      if (userId) {
-        await User.findByIdAndUpdate(
-          userId,
-          { status: 'Free' },
-          { new: true }
-        )
+      const freeUserId = userId || updatedDesk.user
+
+      if (freeUserId) {
+        await User.findByIdAndUpdate(freeUserId, { status: 'Free' }, { new: true })
       }
 
       updatedDesk = await Desk.findByIdAndUpdate(
@@ -183,13 +187,10 @@ deskRouter.put('/:id', async (request, response, next) => {
 
       const queue = await Queue.findOne({ desk: existingDesk._id })
       if (queue) {
-        await Queue.findByIdAndUpdate(
-          queue._id,
-          { user: null },
-          { new: true }
-        )
+        await Queue.findByIdAndUpdate(queue._id, { user: null }, { new: true })
       }
     }
+
 
     response.json(updatedDesk)
   } catch (error) {
